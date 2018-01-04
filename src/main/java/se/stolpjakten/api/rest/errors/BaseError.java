@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package se.stolpjakten.api.service.exception;
+package se.stolpjakten.api.rest.errors;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,17 +13,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author gengdahl
  */
-@XmlRootElement(name = "serverError")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class InternalServerError {
-
-    protected String identifier;
-
-
-    public String getIdentifier() {
-        return identifier;
+public abstract class BaseError {
+    public String getDescription() {
+        return description;
     }
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+
+    public void setDescription(String theDescription) {
+        description = theDescription;
     }
+    
+    private String description = "Server error";
+    
 }

@@ -5,6 +5,7 @@
  */
 package se.stolpjakten.api.service;
 
+import java.io.IOException;
 import se.stolpjakten.api.db.Humans;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -23,6 +24,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import se.stolpjakten.api.security.BasicSecured;
 import se.stolpjakten.api.security.TokenSecured;
+import se.stolpjakten.api.security.exceptions.AuthorizationException;
 
 /**
  *
@@ -61,11 +63,11 @@ public class UsersFacadeREST extends AbstractFacade<Humans> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Humans find(@PathParam("id") String id,
-            @Context ContainerRequestContext context) {
+            @Context ContainerRequestContext context) throws IOException{
         if (id.equals(context.getSecurityContext().getUserPrincipal().getName())) {
             System.out.println("We are good");
         } else {
-            throw new RuntimeException("Forbidden");
+            throw new AuthorizationException();
         }
         
         Humans humans = super.find(id);

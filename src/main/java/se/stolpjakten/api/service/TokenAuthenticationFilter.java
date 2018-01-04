@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.Priority;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -18,10 +19,12 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
+import se.stolpjakten.api.db.RoleMappings;
 import se.stolpjakten.api.db.Tokens;
 import se.stolpjakten.api.security.TokenSecured;
 import se.stolpjakten.api.security.User;
 import se.stolpjakten.api.security.UserSecurityContext;
+import se.stolpjakten.api.security.exceptions.AuthenticationException;
 import se.stolpjakten.api.utils.Strings;
 
 /**
@@ -49,7 +52,7 @@ public class TokenAuthenticationFilter implements ContainerRequestFilter {
 
         // Validate the Authorization header
         if (!isTokenBasedAuthentication(authorizationHeader)) {
-            abortWithUnauthorized(requestContext);
+            abortWithUnauthorized();
             return;
         }
 
@@ -60,7 +63,7 @@ public class TokenAuthenticationFilter implements ContainerRequestFilter {
         try {
 
             // Validate the token
-            String[] userScopes = extractUserScopesFromToken(token);
+            String[] userScopes = extractUserRolesFromToken(token);
             if (!Strings.isNullOrEmpty(userScopes[0])) {
                 User user = new User(userScopes[0],
                         userScopes[1]);
@@ -73,7 +76,7 @@ public class TokenAuthenticationFilter implements ContainerRequestFilter {
             }
 
         } catch (Exception e) {
-            abortWithUnauthorized(requestContext);
+            abortWithUnauthorized();
         }
     }
 
@@ -88,21 +91,21 @@ public class TokenAuthenticationFilter implements ContainerRequestFilter {
                 .startsWith(AUTHENTICATION_SCHEME.toLowerCase() + " ");
     }
 
-    private void abortWithUnauthorized(ContainerRequestContext requestContext) {
-
-        // Abort the filter chain with a 401 status code response
-        // The WWW-Authenticate header is sent along with the response
-        requestContext.abortWith(
-                Response.status(Response.Status.UNAUTHORIZED)
-                        .header(HttpHeaders.WWW_AUTHENTICATE,
-                                AUTHENTICATION_SCHEME + " realm=\"" + REALM + "\"")
-                        .build());
+    private void abortWithUnauthorized()
+    throws AuthenticationException {
+        throw new AuthenticationException("Please provide valid Bearer token.");
     }
 
-    private String[] extractUserScopesFromToken(String token) throws Exception {
+    private String[] extractUserRolesFromToken(String token) throws Exception {
         // Check if the token was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
         Tokens dbToken = entityManager.find(Tokens.class, token);
+        TypedQuery query = entityManager.createNamedQuery("RoleMappings.findByUserName", RoleMappings.class);
+        query.setParameter("userName", dbToken.getUserName());
+        List<RoleMappings> result = query.getResultList();
+        for (RoleMappings mapping : result) {
+            System.out.println("Bossekaka: " + mapping.getRoleMappingsPK().getRole());
+        }
 
         return new String[]{dbToken.getUserName(), dbToken.getScopes()};
     }

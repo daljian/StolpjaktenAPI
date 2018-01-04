@@ -22,6 +22,7 @@ import se.stolpjakten.api.security.BasicAuth;
 import se.stolpjakten.api.security.BasicSecured;
 import se.stolpjakten.api.security.User;
 import se.stolpjakten.api.security.UserSecurityContext;
+import se.stolpjakten.api.security.exceptions.AuthenticationException;
 import se.stolpjakten.api.utils.Strings;
 
 @BasicSecured
@@ -56,7 +57,7 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
             }
         } finally {
             if (!authenticated) {
-                throw new RuntimeException("Forbidden");
+                throw new AuthenticationException("Please provide valid basic authentication information");
             }
         }
     }
