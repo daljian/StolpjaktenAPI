@@ -6,6 +6,7 @@
 package se.stolpjakten.api.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Priority;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 import se.stolpjakten.api.db.RoleMappings;
 import se.stolpjakten.api.db.Tokens;
+import se.stolpjakten.api.rest.Role;
 import se.stolpjakten.api.security.TokenSecured;
 import se.stolpjakten.api.security.User;
 import se.stolpjakten.api.security.UserSecurityContext;
@@ -69,7 +71,12 @@ public class TokenAuthenticationFilter implements ContainerRequestFilter {
                         userScopes[1]);
                 String scheme
                         = requestContext.getUriInfo().getAbsolutePath().getScheme();
-                List<String> roles = Collections.singletonList("test");
+                
+                List<String> roles = new ArrayList(userScopes.length - 1);
+                for (int i = 0 ; i < roles.size(); i++) {
+                    roles.add(userScopes[i+1]);
+                }
+                roles.add(Role.USER.name());
                 SecurityContext securityContext = new UserSecurityContext(user,
                         scheme, roles);
                 requestContext.setSecurityContext(securityContext);
@@ -103,11 +110,15 @@ public class TokenAuthenticationFilter implements ContainerRequestFilter {
         TypedQuery query = entityManager.createNamedQuery("RoleMappings.findByUserName", RoleMappings.class);
         query.setParameter("userName", dbToken.getUserName());
         List<RoleMappings> result = query.getResultList();
+        String[] retVal = new String[result.size() + 2];
+        int index = 0;
+        retVal[index++] = dbToken.getUserName();
+        retVal[index++] = Role.USER.name();
+        
         for (RoleMappings mapping : result) {
-            System.out.println("Bossekaka: " + mapping.getRoleMappingsPK().getRole());
+            retVal[index++] = mapping.getRoleMappingsPK().getRole();
         }
-
-        return new String[]{dbToken.getUserName(), dbToken.getScopes()};
+        return retVal;
     }
 
 }

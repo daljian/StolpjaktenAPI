@@ -46,12 +46,12 @@ public class ErrorMapper implements ExceptionMapper<Exception> {
     public Response convert(AuthenticationException exception) {
         Forbidden error = new Forbidden();
         setErrorDescription(error, exception);
-        return Response.status(Response.Status.FORBIDDEN).entity(error).build();
+        return Response.status(Response.Status.UNAUTHORIZED).entity(error).build();
     }
     public Response convert(AuthorizationException exception) {
         Unauthorized error = new Unauthorized();
         setErrorDescription(error, exception);
-        return Response.status(Response.Status.UNAUTHORIZED).entity(error).build();
+        return Response.status(Response.Status.FORBIDDEN).entity(error).build();
     }
     private void setErrorDescription (BaseError error, Exception exception) {
         if (!Strings.isNullOrEmpty(exception.getMessage())) {

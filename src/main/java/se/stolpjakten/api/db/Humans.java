@@ -15,6 +15,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import se.stolpjakten.api.rest.User;
 
 /**
  *
@@ -28,7 +29,7 @@ import javax.validation.constraints.Size;
     , @NamedQuery(name = "Humans.findByEmail", query = "SELECT h FROM Humans h WHERE h.email = :email")
     , @NamedQuery(name = "Humans.findByPassword", query = "SELECT h FROM Humans h WHERE h.password = :password")
     , @NamedQuery(name = "Humans.findBySalt", query = "SELECT h FROM Humans h WHERE h.salt = :salt")})
-public class Humans implements Serializable {
+public class Humans implements User, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -77,7 +78,10 @@ public class Humans implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    /**
+     * Internal, never seen in API.
+     * @return 
+     */
     public Integer getSalt() {
         return salt;
     }

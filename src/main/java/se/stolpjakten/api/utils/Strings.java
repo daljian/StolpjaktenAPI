@@ -32,5 +32,17 @@ public class Strings {
         }
         return isNullOrEmpty;
     }
+    /**
+     * Password restrictions that apply are TODO
+     * @param s
+     * @return 
+     */
+    public static boolean isValidPasswordString(String s) { 
+        if (isNullOrEmpty(s)) {
+            return false;
+        }
+        return s.length() > 5 && s.length() < 40;
+        
+    }
 
 }

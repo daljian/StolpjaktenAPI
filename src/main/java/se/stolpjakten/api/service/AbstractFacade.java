@@ -5,6 +5,7 @@
  */
 package se.stolpjakten.api.service;
 
+import java.io.IOException;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -22,7 +23,7 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(T entity) {
+    public void create(T entity) throws IOException {
         getEntityManager().persist(entity);
     }
 

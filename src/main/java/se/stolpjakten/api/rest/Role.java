@@ -5,13 +5,19 @@
  */
 package se.stolpjakten.api.rest;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author gengdahl
  */
-public enum Roles {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public enum Role {
     USER,
-    ADMIN,
-    SYSADMIN;
+    ARR_ADMIN,
+    SYS_ADMIN;
     
 }

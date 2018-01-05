@@ -6,8 +6,10 @@
 package se.stolpjakten.api.security;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.SecurityContext;
+import se.stolpjakten.api.rest.Role;
 
 /**
  *
@@ -16,16 +18,18 @@ import javax.ws.rs.core.SecurityContext;
 public class UserSecurityContext implements SecurityContext {
     private User user;
     private String scheme;
+    private List<String> roles;
     public UserSecurityContext(User user, String scheme, List<String> roles) {
         this.user = user;
         this.scheme = scheme;
+        this.roles = roles;
     }
    @Override
     public Principal getUserPrincipal() {return this.user;}
  
     @Override
-    public boolean isUserInRole(String s) {
-        return true;
+    public boolean isUserInRole(String role) {
+        return roles.contains(role);
     }
  
     @Override
