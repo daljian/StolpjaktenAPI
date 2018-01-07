@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -71,7 +72,7 @@ public class UsersFacadeREST extends AbstractFacade<Humans> {
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(User human) throws IOException {
+    public void create(Humans human) throws IOException {
         Humans entity = (Humans) human;
         entity.setSalt((int) System.currentTimeMillis() % 10000);
 
@@ -105,9 +106,10 @@ public class UsersFacadeREST extends AbstractFacade<Humans> {
 
         Humans humans = super.find(id);
         if (humans != null) {
-            humans = humans.toRest();
+            return humans.toUser();
+        } else {
+            throw new NotFoundException();
         }
-        return (User)humans;
     }
     @GET
     @Produces({MediaType.APPLICATION_JSON})
@@ -115,7 +117,7 @@ public class UsersFacadeREST extends AbstractFacade<Humans> {
         List<Humans> humans =  super.findAll();
         List<User> users = new ArrayList<>(humans.size());
         for (Humans human : humans) {
-            users.add((User)human);
+            users.add(human.toUser());
         }
         return users;
     }
@@ -126,7 +128,7 @@ public class UsersFacadeREST extends AbstractFacade<Humans> {
         List<Humans> humans =  super.findRange(new int[]{from, to});
         List<User> users = new ArrayList<>(humans.size());
         for (Humans human : humans) {
-            users.add((User)human);
+            users.add(human.toUser());
         }
         return users;
     }

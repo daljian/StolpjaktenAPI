@@ -17,6 +17,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class UserError extends BaseError {
     private ErrorCode errorCode;
+    public UserError(){
+        
+    }
     public UserError(ErrorCode code, String description) {
         this.errorCode = code;
         setDescription(description);

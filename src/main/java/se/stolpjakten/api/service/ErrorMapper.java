@@ -18,8 +18,10 @@ import se.stolpjakten.api.rest.errors.BaseError;
 import se.stolpjakten.api.rest.errors.Forbidden;
 import se.stolpjakten.api.rest.errors.InternalServerError;
 import se.stolpjakten.api.rest.errors.Unauthorized;
+import se.stolpjakten.api.rest.errors.UserError;
 import se.stolpjakten.api.security.exceptions.AuthenticationException;
 import se.stolpjakten.api.security.exceptions.AuthorizationException;
+import se.stolpjakten.api.security.exceptions.UserException;
 import se.stolpjakten.api.utils.Strings;
 
 @Provider
@@ -32,6 +34,8 @@ public class ErrorMapper implements ExceptionMapper<Exception> {
             return convert((AuthenticationException)exception);
         } else if (exception instanceof AuthorizationException) {
             return convert((AuthorizationException)exception);
+        } else if (exception instanceof UserException) {
+            return convert((UserException)exception);
         } else {
             return convert(exception);
         }
@@ -52,6 +56,12 @@ public class ErrorMapper implements ExceptionMapper<Exception> {
         Unauthorized error = new Unauthorized();
         setErrorDescription(error, exception);
         return Response.status(Response.Status.FORBIDDEN).entity(error).build();
+    }
+    public Response convert(UserException exception) {
+        UserError error = new UserError(exception.getErrorCode(),
+                exception.getMessage());
+        setErrorDescription(error, exception);
+        return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
     }
     private void setErrorDescription (BaseError error, Exception exception) {
         if (!Strings.isNullOrEmpty(exception.getMessage())) {

@@ -17,7 +17,7 @@ import se.stolpjakten.api.db.Tokens;
  */
 @XmlRootElement(name = "token")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Token {
+public class Token implements TokenIF {
 
     private String accessToken;
     private String type;
@@ -74,8 +74,8 @@ public class Token {
     public static Token fromTokens(Tokens dbToken) {
         Token token = new Token();
         token.setAccessToken(dbToken.getToken());
-        token.setExpire(dbToken.getExpires().longValue()
-                - System.currentTimeMillis());
+        token.setExpire((dbToken.getExpires().longValue()
+                - System.currentTimeMillis())/1000);
         token.setType("Bearer");
         return token;
     }

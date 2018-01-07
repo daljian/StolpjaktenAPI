@@ -114,10 +114,24 @@ public class Humans implements User, Serializable {
     public String toString() {
         return "se.stolpjakten.api.service.Humans[ userName=" + userName + " ]";
     }
-    public Humans toRest() {
-        setPassword(null);
-        setSalt(null);
-        return this;
+    public User toUser() {
+        return new User() {
+            @Override
+            public String getUserName() {
+                return userName;
+            }
+
+            @Override
+            public String getEmail() {
+                return email;
+            }
+
+            @Override
+            public String getPassword() {
+                return null;
+            }
+            
+        };
     }
     
 }

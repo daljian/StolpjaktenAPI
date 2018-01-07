@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Tokens.findByToken", query = "SELECT t FROM Tokens t WHERE t.token = :token")
     , @NamedQuery(name = "Tokens.findByUserName", query = "SELECT t FROM Tokens t WHERE t.userName = :userName")
     , @NamedQuery(name = "Tokens.findByExpires", query = "SELECT t FROM Tokens t WHERE t.expires = :expires")
+    , @NamedQuery(name = "Tokens.deleteByUserName", query = "DELETE FROM Tokens t WHERE t.userName = :userName")
     , @NamedQuery(name = "Tokens.findByScopes", query = "SELECT t FROM Tokens t WHERE t.scopes = :scopes")})
 public class Tokens implements Serializable {
 
