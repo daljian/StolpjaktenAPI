@@ -5,7 +5,6 @@
  */
 package se.stolpjakten.api.service;
 
-import se.stolpjakten.api.db.Humans;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +17,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
+import se.stolpjakten.api.db.type.Users;
 import se.stolpjakten.api.security.BasicAuth;
 import se.stolpjakten.api.security.BasicSecured;
 import se.stolpjakten.api.security.User;
@@ -41,8 +41,8 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
             String[] userPass = BasicAuth.decode(auth.replaceFirst("[Bb]asic ", ""));
             if (!Strings.isNullOrEmpty(userPass[0])
                     && !Strings.isNullOrEmpty(userPass[1])) {
-                Humans human = entityManager.find(Humans.class, userPass[0]);
-                if (human.getPassword().equals(userPass[1])) {
+                Users dbUser = entityManager.find(Users.class, userPass[0]);
+                if (dbUser.getPassword().equals(userPass[1])) {
                     User user = new User(userPass[0]);
                     String scheme = 
                             requestContext.getUriInfo().getAbsolutePath().getScheme();

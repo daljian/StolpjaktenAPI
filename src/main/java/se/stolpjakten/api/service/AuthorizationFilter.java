@@ -21,7 +21,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
-import se.stolpjakten.api.rest.Role;
+import se.stolpjakten.api.rest.type.Role;
 import se.stolpjakten.api.security.Authorization;
 import se.stolpjakten.api.security.exceptions.AuthorizationException;
 

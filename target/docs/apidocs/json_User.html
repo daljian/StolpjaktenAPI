@@ -69,8 +69,6 @@
       <dl class="dl-horizontal">
         <dt>Abstract Type</dt>
         <dd></dd>
-        <dt>Subtypes</dt>
-        <dd><a href="json_Humans.html">Humans</a></dd>
       </dl>
 
       <table class="table datatype-properties">
@@ -83,21 +81,6 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>  <span class="property-name">password</span>
-</td>
-          <td>  <span class="datatype-reference">string
-</span>
-</td>
-          <td>  <span class="property-description">Password for this user.
-<br>
-Only available for add (POST) and update (PUT) requests.
-<br>
-Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-<br>
-Required: yes</span>
-</td>
-        </tr>
         <tr>
           <td>  <span class="property-name">email</span>
 </td>
@@ -120,6 +103,21 @@ Required: no</span>
 Required: yes</span>
 </td>
         </tr>
+        <tr>
+          <td>  <span class="property-name">password</span>
+</td>
+          <td>  <span class="datatype-reference">string
+</span>
+</td>
+          <td>  <span class="property-description">Password for this user.
+<br>
+Only available for add (POST) and update (PUT) requests.
+<br>
+Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
+<br>
+Required: yes</span>
+</td>
+        </tr>
         </tbody>
       </table>
 
@@ -128,9 +126,9 @@ Required: yes</span>
       <div class="alert alert-warning">This data type is abstract. The example below may be incomplete. More accurate examples can be found in subtypes pages.</div>
       
       <pre class="prettyprint language-js example">{
-  &quot;password&quot; : &quot;...&quot;,
   &quot;email&quot; : &quot;...&quot;,
-  &quot;userName&quot; : &quot;...&quot;
+  &quot;userName&quot; : &quot;...&quot;,
+  &quot;password&quot; : &quot;...&quot;
 }</pre>
 
         <footer class="footer">

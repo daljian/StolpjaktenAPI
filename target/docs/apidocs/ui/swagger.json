@@ -12,44 +12,10 @@
     }
     ,
     {
-      "name" : "UsersFacadeREST"
+      "name" : "UsersFacade"
     }
   ],
   "definitions" : {
-    "json_Humans" : {
-      "type" : "object",
-      "title" : "Humans",
-          "properties" : {
-            "userName" : {
-            "readOnly" : false,
-"description" : "A globally unique username that identifies a user.\n<br>\nRequired: yes",
-"type" : "string"
-            },
-            "email" : {
-            "readOnly" : false,
-"description" : "Email address for this user.\n<br>\nRequired: no",
-"type" : "string"
-            },
-            "password" : {
-            "readOnly" : false,
-"description" : "Password for this user.\n<br>\nOnly available for add (POST) and update (PUT) requests.\n<br>\nStored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.\n<br>\nRequired: yes",
-"type" : "string"
-            },
-            "salt" : {
-            "readOnly" : false,
-"description" : "Internal, never seen in API.",
-"type" : "number"
-            }
-          },
-      "example" : {
-  "userName" : "...",
-  "email" : "...",
-  "password" : "...",
-  "salt" : 12345
-},
-      "description" : ""
-    }
-    ,
     "json_Token" : {
       "type" : "object",
       "title" : "Token",
@@ -82,11 +48,6 @@
       "type" : "object",
       "title" : "User",
           "properties" : {
-            "password" : {
-            "readOnly" : false,
-"description" : "Password for this user.\n<br>\nOnly available for add (POST) and update (PUT) requests.\n<br>\nStored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.\n<br>\nRequired: yes",
-"type" : "string"
-            },
             "email" : {
             "readOnly" : false,
 "description" : "Email address for this user.\n<br>\nRequired: no",
@@ -96,12 +57,51 @@
             "readOnly" : false,
 "description" : "A globally unique username that identifies a user.\n<br>\nRequired: yes",
 "type" : "string"
+            },
+            "password" : {
+            "readOnly" : false,
+"description" : "Password for this user.\n<br>\nOnly available for add (POST) and update (PUT) requests.\n<br>\nStored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.\n<br>\nRequired: yes",
+"type" : "string"
             }
           },
       "example" : {
-  "password" : "...",
   "email" : "...",
-  "userName" : "..."
+  "userName" : "...",
+  "password" : "..."
+},
+      "description" : ""
+    }
+    ,
+    "json_Users" : {
+      "type" : "object",
+      "title" : "Users",
+          "properties" : {
+            "userName" : {
+            "readOnly" : false,
+"description" : "",
+"type" : "string"
+            },
+            "email" : {
+            "readOnly" : false,
+"description" : "",
+"type" : "string"
+            },
+            "password" : {
+            "readOnly" : false,
+"description" : "",
+"type" : "string"
+            },
+            "salt" : {
+            "readOnly" : false,
+"description" : "",
+"type" : "number"
+            }
+          },
+      "example" : {
+  "userName" : "...",
+  "email" : "...",
+  "password" : "...",
+  "salt" : 12345
 },
       "description" : ""
     }
@@ -109,7 +109,7 @@
   "paths": {
     "\/users" : {
       "get" : {
-        "tags" : [ "UsersFacadeREST" ],
+        "tags" : [ "UsersFacade" ],
         "description" : "",
         "operationId" : "findAll",
         "produces" : [ "application/json" ],
@@ -125,9 +125,9 @@
 }
             },
             "example" : {
-  "password" : "...",
   "email" : "...",
-  "userName" : "..."
+  "userName" : "...",
+  "password" : "..."
 },
             "description" : ""
           }
@@ -135,7 +135,7 @@
       }
       ,
       "post" : {
-        "tags" : [ "UsersFacadeREST" ],
+        "tags" : [ "UsersFacade" ],
         "description" : "",
         "operationId" : "create",
         "consumes" : [ "application/json" ],
@@ -144,7 +144,7 @@
             "name" : "body",
             "in" : "body",
             "schema" : {
-"$ref" : "#/definitions/json_Humans"
+"$ref" : "#/definitions/json_Users"
             },
             "description" : ""
           }
@@ -159,19 +159,14 @@
     ,
     "\/users/count" : {
       "get" : {
-        "tags" : [ "UsersFacadeREST" ],
+        "tags" : [ "UsersFacade" ],
         "description" : "",
         "operationId" : "countREST",
-        "produces" : [ "text/plain" ],
         "parameters" : [
         ],
         "responses" : {
           "200" : {
-            "schema" : {
-"description" : "",
-"type" : "string"
-            },
-            "description" : ""
+            "description" : "Success"
           }
         }
       }
@@ -179,7 +174,7 @@
     ,
     "\/users/{from}/{to}" : {
       "get" : {
-        "tags" : [ "UsersFacadeREST" ],
+        "tags" : [ "UsersFacade" ],
         "description" : "",
         "operationId" : "findRange",
         "produces" : [ "application/json" ],
@@ -211,9 +206,9 @@
 }
             },
             "example" : {
-  "password" : "...",
   "email" : "...",
-  "userName" : "..."
+  "userName" : "...",
+  "password" : "..."
 },
             "description" : ""
           }
@@ -223,7 +218,7 @@
     ,
     "\/users/{id}" : {
       "delete" : {
-        "tags" : [ "UsersFacadeREST" ],
+        "tags" : [ "UsersFacade" ],
         "description" : "",
         "operationId" : "remove",
         "parameters" : [
@@ -243,7 +238,7 @@
       }
       ,
       "get" : {
-        "tags" : [ "UsersFacadeREST" ],
+        "tags" : [ "UsersFacade" ],
         "description" : "",
         "operationId" : "find",
         "produces" : [ "application/json" ],
@@ -262,9 +257,9 @@
 "$ref" : "#/definitions/json_User"
             },
             "example" : {
-  "password" : "...",
   "email" : "...",
-  "userName" : "..."
+  "userName" : "...",
+  "password" : "..."
 },
             "description" : ""
           }
@@ -272,7 +267,7 @@
       }
       ,
       "put" : {
-        "tags" : [ "UsersFacadeREST" ],
+        "tags" : [ "UsersFacade" ],
         "description" : "",
         "operationId" : "edit",
         "consumes" : [ "application/json" ],

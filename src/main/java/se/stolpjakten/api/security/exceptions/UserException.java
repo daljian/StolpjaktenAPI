@@ -6,7 +6,7 @@
 package se.stolpjakten.api.security.exceptions;
 
 import java.io.IOException;
-import se.stolpjakten.api.rest.errors.ErrorCode;
+import se.stolpjakten.api.rest.error.ErrorCode;
 
 /**
  *

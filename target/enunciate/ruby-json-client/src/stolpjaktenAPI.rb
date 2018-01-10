@@ -83,17 +83,11 @@ module Api
 
 module Rest
 
+module Type
+
   # (no documentation provided)
   class User 
 
-    # Password for this user.
-    # &lt;br&gt;
-    # Only available for add (POST) and update (PUT) requests.
-    # &lt;br&gt;
-    # Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-    # &lt;br&gt;
-    # Required: yes
-    attr_accessor :password
     # Email address for this user.
     # &lt;br&gt;
     # Required: no
@@ -102,13 +96,21 @@ module Rest
     # &lt;br&gt;
     # Required: yes
     attr_accessor :userName
+    # Password for this user.
+    # &lt;br&gt;
+    # Only available for add (POST) and update (PUT) requests.
+    # &lt;br&gt;
+    # Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
+    # &lt;br&gt;
+    # Required: yes
+    attr_accessor :password
 
     # the json hash for this User
     def to_jaxb_json_hash
       _h = {}
-      _h['password'] = password.to_jaxb_json_hash unless password.nil?
       _h['email'] = email.to_jaxb_json_hash unless email.nil?
       _h['userName'] = userName.to_jaxb_json_hash unless userName.nil?
+      _h['password'] = password.to_jaxb_json_hash unless password.nil?
       return _h
     end
 
@@ -119,25 +121,6 @@ module Rest
 
     #initializes this User with a json hash
     def init_jaxb_json_hash(_o)
-        if !_o['password'].nil?
-          _oa = _o['password']
-            if(_oa.is_a? Hash)
-              @password = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
-              @password =  String.from_json(_oa) unless _oa['@class']
-            elsif (_oa.is_a? Array)
-              #an array(of hashes hopefully) or scalar
-              @password = Array.new
-              _oa.each { | _item | 
-                 if ((_item.nil? || _item['@class'].nil?)rescue true)
-                   @password.push String.from_json(_item)
-                 else
-                   @password.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
-                 end
-               }
-            else
-                @password = _oa
-            end
-          end
         if !_o['email'].nil?
           _oa = _o['email']
             if(_oa.is_a? Hash)
@@ -174,6 +157,25 @@ module Rest
                }
             else
                 @userName = _oa
+            end
+          end
+        if !_o['password'].nil?
+          _oa = _o['password']
+            if(_oa.is_a? Hash)
+              @password = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
+              @password =  String.from_json(_oa) unless _oa['@class']
+            elsif (_oa.is_a? Array)
+              #an array(of hashes hopefully) or scalar
+              @password = Array.new
+              _oa.each { | _item | 
+                 if ((_item.nil? || _item['@class'].nil?)rescue true)
+                   @password.push String.from_json(_item)
+                 else
+                   @password.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
+                 end
+               }
+            else
+                @password = _oa
             end
           end
     end
@@ -198,149 +200,6 @@ end
 
 end
 
-module Se
-
-module Stolpjakten
-
-module Api
-
-module Db
-
-  # (no documentation provided)
-  class Humans 
-
-    # A globally unique username that identifies a user.
-    # &lt;br&gt;
-    # Required: yes
-    attr_accessor :userName
-    # Email address for this user.
-    # &lt;br&gt;
-    # Required: no
-    attr_accessor :email
-    # Password for this user.
-    # &lt;br&gt;
-    # Only available for add (POST) and update (PUT) requests.
-    # &lt;br&gt;
-    # Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-    # &lt;br&gt;
-    # Required: yes
-    attr_accessor :password
-    # 
-    attr_accessor :salt
-
-    # the json hash for this Humans
-    def to_jaxb_json_hash
-      _h = {}
-      _h['userName'] = userName.to_jaxb_json_hash unless userName.nil?
-      _h['email'] = email.to_jaxb_json_hash unless email.nil?
-      _h['password'] = password.to_jaxb_json_hash unless password.nil?
-      _h['salt'] = salt.to_jaxb_json_hash unless salt.nil?
-      return _h
-    end
-
-    # the json (string form) for this Humans
-    def to_json
-      to_jaxb_json_hash.to_json
-    end
-
-    #initializes this Humans with a json hash
-    def init_jaxb_json_hash(_o)
-        if !_o['userName'].nil?
-          _oa = _o['userName']
-            if(_oa.is_a? Hash)
-              @userName = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
-              @userName =  String.from_json(_oa) unless _oa['@class']
-            elsif (_oa.is_a? Array)
-              #an array(of hashes hopefully) or scalar
-              @userName = Array.new
-              _oa.each { | _item | 
-                 if ((_item.nil? || _item['@class'].nil?)rescue true)
-                   @userName.push String.from_json(_item)
-                 else
-                   @userName.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
-                 end
-               }
-            else
-                @userName = _oa
-            end
-          end
-        if !_o['email'].nil?
-          _oa = _o['email']
-            if(_oa.is_a? Hash)
-              @email = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
-              @email =  String.from_json(_oa) unless _oa['@class']
-            elsif (_oa.is_a? Array)
-              #an array(of hashes hopefully) or scalar
-              @email = Array.new
-              _oa.each { | _item | 
-                 if ((_item.nil? || _item['@class'].nil?)rescue true)
-                   @email.push String.from_json(_item)
-                 else
-                   @email.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
-                 end
-               }
-            else
-                @email = _oa
-            end
-          end
-        if !_o['password'].nil?
-          _oa = _o['password']
-            if(_oa.is_a? Hash)
-              @password = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
-              @password =  String.from_json(_oa) unless _oa['@class']
-            elsif (_oa.is_a? Array)
-              #an array(of hashes hopefully) or scalar
-              @password = Array.new
-              _oa.each { | _item | 
-                 if ((_item.nil? || _item['@class'].nil?)rescue true)
-                   @password.push String.from_json(_item)
-                 else
-                   @password.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
-                 end
-               }
-            else
-                @password = _oa
-            end
-          end
-        if !_o['salt'].nil?
-          _oa = _o['salt']
-            if(_oa.is_a? Hash)
-              @salt = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
-              @salt =  Fixnum.from_json(_oa) unless _oa['@class']
-            elsif (_oa.is_a? Array)
-              #an array(of hashes hopefully) or scalar
-              @salt = Array.new
-              _oa.each { | _item | 
-                 if ((_item.nil? || _item['@class'].nil?)rescue true)
-                   @salt.push Fixnum.from_json(_item)
-                 else
-                   @salt.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
-                 end
-               }
-            else
-                @salt = _oa
-            end
-          end
-    end
-
-    # constructs a Humans from a (parsed) JSON hash
-    def self.from_json(o)
-      if o.nil?
-        return nil
-      else
-        inst = new
-        inst.init_jaxb_json_hash o
-        return inst
-      end
-    end
-  end
-
-end
-
-end
-
-end
-
 end
 
 module Se
@@ -350,6 +209,8 @@ module Stolpjakten
 module Api
 
 module Rest
+
+module Type
 
   # (no documentation provided)
   class Token 
@@ -459,6 +320,147 @@ module Rest
       end
     end
   end
+
+end
+
+end
+
+end
+
+end
+
+end
+
+module Se
+
+module Stolpjakten
+
+module Api
+
+module Db
+
+module Type
+
+  # (no documentation provided)
+  class Users 
+
+    # (no documentation provided)
+    attr_accessor :userName
+    # (no documentation provided)
+    attr_accessor :email
+    # (no documentation provided)
+    attr_accessor :password
+    # (no documentation provided)
+    attr_accessor :salt
+
+    # the json hash for this Users
+    def to_jaxb_json_hash
+      _h = {}
+      _h['userName'] = userName.to_jaxb_json_hash unless userName.nil?
+      _h['email'] = email.to_jaxb_json_hash unless email.nil?
+      _h['password'] = password.to_jaxb_json_hash unless password.nil?
+      _h['salt'] = salt.to_jaxb_json_hash unless salt.nil?
+      return _h
+    end
+
+    # the json (string form) for this Users
+    def to_json
+      to_jaxb_json_hash.to_json
+    end
+
+    #initializes this Users with a json hash
+    def init_jaxb_json_hash(_o)
+        if !_o['userName'].nil?
+          _oa = _o['userName']
+            if(_oa.is_a? Hash)
+              @userName = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
+              @userName =  String.from_json(_oa) unless _oa['@class']
+            elsif (_oa.is_a? Array)
+              #an array(of hashes hopefully) or scalar
+              @userName = Array.new
+              _oa.each { | _item | 
+                 if ((_item.nil? || _item['@class'].nil?)rescue true)
+                   @userName.push String.from_json(_item)
+                 else
+                   @userName.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
+                 end
+               }
+            else
+                @userName = _oa
+            end
+          end
+        if !_o['email'].nil?
+          _oa = _o['email']
+            if(_oa.is_a? Hash)
+              @email = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
+              @email =  String.from_json(_oa) unless _oa['@class']
+            elsif (_oa.is_a? Array)
+              #an array(of hashes hopefully) or scalar
+              @email = Array.new
+              _oa.each { | _item | 
+                 if ((_item.nil? || _item['@class'].nil?)rescue true)
+                   @email.push String.from_json(_item)
+                 else
+                   @email.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
+                 end
+               }
+            else
+                @email = _oa
+            end
+          end
+        if !_o['password'].nil?
+          _oa = _o['password']
+            if(_oa.is_a? Hash)
+              @password = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
+              @password =  String.from_json(_oa) unless _oa['@class']
+            elsif (_oa.is_a? Array)
+              #an array(of hashes hopefully) or scalar
+              @password = Array.new
+              _oa.each { | _item | 
+                 if ((_item.nil? || _item['@class'].nil?)rescue true)
+                   @password.push String.from_json(_item)
+                 else
+                   @password.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
+                 end
+               }
+            else
+                @password = _oa
+            end
+          end
+        if !_o['salt'].nil?
+          _oa = _o['salt']
+            if(_oa.is_a? Hash)
+              @salt = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
+              @salt =  Fixnum.from_json(_oa) unless _oa['@class']
+            elsif (_oa.is_a? Array)
+              #an array(of hashes hopefully) or scalar
+              @salt = Array.new
+              _oa.each { | _item | 
+                 if ((_item.nil? || _item['@class'].nil?)rescue true)
+                   @salt.push Fixnum.from_json(_item)
+                 else
+                   @salt.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
+                 end
+               }
+            else
+                @salt = _oa
+            end
+          end
+    end
+
+    # constructs a Users from a (parsed) JSON hash
+    def self.from_json(o)
+      if o.nil?
+        return nil
+      else
+        inst = new
+        inst.init_jaxb_json_hash o
+        return inst
+      end
+    end
+  end
+
+end
 
 end
 

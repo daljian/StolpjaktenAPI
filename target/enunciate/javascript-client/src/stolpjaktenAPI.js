@@ -27,8 +27,8 @@
 /**
  * (no documentation provided)
  */
-ensureNamespace('Se.Stolpjakten.Api.Rest');
-exports.Se.Stolpjakten.Api.Rest.User = class {
+ensureNamespace('Se.Stolpjakten.Api.Rest.Type');
+exports.Se.Stolpjakten.Api.Rest.Type.User = class {
 
     /**
      * Constructs a User from a JSON object
@@ -37,46 +37,17 @@ exports.Se.Stolpjakten.Api.Rest.User = class {
      */
     constructor(o) {
         var self = this;
-        if (typeof o['password'] !== 'undefined') {
-            this.password = o['password'];
-        }
         if (typeof o['email'] !== 'undefined') {
             this.email = o['email'];
         }
         if (typeof o['userName'] !== 'undefined') {
             this.userName = o['userName'];
         }
+        if (typeof o['password'] !== 'undefined') {
+            this.password = o['password'];
+        }
     }
 
-    /**
-     * Password for this user.
-       * &lt;br&gt;
-       * Only available for add (POST) and update (PUT) requests.
-       * &lt;br&gt;
-       * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-       * &lt;br&gt;
-       * Required: yes
-     *
-     * @return string
-     */
-    getPassword() {
-        return this.password;
-    }
-
-    /**
-     * Password for this user.
-       * &lt;br&gt;
-       * Only available for add (POST) and update (PUT) requests.
-       * &lt;br&gt;
-       * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-       * &lt;br&gt;
-       * Required: yes
-     *
-     * @param string password
-     */
-    setPassword(password) {
-        this.password = password;
-    }
     /**
      * Email address for this user.
        * &lt;br&gt;
@@ -118,6 +89,35 @@ exports.Se.Stolpjakten.Api.Rest.User = class {
      */
     setUserName(userName) {
         this.userName = userName;
+    }
+    /**
+     * Password for this user.
+       * &lt;br&gt;
+       * Only available for add (POST) and update (PUT) requests.
+       * &lt;br&gt;
+       * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
+       * &lt;br&gt;
+       * Required: yes
+     *
+     * @return string
+     */
+    getPassword() {
+        return this.password;
+    }
+
+    /**
+     * Password for this user.
+       * &lt;br&gt;
+       * Only available for add (POST) and update (PUT) requests.
+       * &lt;br&gt;
+       * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
+       * &lt;br&gt;
+       * Required: yes
+     *
+     * @param string password
+     */
+    setPassword(password) {
+        this.password = password;
     }
 
     /**
@@ -128,14 +128,14 @@ exports.Se.Stolpjakten.Api.Rest.User = class {
     toJSON() {
         var json = {};
         var self = this;
-        if (typeof this.password !== 'undefined') {
-            json['password'] = this.password;
-        }
         if (typeof this.email !== 'undefined') {
             json['email'] = this.email;
         }
         if (typeof this.userName !== 'undefined') {
             json['userName'] = this.userName;
+        }
+        if (typeof this.password !== 'undefined') {
+            json['password'] = this.password;
         }
         return json;
     }
@@ -145,149 +145,8 @@ exports.Se.Stolpjakten.Api.Rest.User = class {
 /**
  * (no documentation provided)
  */
-ensureNamespace('Se.Stolpjakten.Api.Db');
-exports.Se.Stolpjakten.Api.Db.Humans = class {
-
-    /**
-     * Constructs a Humans from a JSON object
-     *
-     * @param Object o JSON object.
-     */
-    constructor(o) {
-        var self = this;
-        if (typeof o['userName'] !== 'undefined') {
-            this.userName = o['userName'];
-        }
-        if (typeof o['email'] !== 'undefined') {
-            this.email = o['email'];
-        }
-        if (typeof o['password'] !== 'undefined') {
-            this.password = o['password'];
-        }
-        if (typeof o['salt'] !== 'undefined') {
-            this.salt = o['salt'];
-        }
-    }
-
-    /**
-     * A globally unique username that identifies a user.
-       * &lt;br&gt;
-       * Required: yes
-     *
-     * @return string
-     */
-    getUserName() {
-        return this.userName;
-    }
-
-    /**
-     * A globally unique username that identifies a user.
-       * &lt;br&gt;
-       * Required: yes
-     *
-     * @param string userName
-     */
-    setUserName(userName) {
-        this.userName = userName;
-    }
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @return string
-     */
-    getEmail() {
-        return this.email;
-    }
-
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @param string email
-     */
-    setEmail(email) {
-        this.email = email;
-    }
-    /**
-     * Password for this user.
-       * &lt;br&gt;
-       * Only available for add (POST) and update (PUT) requests.
-       * &lt;br&gt;
-       * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-       * &lt;br&gt;
-       * Required: yes
-     *
-     * @return string
-     */
-    getPassword() {
-        return this.password;
-    }
-
-    /**
-     * Password for this user.
-       * &lt;br&gt;
-       * Only available for add (POST) and update (PUT) requests.
-       * &lt;br&gt;
-       * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-       * &lt;br&gt;
-       * Required: yes
-     *
-     * @param string password
-     */
-    setPassword(password) {
-        this.password = password;
-    }
-    /**
-     * 
-     *
-     * @return integer
-     */
-    getSalt() {
-        return this.salt;
-    }
-
-    /**
-     * 
-     *
-     * @param integer salt
-     */
-    setSalt(salt) {
-        this.salt = salt;
-    }
-
-    /**
-     * Returns a JSON object for this Humans
-     *
-     * @return object
-     */
-    toJSON() {
-        var json = {};
-        var self = this;
-        if (typeof this.userName !== 'undefined') {
-            json['userName'] = this.userName;
-        }
-        if (typeof this.email !== 'undefined') {
-            json['email'] = this.email;
-        }
-        if (typeof this.password !== 'undefined') {
-            json['password'] = this.password;
-        }
-        if (typeof this.salt !== 'undefined') {
-            json['salt'] = this.salt;
-        }
-        return json;
-    }
-
-}
-
-/**
- * (no documentation provided)
- */
-ensureNamespace('Se.Stolpjakten.Api.Rest');
-exports.Se.Stolpjakten.Api.Rest.Token = class {
+ensureNamespace('Se.Stolpjakten.Api.Rest.Type');
+exports.Se.Stolpjakten.Api.Rest.Type.Token = class {
 
     /**
      * Constructs a Token from a JSON object
@@ -399,6 +258,127 @@ exports.Se.Stolpjakten.Api.Rest.Token = class {
         }
         if (typeof this.expire !== 'undefined') {
             json['expire'] = this.expire;
+        }
+        return json;
+    }
+
+}
+
+/**
+ * (no documentation provided)
+ */
+ensureNamespace('Se.Stolpjakten.Api.Db.Type');
+exports.Se.Stolpjakten.Api.Db.Type.Users = class {
+
+    /**
+     * Constructs a Users from a JSON object
+     *
+     * @param Object o JSON object.
+     */
+    constructor(o) {
+        var self = this;
+        if (typeof o['userName'] !== 'undefined') {
+            this.userName = o['userName'];
+        }
+        if (typeof o['email'] !== 'undefined') {
+            this.email = o['email'];
+        }
+        if (typeof o['password'] !== 'undefined') {
+            this.password = o['password'];
+        }
+        if (typeof o['salt'] !== 'undefined') {
+            this.salt = o['salt'];
+        }
+    }
+
+    /**
+     * (no documentation provided)
+     *
+     * @return string
+     */
+    getUserName() {
+        return this.userName;
+    }
+
+    /**
+     * (no documentation provided)
+     *
+     * @param string userName
+     */
+    setUserName(userName) {
+        this.userName = userName;
+    }
+    /**
+     * (no documentation provided)
+     *
+     * @return string
+     */
+    getEmail() {
+        return this.email;
+    }
+
+    /**
+     * (no documentation provided)
+     *
+     * @param string email
+     */
+    setEmail(email) {
+        this.email = email;
+    }
+    /**
+     * (no documentation provided)
+     *
+     * @return string
+     */
+    getPassword() {
+        return this.password;
+    }
+
+    /**
+     * (no documentation provided)
+     *
+     * @param string password
+     */
+    setPassword(password) {
+        this.password = password;
+    }
+    /**
+     * (no documentation provided)
+     *
+     * @return integer
+     */
+    getSalt() {
+        return this.salt;
+    }
+
+    /**
+     * (no documentation provided)
+     *
+     * @param integer salt
+     */
+    setSalt(salt) {
+        this.salt = salt;
+    }
+
+    /**
+     * Returns a JSON object for this Users
+     *
+     * @return object
+     */
+    toJSON() {
+        var json = {};
+        var self = this;
+        if (typeof this.userName !== 'undefined') {
+            json['userName'] = this.userName;
+        }
+        if (typeof this.email !== 'undefined') {
+            json['email'] = this.email;
+        }
+        if (typeof this.password !== 'undefined') {
+            json['password'] = this.password;
+        }
+        if (typeof this.salt !== 'undefined') {
+            json['salt'] = this.salt;
         }
         return json;
     }

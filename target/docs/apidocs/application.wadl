@@ -32,10 +32,6 @@
     <wadl:resource path="users/count">
       <wadl:method name="GET">
         <wadl:doc><![CDATA[]]></wadl:doc>
-        <wadl:response>
-          <wadl:doc><![CDATA[]]></wadl:doc>
-          <wadl:representation mediaType="text/plain"/>
-        </wadl:response>
       </wadl:method>
     </wadl:resource>
 

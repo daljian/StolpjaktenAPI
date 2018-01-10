@@ -9,7 +9,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.SecurityContext;
-import se.stolpjakten.api.rest.Role;
+import se.stolpjakten.api.rest.type.Role;
 
 /**
  *

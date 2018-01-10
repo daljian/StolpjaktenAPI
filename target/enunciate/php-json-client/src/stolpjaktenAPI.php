@@ -9,26 +9,13 @@
  */
  
 
-namespace Se\Stolpjakten\Api\Rest;
+namespace Se\Stolpjakten\Api\Rest\Type;
 
 /**
  * (no documentation provided)
  */
 class User
 {
-
-    /**
-     * Password for this user.
-     * &lt;br&gt;
-     * Only available for add (POST) and update (PUT) requests.
-     * &lt;br&gt;
-     * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-     * &lt;br&gt;
-     * Required: yes
-     *
-     * @var string
-     */
-    private $password;
 
     /**
      * Email address for this user.
@@ -49,6 +36,19 @@ class User
     private $userName;
 
     /**
+     * Password for this user.
+     * &lt;br&gt;
+     * Only available for add (POST) and update (PUT) requests.
+     * &lt;br&gt;
+     * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
+     * &lt;br&gt;
+     * Required: yes
+     *
+     * @var string
+     */
+    private $password;
+
+    /**
      * Constructs a User from a (parsed) JSON hash
      *
      * @param mixed $o JSON array.
@@ -58,37 +58,6 @@ class User
         $this->initFromArray($o);
     }
 
-    /**
-     * Password for this user.
-       * &lt;br&gt;
-       * Only available for add (POST) and update (PUT) requests.
-       * &lt;br&gt;
-       * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-       * &lt;br&gt;
-       * Required: yes
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Password for this user.
-       * &lt;br&gt;
-       * Only available for add (POST) and update (PUT) requests.
-       * &lt;br&gt;
-       * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-       * &lt;br&gt;
-       * Required: yes
-     *
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
     /**
      * Email address for this user.
        * &lt;br&gt;
@@ -136,6 +105,37 @@ class User
         $this->userName = $userName;
     }
     /**
+     * Password for this user.
+       * &lt;br&gt;
+       * Only available for add (POST) and update (PUT) requests.
+       * &lt;br&gt;
+       * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
+       * &lt;br&gt;
+       * Required: yes
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Password for this user.
+       * &lt;br&gt;
+       * Only available for add (POST) and update (PUT) requests.
+       * &lt;br&gt;
+       * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
+       * &lt;br&gt;
+       * Required: yes
+     *
+     * @param string $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+    /**
      * Returns the associative array for this User
      *
      * @return array
@@ -143,14 +143,14 @@ class User
     public function toArray()
     {
         $a = array();
-        if ($this->password) {
-            $a["password"] = $this->password;
-        }
         if ($this->email) {
             $a["email"] = $this->email;
         }
         if ($this->userName) {
             $a["userName"] = $this->userName;
+        }
+        if ($this->password) {
+            $a["password"] = $this->password;
         }
         return $a;
     }
@@ -172,226 +172,19 @@ class User
      */
     public function initFromArray($o)
     {
-        if (isset($o['password'])) {
-            $this->password = $o["password"];
-        }
         if (isset($o['email'])) {
             $this->email = $o["email"];
         }
         if (isset($o['userName'])) {
             $this->userName = $o["userName"];
         }
-    }
-}
-
-namespace Se\Stolpjakten\Api\Db;
-
-/**
- * (no documentation provided)
- */
-class Humans
-{
-
-    /**
-     * A globally unique username that identifies a user.
-     * &lt;br&gt;
-     * Required: yes
-     *
-     * @var string
-     */
-    private $userName;
-
-    /**
-     * Email address for this user.
-     * &lt;br&gt;
-     * Required: no
-     *
-     * @var string
-     */
-    private $email;
-
-    /**
-     * Password for this user.
-     * &lt;br&gt;
-     * Only available for add (POST) and update (PUT) requests.
-     * &lt;br&gt;
-     * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-     * &lt;br&gt;
-     * Required: yes
-     *
-     * @var string
-     */
-    private $password;
-
-    /**
-     * 
-     *
-     * @var integer
-     */
-    private $salt;
-
-    /**
-     * Constructs a Humans from a (parsed) JSON hash
-     *
-     * @param mixed $o JSON array.
-     */
-    public function __construct($o = null)
-    {
-        $this->initFromArray($o);
-    }
-
-    /**
-     * A globally unique username that identifies a user.
-       * &lt;br&gt;
-       * Required: yes
-     *
-     * @return string
-     */
-    public function getUserName()
-    {
-        return $this->userName;
-    }
-
-    /**
-     * A globally unique username that identifies a user.
-       * &lt;br&gt;
-       * Required: yes
-     *
-     * @param string $userName
-     */
-    public function setUserName($userName)
-    {
-        $this->userName = $userName;
-    }
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-    /**
-     * Password for this user.
-       * &lt;br&gt;
-       * Only available for add (POST) and update (PUT) requests.
-       * &lt;br&gt;
-       * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-       * &lt;br&gt;
-       * Required: yes
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Password for this user.
-       * &lt;br&gt;
-       * Only available for add (POST) and update (PUT) requests.
-       * &lt;br&gt;
-       * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
-       * &lt;br&gt;
-       * Required: yes
-     *
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-    /**
-     * 
-     *
-     * @return integer
-     */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
-
-    /**
-     * 
-     *
-     * @param integer $salt
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-    }
-    /**
-     * Returns the associative array for this Humans
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        $a = array();
-        if ($this->userName) {
-            $a["userName"] = $this->userName;
-        }
-        if ($this->email) {
-            $a["email"] = $this->email;
-        }
-        if ($this->password) {
-            $a["password"] = $this->password;
-        }
-        if ($this->salt) {
-            $a["salt"] = $this->salt;
-        }
-        return $a;
-    }
-
-    /**
-     * Returns the JSON string for this Humans
-     *
-     * @return string
-     */
-    public function toJson()
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Initializes this Humans from an associative array
-     *
-     * @param array $o
-     */
-    public function initFromArray($o)
-    {
-        if (isset($o['userName'])) {
-            $this->userName = $o["userName"];
-        }
-        if (isset($o['email'])) {
-            $this->email = $o["email"];
-        }
         if (isset($o['password'])) {
             $this->password = $o["password"];
         }
-        if (isset($o['salt'])) {
-            $this->salt = $o["salt"];
-        }
     }
 }
 
-namespace Se\Stolpjakten\Api\Rest;
+namespace Se\Stolpjakten\Api\Rest\Type;
 
 /**
  * (no documentation provided)
@@ -568,6 +361,183 @@ class Token
         }
         if (isset($o['expire'])) {
             $this->expire = $o["expire"];
+        }
+    }
+}
+
+namespace Se\Stolpjakten\Api\Db\Type;
+
+/**
+ * (no documentation provided)
+ */
+class Users
+{
+
+    /**
+     * (no documentation provided)
+     *
+     * @var string
+     */
+    private $userName;
+
+    /**
+     * (no documentation provided)
+     *
+     * @var string
+     */
+    private $email;
+
+    /**
+     * (no documentation provided)
+     *
+     * @var string
+     */
+    private $password;
+
+    /**
+     * (no documentation provided)
+     *
+     * @var integer
+     */
+    private $salt;
+
+    /**
+     * Constructs a Users from a (parsed) JSON hash
+     *
+     * @param mixed $o JSON array.
+     */
+    public function __construct($o = null)
+    {
+        $this->initFromArray($o);
+    }
+
+    /**
+     * (no documentation provided)
+     *
+     * @return string
+     */
+    public function getUserName()
+    {
+        return $this->userName;
+    }
+
+    /**
+     * (no documentation provided)
+     *
+     * @param string $userName
+     */
+    public function setUserName($userName)
+    {
+        $this->userName = $userName;
+    }
+    /**
+     * (no documentation provided)
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * (no documentation provided)
+     *
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+    /**
+     * (no documentation provided)
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * (no documentation provided)
+     *
+     * @param string $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+    /**
+     * (no documentation provided)
+     *
+     * @return integer
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * (no documentation provided)
+     *
+     * @param integer $salt
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+    }
+    /**
+     * Returns the associative array for this Users
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $a = array();
+        if ($this->userName) {
+            $a["userName"] = $this->userName;
+        }
+        if ($this->email) {
+            $a["email"] = $this->email;
+        }
+        if ($this->password) {
+            $a["password"] = $this->password;
+        }
+        if ($this->salt) {
+            $a["salt"] = $this->salt;
+        }
+        return $a;
+    }
+
+    /**
+     * Returns the JSON string for this Users
+     *
+     * @return string
+     */
+    public function toJson()
+    {
+        return json_encode($this->toArray());
+    }
+
+    /**
+     * Initializes this Users from an associative array
+     *
+     * @param array $o
+     */
+    public function initFromArray($o)
+    {
+        if (isset($o['userName'])) {
+            $this->userName = $o["userName"];
+        }
+        if (isset($o['email'])) {
+            $this->email = $o["email"];
+        }
+        if (isset($o['password'])) {
+            $this->password = $o["password"];
+        }
+        if (isset($o['salt'])) {
+            $this->salt = $o["salt"];
         }
     }
 }
