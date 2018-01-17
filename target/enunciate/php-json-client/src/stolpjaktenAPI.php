@@ -18,15 +18,6 @@ class User
 {
 
     /**
-     * Email address for this user.
-     * &lt;br&gt;
-     * Required: no
-     *
-     * @var string
-     */
-    private $email;
-
-    /**
      * A globally unique username that identifies a user.
      * &lt;br&gt;
      * Required: yes
@@ -34,6 +25,15 @@ class User
      * @var string
      */
     private $userName;
+
+    /**
+     * Email address for this user.
+     * &lt;br&gt;
+     * Required: no
+     *
+     * @var string
+     */
+    private $email;
 
     /**
      * Password for this user.
@@ -59,29 +59,6 @@ class User
     }
 
     /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-    /**
      * A globally unique username that identifies a user.
        * &lt;br&gt;
        * Required: yes
@@ -103,6 +80,29 @@ class User
     public function setUserName($userName)
     {
         $this->userName = $userName;
+    }
+    /**
+     * Email address for this user.
+       * &lt;br&gt;
+       * Required: no
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Email address for this user.
+       * &lt;br&gt;
+       * Required: no
+     *
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
     /**
      * Password for this user.
@@ -143,11 +143,11 @@ class User
     public function toArray()
     {
         $a = array();
-        if ($this->email) {
-            $a["email"] = $this->email;
-        }
         if ($this->userName) {
             $a["userName"] = $this->userName;
+        }
+        if ($this->email) {
+            $a["email"] = $this->email;
         }
         if ($this->password) {
             $a["password"] = $this->password;
@@ -172,11 +172,11 @@ class User
      */
     public function initFromArray($o)
     {
-        if (isset($o['email'])) {
-            $this->email = $o["email"];
-        }
         if (isset($o['userName'])) {
             $this->userName = $o["userName"];
+        }
+        if (isset($o['email'])) {
+            $this->email = $o["email"];
         }
         if (isset($o['password'])) {
             $this->password = $o["password"];

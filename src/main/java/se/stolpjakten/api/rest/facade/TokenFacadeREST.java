@@ -27,9 +27,9 @@ import javax.ws.rs.core.Response;
 import se.stolpjakten.api.db.type.Tokens;
 import se.stolpjakten.api.rest.type.Token;
 import se.stolpjakten.api.rest.type.TokenIF;
-import se.stolpjakten.api.security.BasicSecured;
-import se.stolpjakten.api.security.TokenSecured;
-import se.stolpjakten.api.security.exceptions.AuthorizationException;
+import se.stolpjakten.api.security.aspects.BasicSecured;
+import se.stolpjakten.api.security.aspects.TokenSecured;
+import se.stolpjakten.api.exceptions.AuthorizationException;
 
 /**
  *

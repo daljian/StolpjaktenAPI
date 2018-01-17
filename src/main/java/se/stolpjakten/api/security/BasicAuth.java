@@ -12,7 +12,7 @@ import java.util.Base64;
  * @author gengdahl
  */
 public class BasicAuth {
-        /**
+    /**
      * Decode the basic auth and convert it to array login/password
      * @param auth The string encoded authentication
      * @return The login (case 0), the password (case 1)

@@ -37,38 +37,17 @@ exports.Se.Stolpjakten.Api.Rest.Type.User = class {
      */
     constructor(o) {
         var self = this;
-        if (typeof o['email'] !== 'undefined') {
-            this.email = o['email'];
-        }
         if (typeof o['userName'] !== 'undefined') {
             this.userName = o['userName'];
+        }
+        if (typeof o['email'] !== 'undefined') {
+            this.email = o['email'];
         }
         if (typeof o['password'] !== 'undefined') {
             this.password = o['password'];
         }
     }
 
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @return string
-     */
-    getEmail() {
-        return this.email;
-    }
-
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @param string email
-     */
-    setEmail(email) {
-        this.email = email;
-    }
     /**
      * A globally unique username that identifies a user.
        * &lt;br&gt;
@@ -89,6 +68,27 @@ exports.Se.Stolpjakten.Api.Rest.Type.User = class {
      */
     setUserName(userName) {
         this.userName = userName;
+    }
+    /**
+     * Email address for this user.
+       * &lt;br&gt;
+       * Required: no
+     *
+     * @return string
+     */
+    getEmail() {
+        return this.email;
+    }
+
+    /**
+     * Email address for this user.
+       * &lt;br&gt;
+       * Required: no
+     *
+     * @param string email
+     */
+    setEmail(email) {
+        this.email = email;
     }
     /**
      * Password for this user.
@@ -128,11 +128,11 @@ exports.Se.Stolpjakten.Api.Rest.Type.User = class {
     toJSON() {
         var json = {};
         var self = this;
-        if (typeof this.email !== 'undefined') {
-            json['email'] = this.email;
-        }
         if (typeof this.userName !== 'undefined') {
             json['userName'] = this.userName;
+        }
+        if (typeof this.email !== 'undefined') {
+            json['email'] = this.email;
         }
         if (typeof this.password !== 'undefined') {
             json['password'] = this.password;

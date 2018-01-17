@@ -12,7 +12,7 @@
     }
     ,
     {
-      "name" : "UsersFacade"
+      "name" : "UsersFacadeREST"
     }
   ],
   "definitions" : {
@@ -48,14 +48,14 @@
       "type" : "object",
       "title" : "User",
           "properties" : {
-            "email" : {
-            "readOnly" : false,
-"description" : "Email address for this user.\n<br>\nRequired: no",
-"type" : "string"
-            },
             "userName" : {
             "readOnly" : false,
 "description" : "A globally unique username that identifies a user.\n<br>\nRequired: yes",
+"type" : "string"
+            },
+            "email" : {
+            "readOnly" : false,
+"description" : "Email address for this user.\n<br>\nRequired: no",
 "type" : "string"
             },
             "password" : {
@@ -65,8 +65,8 @@
             }
           },
       "example" : {
-  "email" : "...",
   "userName" : "...",
+  "email" : "...",
   "password" : "..."
 },
       "description" : ""
@@ -109,7 +109,7 @@
   "paths": {
     "\/users" : {
       "get" : {
-        "tags" : [ "UsersFacade" ],
+        "tags" : [ "UsersFacadeREST" ],
         "description" : "",
         "operationId" : "findAll",
         "produces" : [ "application/json" ],
@@ -125,8 +125,8 @@
 }
             },
             "example" : {
-  "email" : "...",
   "userName" : "...",
+  "email" : "...",
   "password" : "..."
 },
             "description" : ""
@@ -135,7 +135,7 @@
       }
       ,
       "post" : {
-        "tags" : [ "UsersFacade" ],
+        "tags" : [ "UsersFacadeREST" ],
         "description" : "",
         "operationId" : "create",
         "consumes" : [ "application/json" ],
@@ -159,7 +159,7 @@
     ,
     "\/users/count" : {
       "get" : {
-        "tags" : [ "UsersFacade" ],
+        "tags" : [ "UsersFacadeREST" ],
         "description" : "",
         "operationId" : "countREST",
         "parameters" : [
@@ -174,7 +174,7 @@
     ,
     "\/users/{from}/{to}" : {
       "get" : {
-        "tags" : [ "UsersFacade" ],
+        "tags" : [ "UsersFacadeREST" ],
         "description" : "",
         "operationId" : "findRange",
         "produces" : [ "application/json" ],
@@ -206,8 +206,8 @@
 }
             },
             "example" : {
-  "email" : "...",
   "userName" : "...",
+  "email" : "...",
   "password" : "..."
 },
             "description" : ""
@@ -218,7 +218,7 @@
     ,
     "\/users/{id}" : {
       "delete" : {
-        "tags" : [ "UsersFacade" ],
+        "tags" : [ "UsersFacadeREST" ],
         "description" : "",
         "operationId" : "remove",
         "parameters" : [
@@ -238,7 +238,7 @@
       }
       ,
       "get" : {
-        "tags" : [ "UsersFacade" ],
+        "tags" : [ "UsersFacadeREST" ],
         "description" : "",
         "operationId" : "find",
         "produces" : [ "application/json" ],
@@ -257,8 +257,8 @@
 "$ref" : "#/definitions/json_User"
             },
             "example" : {
-  "email" : "...",
   "userName" : "...",
+  "email" : "...",
   "password" : "..."
 },
             "description" : ""
@@ -267,7 +267,7 @@
       }
       ,
       "put" : {
-        "tags" : [ "UsersFacade" ],
+        "tags" : [ "UsersFacadeREST" ],
         "description" : "",
         "operationId" : "edit",
         "consumes" : [ "application/json" ],

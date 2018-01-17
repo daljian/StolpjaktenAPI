@@ -6,8 +6,16 @@
 package se.stolpjakten.api.rest.facade;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,11 +39,12 @@ import se.stolpjakten.api.db.type.Users;
 import se.stolpjakten.api.rest.error.ErrorCode;
 import se.stolpjakten.api.rest.type.Role;
 import se.stolpjakten.api.rest.type.User;
-import se.stolpjakten.api.security.Authorization;
-import se.stolpjakten.api.security.BasicSecured;
-import se.stolpjakten.api.security.TokenSecured;
-import se.stolpjakten.api.security.exceptions.AuthorizationException;
-import se.stolpjakten.api.security.exceptions.UserException;
+import se.stolpjakten.api.security.aspects.Authorization;
+import se.stolpjakten.api.security.aspects.BasicSecured;
+import se.stolpjakten.api.security.aspects.TokenSecured;
+import se.stolpjakten.api.exceptions.AuthorizationException;
+import se.stolpjakten.api.exceptions.UserException;
+import se.stolpjakten.api.security.PasswordAuthentication;
 import se.stolpjakten.api.utils.Strings;
 
 /**
@@ -47,7 +56,8 @@ import se.stolpjakten.api.utils.Strings;
 public class UsersFacadeREST {
     @PersistenceContext(unitName = "se.stolpjakten.api_stolpjaktenAPI_war_1.0-SNAPSHOTPU")
     private EntityManager em;
-    private UsersFacadeDB dbFacade = null;
+    private PasswordAuthentication passwordAuthentication = null;
+    private UsersFacadeDB dbFacade = null; 
     private UsersFacadeDB getDb(){
         if (dbFacade == null) {
             dbFacade = new UsersFacadeDB(em);
@@ -87,6 +97,11 @@ public class UsersFacadeREST {
             throw new UserException(ErrorCode.RESOURCE_EXISTS, "User "
                     + entity.getUserName() + " already exists.");
         }
+        PasswordAuthentication helper = getPasswordAuthentication();
+        String password = helper.hash(user.getPassword().toCharArray());
+        entity.setPassword(password);
+        //dummy salt...
+        entity.setSalt(user.getUserName().hashCode());
         dbFacade.create(entity);
     }
 
@@ -151,6 +166,12 @@ public class UsersFacadeREST {
 
     private String doCountREST() {
         return String.valueOf(dbFacade.count());
+    }
+    private PasswordAuthentication getPasswordAuthentication(){
+        if (passwordAuthentication == null) {
+            passwordAuthentication = new PasswordAuthentication();
+        }
+        return passwordAuthentication;
     }
 }
 
