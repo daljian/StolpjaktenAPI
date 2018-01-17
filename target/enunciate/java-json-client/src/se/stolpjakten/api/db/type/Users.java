@@ -21,8 +21,6 @@ public class Users implements java.io.Serializable {
   private java.lang.String _email;
   @JsonIgnore
   private java.lang.String _password;
-  @JsonIgnore
-  private int _salt;
 
   /**
    * (no documentation provided)
@@ -70,21 +68,5 @@ public class Users implements java.io.Serializable {
   @JsonProperty( value = "password", required = false )
   public void setPassword(java.lang.String _password) {
     this._password = _password;
-  }
-
-  /**
-   * (no documentation provided)
-   */
-  @JsonProperty( value = "salt", required = false )
-  public int getSalt() {
-    return this._salt;
-  }
-
-  /**
-   * (no documentation provided)
-   */
-  @JsonProperty( value = "salt", required = false )
-  public void setSalt(int _salt) {
-    this._salt = _salt;
   }
 }

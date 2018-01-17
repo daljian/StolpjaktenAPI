@@ -40,11 +40,11 @@ exports.Se.Stolpjakten.Api.Rest.Type.User = class {
         if (typeof o['userName'] !== 'undefined') {
             this.userName = o['userName'];
         }
-        if (typeof o['email'] !== 'undefined') {
-            this.email = o['email'];
-        }
         if (typeof o['password'] !== 'undefined') {
             this.password = o['password'];
+        }
+        if (typeof o['email'] !== 'undefined') {
+            this.email = o['email'];
         }
     }
 
@@ -68,27 +68,6 @@ exports.Se.Stolpjakten.Api.Rest.Type.User = class {
      */
     setUserName(userName) {
         this.userName = userName;
-    }
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @return string
-     */
-    getEmail() {
-        return this.email;
-    }
-
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @param string email
-     */
-    setEmail(email) {
-        this.email = email;
     }
     /**
      * Password for this user.
@@ -119,6 +98,27 @@ exports.Se.Stolpjakten.Api.Rest.Type.User = class {
     setPassword(password) {
         this.password = password;
     }
+    /**
+     * Email address for this user.
+       * &lt;br&gt;
+       * Required: no
+     *
+     * @return string
+     */
+    getEmail() {
+        return this.email;
+    }
+
+    /**
+     * Email address for this user.
+       * &lt;br&gt;
+       * Required: no
+     *
+     * @param string email
+     */
+    setEmail(email) {
+        this.email = email;
+    }
 
     /**
      * Returns a JSON object for this User
@@ -131,11 +131,11 @@ exports.Se.Stolpjakten.Api.Rest.Type.User = class {
         if (typeof this.userName !== 'undefined') {
             json['userName'] = this.userName;
         }
-        if (typeof this.email !== 'undefined') {
-            json['email'] = this.email;
-        }
         if (typeof this.password !== 'undefined') {
             json['password'] = this.password;
+        }
+        if (typeof this.email !== 'undefined') {
+            json['email'] = this.email;
         }
         return json;
     }
@@ -286,9 +286,6 @@ exports.Se.Stolpjakten.Api.Db.Type.Users = class {
         if (typeof o['password'] !== 'undefined') {
             this.password = o['password'];
         }
-        if (typeof o['salt'] !== 'undefined') {
-            this.salt = o['salt'];
-        }
     }
 
     /**
@@ -342,23 +339,6 @@ exports.Se.Stolpjakten.Api.Db.Type.Users = class {
     setPassword(password) {
         this.password = password;
     }
-    /**
-     * (no documentation provided)
-     *
-     * @return integer
-     */
-    getSalt() {
-        return this.salt;
-    }
-
-    /**
-     * (no documentation provided)
-     *
-     * @param integer salt
-     */
-    setSalt(salt) {
-        this.salt = salt;
-    }
 
     /**
      * Returns a JSON object for this Users
@@ -376,9 +356,6 @@ exports.Se.Stolpjakten.Api.Db.Type.Users = class {
         }
         if (typeof this.password !== 'undefined') {
             json['password'] = this.password;
-        }
-        if (typeof this.salt !== 'undefined') {
-            json['salt'] = this.salt;
         }
         return json;
     }

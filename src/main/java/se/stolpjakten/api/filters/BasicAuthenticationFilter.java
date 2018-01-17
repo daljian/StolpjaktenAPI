@@ -51,7 +51,8 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
                     User user = new User(userPass[0]);
                     String scheme = 
                             requestContext.getUriInfo().getAbsolutePath().getScheme();
-                    List<String> roles = Collections.singletonList("test");
+                    //TODO check the roles
+                    List<String> roles = Collections.singletonList("USER");
                     SecurityContext securityContext = 
                             new UserSecurityContext(user, scheme, roles);
                     requestContext.setSecurityContext(securityContext);

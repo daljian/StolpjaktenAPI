@@ -57,20 +57,6 @@ public class Users extends com.google.gwt.core.client.JavaScriptObject {
   }-*/;
 
   /**
-   * (no documentation provided)
-   */
-  public final native int getSalt() /*-{
-    return this.salt;
-  }-*/;
-
-  /**
-   * (no documentation provided)
-   */
-  public final native void setSalt(int salt) /*-{
-    this.salt = salt;
-  }-*/;
-
-  /**
    * Create an instance of Users from JSON text.
    */
   public static native Users fromJson(String json) /*-{

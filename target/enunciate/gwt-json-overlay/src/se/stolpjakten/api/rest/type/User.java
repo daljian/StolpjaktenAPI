@@ -33,24 +33,6 @@ public class User extends com.google.gwt.core.client.JavaScriptObject {
   }-*/;
 
   /**
-   * Email address for this user.
-   * <br>
-   * Required: no
-   */
-  public final native java.lang.String getEmail() /*-{
-    return this.email;
-  }-*/;
-
-  /**
-   * Email address for this user.
-   * <br>
-   * Required: no
-   */
-  public final native void setEmail(java.lang.String email) /*-{
-    this.email = email;
-  }-*/;
-
-  /**
    * Password for this user.
    * <br>
    * Only available for add (POST) and update (PUT) requests.
@@ -74,5 +56,23 @@ public class User extends com.google.gwt.core.client.JavaScriptObject {
    */
   public final native void setPassword(java.lang.String password) /*-{
     this.password = password;
+  }-*/;
+
+  /**
+   * Email address for this user.
+   * <br>
+   * Required: no
+   */
+  public final native java.lang.String getEmail() /*-{
+    return this.email;
+  }-*/;
+
+  /**
+   * Email address for this user.
+   * <br>
+   * Required: no
+   */
+  public final native void setEmail(java.lang.String email) /*-{
+    this.email = email;
   }-*/;
 }

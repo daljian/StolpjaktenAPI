@@ -29,8 +29,7 @@ import se.stolpjakten.api.rest.type.User;
     @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u")
     , @NamedQuery(name = "Users.findByUserName", query = "SELECT u FROM Users u WHERE u.userName = :userName")
     , @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email")
-    , @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password")
-    , @NamedQuery(name = "Users.findBySalt", query = "SELECT u FROM Users u WHERE u.salt = :salt")})
+    , @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password")})
 public class Users implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,10 +48,6 @@ public class Users implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "Password")
     private String password;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "Salt")
-    private int salt;
 
     public Users() {
     }
@@ -61,10 +56,9 @@ public class Users implements Serializable {
         this.userName = userName;
     }
 
-    public Users(String userName, String password, int salt) {
+    public Users(String userName, String password) {
         this.userName = userName;
         this.password = password;
-        this.salt = salt;
     }
 
     public String getUserName() {
@@ -89,14 +83,6 @@ public class Users implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public int getSalt() {
-        return salt;
-    }
-
-    public void setSalt(int salt) {
-        this.salt = salt;
     }
 
     @Override

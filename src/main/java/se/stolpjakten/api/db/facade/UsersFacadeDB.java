@@ -6,7 +6,6 @@
 package se.stolpjakten.api.db.facade;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import se.stolpjakten.api.db.type.Users;
 
 /**

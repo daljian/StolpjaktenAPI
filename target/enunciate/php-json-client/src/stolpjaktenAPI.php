@@ -27,15 +27,6 @@ class User
     private $userName;
 
     /**
-     * Email address for this user.
-     * &lt;br&gt;
-     * Required: no
-     *
-     * @var string
-     */
-    private $email;
-
-    /**
      * Password for this user.
      * &lt;br&gt;
      * Only available for add (POST) and update (PUT) requests.
@@ -47,6 +38,15 @@ class User
      * @var string
      */
     private $password;
+
+    /**
+     * Email address for this user.
+     * &lt;br&gt;
+     * Required: no
+     *
+     * @var string
+     */
+    private $email;
 
     /**
      * Constructs a User from a (parsed) JSON hash
@@ -82,29 +82,6 @@ class User
         $this->userName = $userName;
     }
     /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-    /**
      * Password for this user.
        * &lt;br&gt;
        * Only available for add (POST) and update (PUT) requests.
@@ -136,6 +113,29 @@ class User
         $this->password = $password;
     }
     /**
+     * Email address for this user.
+       * &lt;br&gt;
+       * Required: no
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Email address for this user.
+       * &lt;br&gt;
+       * Required: no
+     *
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+    /**
      * Returns the associative array for this User
      *
      * @return array
@@ -146,11 +146,11 @@ class User
         if ($this->userName) {
             $a["userName"] = $this->userName;
         }
-        if ($this->email) {
-            $a["email"] = $this->email;
-        }
         if ($this->password) {
             $a["password"] = $this->password;
+        }
+        if ($this->email) {
+            $a["email"] = $this->email;
         }
         return $a;
     }
@@ -175,11 +175,11 @@ class User
         if (isset($o['userName'])) {
             $this->userName = $o["userName"];
         }
-        if (isset($o['email'])) {
-            $this->email = $o["email"];
-        }
         if (isset($o['password'])) {
             $this->password = $o["password"];
+        }
+        if (isset($o['email'])) {
+            $this->email = $o["email"];
         }
     }
 }
@@ -395,13 +395,6 @@ class Users
     private $password;
 
     /**
-     * (no documentation provided)
-     *
-     * @var integer
-     */
-    private $salt;
-
-    /**
      * Constructs a Users from a (parsed) JSON hash
      *
      * @param mixed $o JSON array.
@@ -469,25 +462,6 @@ class Users
         $this->password = $password;
     }
     /**
-     * (no documentation provided)
-     *
-     * @return integer
-     */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
-
-    /**
-     * (no documentation provided)
-     *
-     * @param integer $salt
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-    }
-    /**
      * Returns the associative array for this Users
      *
      * @return array
@@ -503,9 +477,6 @@ class Users
         }
         if ($this->password) {
             $a["password"] = $this->password;
-        }
-        if ($this->salt) {
-            $a["salt"] = $this->salt;
         }
         return $a;
     }
@@ -535,9 +506,6 @@ class Users
         }
         if (isset($o['password'])) {
             $this->password = $o["password"];
-        }
-        if (isset($o['salt'])) {
-            $this->salt = $o["salt"];
         }
     }
 }

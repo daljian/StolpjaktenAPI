@@ -5,6 +5,7 @@ se/stolpjakten/api/db/type/Tokens.class
 se/stolpjakten/api/db/type/Users$1.class
 se/stolpjakten/api/db/type/RoleMappingsPK.class
 se/stolpjakten/api/rest/type/User.class
+se/stolpjakten/api/db/facade/TokensFacadeDB.class
 se/stolpjakten/api/rest/error/Forbidden.class
 se/stolpjakten/api/security/PasswordAuthentication.class
 se/stolpjakten/api/exceptions/AuthenticationException.class

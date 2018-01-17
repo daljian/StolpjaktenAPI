@@ -93,17 +93,6 @@ Required: yes</span>
 </td>
         </tr>
         <tr>
-          <td>  <span class="property-name">email</span>
-</td>
-          <td>  <span class="datatype-reference">string
-</span>
-</td>
-          <td>  <span class="property-description">Email address for this user.
-<br>
-Required: no</span>
-</td>
-        </tr>
-        <tr>
           <td>  <span class="property-name">password</span>
 </td>
           <td>  <span class="datatype-reference">string
@@ -118,6 +107,17 @@ Stored in database using xxx one-way hash algorithm with key yyy and salt length
 Required: yes</span>
 </td>
         </tr>
+        <tr>
+          <td>  <span class="property-name">email</span>
+</td>
+          <td>  <span class="datatype-reference">string
+</span>
+</td>
+          <td>  <span class="property-description">Email address for this user.
+<br>
+Required: no</span>
+</td>
+        </tr>
         </tbody>
       </table>
 
@@ -127,8 +127,8 @@ Required: yes</span>
       
       <pre class="prettyprint language-js example">{
   &quot;userName&quot; : &quot;...&quot;,
-  &quot;email&quot; : &quot;...&quot;,
-  &quot;password&quot; : &quot;...&quot;
+  &quot;password&quot; : &quot;...&quot;,
+  &quot;email&quot; : &quot;...&quot;
 }</pre>
 
         <footer class="footer">

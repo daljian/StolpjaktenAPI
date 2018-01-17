@@ -21,6 +21,7 @@
 /home/gengdahl/workspace/stolpjaktenAPI/src/main/java/se/stolpjakten/api/rest/type/User.java
 /home/gengdahl/workspace/stolpjaktenAPI/src/main/java/se/stolpjakten/api/filters/TokenAuthenticationFilter.java
 /home/gengdahl/workspace/stolpjaktenAPI/src/main/java/se/stolpjakten/api/security/User.java
+/home/gengdahl/workspace/stolpjaktenAPI/src/main/java/se/stolpjakten/api/db/facade/TokensFacadeDB.java
 /home/gengdahl/workspace/stolpjaktenAPI/src/main/java/se/stolpjakten/api/rest/error/BaseError.java
 /home/gengdahl/workspace/stolpjaktenAPI/src/main/java/se/stolpjakten/api/rest/error/Unauthorized.java
 /home/gengdahl/workspace/stolpjaktenAPI/src/main/java/se/stolpjakten/api/security/aspects/BasicSecured.java

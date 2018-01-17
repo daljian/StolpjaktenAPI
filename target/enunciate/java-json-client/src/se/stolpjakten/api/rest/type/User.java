@@ -18,9 +18,9 @@ public class User implements java.io.Serializable {
   @JsonIgnore
   private java.lang.String _userName;
   @JsonIgnore
-  private java.lang.String _email;
-  @JsonIgnore
   private java.lang.String _password;
+  @JsonIgnore
+  private java.lang.String _email;
 
   /**
    * A globally unique username that identifies a user.
@@ -40,26 +40,6 @@ public class User implements java.io.Serializable {
   @JsonProperty( value = "userName", required = false )
   public void setUserName(java.lang.String _userName) {
     this._userName = _userName;
-  }
-
-  /**
-   * Email address for this user.
-   * <br>
-   * Required: no
-   */
-  @JsonProperty( value = "email", required = false )
-  public java.lang.String getEmail() {
-    return this._email;
-  }
-
-  /**
-   * Email address for this user.
-   * <br>
-   * Required: no
-   */
-  @JsonProperty( value = "email", required = false )
-  public void setEmail(java.lang.String _email) {
-    this._email = _email;
   }
 
   /**
@@ -88,5 +68,25 @@ public class User implements java.io.Serializable {
   @JsonProperty( value = "password", required = false )
   public void setPassword(java.lang.String _password) {
     this._password = _password;
+  }
+
+  /**
+   * Email address for this user.
+   * <br>
+   * Required: no
+   */
+  @JsonProperty( value = "email", required = false )
+  public java.lang.String getEmail() {
+    return this._email;
+  }
+
+  /**
+   * Email address for this user.
+   * <br>
+   * Required: no
+   */
+  @JsonProperty( value = "email", required = false )
+  public void setEmail(java.lang.String _email) {
+    this._email = _email;
   }
 }

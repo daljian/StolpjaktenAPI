@@ -92,10 +92,6 @@ module Type
     # &lt;br&gt;
     # Required: yes
     attr_accessor :userName
-    # Email address for this user.
-    # &lt;br&gt;
-    # Required: no
-    attr_accessor :email
     # Password for this user.
     # &lt;br&gt;
     # Only available for add (POST) and update (PUT) requests.
@@ -104,13 +100,17 @@ module Type
     # &lt;br&gt;
     # Required: yes
     attr_accessor :password
+    # Email address for this user.
+    # &lt;br&gt;
+    # Required: no
+    attr_accessor :email
 
     # the json hash for this User
     def to_jaxb_json_hash
       _h = {}
       _h['userName'] = userName.to_jaxb_json_hash unless userName.nil?
-      _h['email'] = email.to_jaxb_json_hash unless email.nil?
       _h['password'] = password.to_jaxb_json_hash unless password.nil?
+      _h['email'] = email.to_jaxb_json_hash unless email.nil?
       return _h
     end
 
@@ -140,25 +140,6 @@ module Type
                 @userName = _oa
             end
           end
-        if !_o['email'].nil?
-          _oa = _o['email']
-            if(_oa.is_a? Hash)
-              @email = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
-              @email =  String.from_json(_oa) unless _oa['@class']
-            elsif (_oa.is_a? Array)
-              #an array(of hashes hopefully) or scalar
-              @email = Array.new
-              _oa.each { | _item | 
-                 if ((_item.nil? || _item['@class'].nil?)rescue true)
-                   @email.push String.from_json(_item)
-                 else
-                   @email.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
-                 end
-               }
-            else
-                @email = _oa
-            end
-          end
         if !_o['password'].nil?
           _oa = _o['password']
             if(_oa.is_a? Hash)
@@ -176,6 +157,25 @@ module Type
                }
             else
                 @password = _oa
+            end
+          end
+        if !_o['email'].nil?
+          _oa = _o['email']
+            if(_oa.is_a? Hash)
+              @email = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
+              @email =  String.from_json(_oa) unless _oa['@class']
+            elsif (_oa.is_a? Array)
+              #an array(of hashes hopefully) or scalar
+              @email = Array.new
+              _oa.each { | _item | 
+                 if ((_item.nil? || _item['@class'].nil?)rescue true)
+                   @email.push String.from_json(_item)
+                 else
+                   @email.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
+                 end
+               }
+            else
+                @email = _oa
             end
           end
     end
@@ -350,8 +350,6 @@ module Type
     attr_accessor :email
     # (no documentation provided)
     attr_accessor :password
-    # (no documentation provided)
-    attr_accessor :salt
 
     # the json hash for this Users
     def to_jaxb_json_hash
@@ -359,7 +357,6 @@ module Type
       _h['userName'] = userName.to_jaxb_json_hash unless userName.nil?
       _h['email'] = email.to_jaxb_json_hash unless email.nil?
       _h['password'] = password.to_jaxb_json_hash unless password.nil?
-      _h['salt'] = salt.to_jaxb_json_hash unless salt.nil?
       return _h
     end
 
@@ -425,25 +422,6 @@ module Type
                }
             else
                 @password = _oa
-            end
-          end
-        if !_o['salt'].nil?
-          _oa = _o['salt']
-            if(_oa.is_a? Hash)
-              @salt = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
-              @salt =  Fixnum.from_json(_oa) unless _oa['@class']
-            elsif (_oa.is_a? Array)
-              #an array(of hashes hopefully) or scalar
-              @salt = Array.new
-              _oa.each { | _item | 
-                 if ((_item.nil? || _item['@class'].nil?)rescue true)
-                   @salt.push Fixnum.from_json(_item)
-                 else
-                   @salt.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
-                 end
-               }
-            else
-                @salt = _oa
             end
           end
     end
