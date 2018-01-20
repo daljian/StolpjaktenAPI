@@ -6,16 +6,8 @@
 package se.stolpjakten.api.rest.facade;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -36,6 +28,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import se.stolpjakten.api.db.facade.TokensFacadeDB;
 import se.stolpjakten.api.db.facade.UsersFacadeDB;
+import se.stolpjakten.api.db.type.Tokens;
 import se.stolpjakten.api.db.type.Users;
 import se.stolpjakten.api.rest.error.ErrorCode;
 import se.stolpjakten.api.rest.type.Role;
@@ -46,6 +39,7 @@ import se.stolpjakten.api.security.aspects.TokenSecured;
 import se.stolpjakten.api.exceptions.AuthorizationException;
 import se.stolpjakten.api.exceptions.UserException;
 import se.stolpjakten.api.security.PasswordAuthentication;
+import se.stolpjakten.api.utils.EntityManagerHolder;
 import se.stolpjakten.api.utils.Strings;
 
 /**
@@ -55,17 +49,17 @@ import se.stolpjakten.api.utils.Strings;
 @Stateless
 @Path("/users")
 public class UsersFacadeREST {
-    @PersistenceContext(unitName = "se.stolpjakten.api_stolpjaktenAPI_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
+
     private PasswordAuthentication passwordAuthentication = null;
-    private UsersFacadeDB dbFacade = null; 
-    private UsersFacadeDB getDb(){
+    private UsersFacadeDB dbFacade = null;
+
+    private UsersFacadeDB getDb() {
         if (dbFacade == null) {
-            dbFacade = new UsersFacadeDB(em);
+            dbFacade = new UsersFacadeDB();
         }
         return dbFacade;
     }
-    
+
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -76,13 +70,11 @@ public class UsersFacadeREST {
         if (!id.equals(entity.getUserName())) {
             throw new AuthorizationException();
             //TODO Refactor to have these type of validations inside REST data type objects.
-        } else if(!Strings.isValidPasswordString(entity.getPassword())) {
+        } else if (!Strings.isValidPasswordString(entity.getPassword())) {
             //TODO also have similar checks for username.
             throw new UserException(ErrorCode.JSON_FIELD_PASSWORD, "Please provide a valid password");
         }
-        
-        
-        
+
         getDb().edit(entity);
     }
 
@@ -90,6 +82,7 @@ public class UsersFacadeREST {
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Users user) throws IOException {
         Users entity = (Users) user;
+        validateUserFields(user);
         if (getDb().find(entity.getUserName()) != null) {
             throw new UserException(ErrorCode.RESOURCE_EXISTS, "User "
                     + entity.getUserName() + " already exists.");
@@ -105,7 +98,7 @@ public class UsersFacadeREST {
     @BasicSecured
     @Authorization({Role.USER})
     public void remove(@PathParam("id") String id) {
-        TokensFacadeDB tokensDB = new TokensFacadeDB(em);
+        TokensFacadeDB tokensDB = new TokensFacadeDB();
         tokensDB.deleteByUserName(id);
         getDb().remove(getDb().find(id));
     }
@@ -130,21 +123,23 @@ public class UsersFacadeREST {
             throw new NotFoundException();
         }
     }
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<User> findAll(@Context ContainerRequestContext context) {
-        List<Users> dbUsers =  getDb().findAll();
+        List<Users> dbUsers = getDb().findAll();
         List<User> users = new ArrayList<>(dbUsers.size());
         for (Users dbUser : dbUsers) {
             users.add(dbUser.toUser());
         }
         return users;
     }
+
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<User> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        List<Users> dbUsers =  getDb().findRange(new int[]{from, to});
+        List<Users> dbUsers = getDb().findRange(new int[]{from, to});
         List<User> users = new ArrayList<>(dbUsers.size());
         for (Users dbUser : dbUsers) {
             users.add(dbUser.toUser());
@@ -157,18 +152,32 @@ public class UsersFacadeREST {
     @Produces(MediaType.TEXT_PLAIN)
     @Asynchronous
     public void countREST(@Suspended
-    final AsyncResponse asyncResponse) {
+            final AsyncResponse asyncResponse) {
         asyncResponse.resume(doCountREST());
     }
 
     private String doCountREST() {
         return String.valueOf(getDb().count());
     }
-    private PasswordAuthentication getPasswordAuthentication(){
+
+    private PasswordAuthentication getPasswordAuthentication() {
         if (passwordAuthentication == null) {
             passwordAuthentication = new PasswordAuthentication();
         }
         return passwordAuthentication;
     }
-}
 
+    private void validateUserFields(User user) throws UserException {
+        if (!Strings.isValidUsername(user.getUserName())) {
+            throw new UserException(ErrorCode.JSON_FIELD_USERNAME,
+                    "Please provide a valid username");
+        } else if (!Strings.isValidEmail(user.getEmail())) {
+            throw new UserException(ErrorCode.JSON_FIELD_EMAIL,
+                    "Please provide a valid email address");
+        } else if (!Strings.isValidPasswordString(user.getPassword())) {
+            throw new UserException(ErrorCode.JSON_FIELD_PASSWORD,
+                    "Please provide a valid password");
+        }
+
+    }
+}

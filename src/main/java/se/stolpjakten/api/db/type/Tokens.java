@@ -16,7 +16,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -24,13 +23,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "Tokens")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tokens.findAll", query = "SELECT t FROM Tokens t")
     , @NamedQuery(name = "Tokens.findByToken", query = "SELECT t FROM Tokens t WHERE t.token = :token")
     , @NamedQuery(name = "Tokens.findByUserName", query = "SELECT t FROM Tokens t WHERE t.userName = :userName")
     , @NamedQuery(name = "Tokens.findByExpires", query = "SELECT t FROM Tokens t WHERE t.expires = :expires")
     , @NamedQuery(name = "Tokens.deleteByUserName", query = "DELETE FROM Tokens t WHERE t.userName = :userName")
+    , @NamedQuery(name = "Tokens.deleteByExpiresTime", query = "DELETE FROM Tokens t WHERE t.expires < :currentTime")
     , @NamedQuery(name = "Tokens.findByScopes", query = "SELECT t FROM Tokens t WHERE t.scopes = :scopes")})
 public class Tokens implements Serializable {
 

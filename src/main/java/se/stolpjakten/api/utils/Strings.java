@@ -5,6 +5,10 @@
  */
 package se.stolpjakten.api.utils;
 
+import java.util.regex.Pattern;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 /**
  *
  * @author gengdahl
@@ -32,17 +36,40 @@ public class Strings {
         }
         return isNullOrEmpty;
     }
+
     /**
      * Password restrictions that apply are TODO
-     * @param s
-     * @return 
+     *
+     * @param password
+     * @return
      */
-    public static boolean isValidPasswordString(String s) { 
-        if (isNullOrEmpty(s)) {
+    public static boolean isValidPasswordString(String password) {
+        if (isNullOrEmpty(password)) {
             return false;
+        } else {
+            return Pattern.matches(ConfigurationStore.PASSWORD_PATTERN.get(),
+                    password);
         }
-        return s.length() > 5 && s.length() < 40;
-        
     }
 
+    public static boolean isValidUsername(String username) {
+        if (isNullOrEmpty(username)) {
+            return false;
+        } else {
+            return Pattern.matches(ConfigurationStore.USERNAME_PATTERN.get(),
+                    username);
+        }
+
+    }
+
+    public static boolean isValidEmail(String email) {
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
+    }
 }

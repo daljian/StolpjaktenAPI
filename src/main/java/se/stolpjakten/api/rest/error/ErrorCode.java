@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import se.stolpjakten.api.utils.ConfigurationStore;
 
 /**
  *
@@ -20,7 +21,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 public enum ErrorCode {
     JSON_SYNTAX(100,"JSON", "JSON syntax is incorrect."),
     JSON_SEMATIC(101,"JSON", "JSON semantic is incorrect."),
-    JSON_FIELD_PASSWORD(102,"JSON", "Field: password must follow TODO"),
+    JSON_FIELD_USERNAME(102,"JSON", "Field: username must follow configuration "
+            + ConfigurationStore.USERNAME_PATTERN),
+    JSON_FIELD_EMAIL(103,"JSON", "Field: email must be valid"),
+    JSON_FIELD_PASSWORD(104,"JSON", "Field: password must follow Configuration "
+            + ConfigurationStore.PASSWORD_PATTERN),
     RESOURCE_EXISTS(200, "RESOURCE", "Resource already exists"),
     RESOURCE_NOT_EXISTS(201, "RESOURCE", "This resource does not exist");
     private static final Map<Integer, ErrorCode> CACHE = new HashMap<>();

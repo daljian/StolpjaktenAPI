@@ -6,23 +6,24 @@
 package se.stolpjakten.api.db.facade;
 
 import javax.persistence.EntityManager;
-import se.stolpjakten.api.db.type.Users;
+import se.stolpjakten.api.db.type.Configuration;
 import se.stolpjakten.api.utils.EntityManagerHolder;
 
 /**
  *
  * @author gengdahl
  */
-public class UsersFacadeDB extends AbstractFacade<Users> {
+public class ConfigurationFacadeDB extends AbstractFacade<Configuration> {
     private EntityManager em;
-
-    public UsersFacadeDB() {
-        super(Users.class);
+    public ConfigurationFacadeDB() {
+        super(Configuration.class);
+        this.em = EntityManagerHolder.INSTANCE.get();
     }
+
 
     @Override
     protected EntityManager getEntityManager() {
-        return EntityManagerHolder.INSTANCE.get();
+        return em;
     }
     
 }

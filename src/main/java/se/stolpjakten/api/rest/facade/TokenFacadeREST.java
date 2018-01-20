@@ -14,7 +14,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -22,14 +21,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
-import javax.ws.rs.core.Response;
+import se.stolpjakten.api.db.facade.TokensFacadeDB;
 import se.stolpjakten.api.db.type.Tokens;
 import se.stolpjakten.api.rest.type.Token;
-import se.stolpjakten.api.rest.type.TokenIF;
 import se.stolpjakten.api.security.aspects.BasicSecured;
 import se.stolpjakten.api.security.aspects.TokenSecured;
 import se.stolpjakten.api.exceptions.AuthorizationException;
+import se.stolpjakten.api.utils.EntityManagerHolder;
 
 /**
  *
@@ -38,9 +36,14 @@ import se.stolpjakten.api.exceptions.AuthorizationException;
 @Stateless
 @Path("/users/{userId}/tokens")
 public class TokenFacadeREST {
+    private TokensFacadeDB db = null;
+    private TokensFacadeDB getDb() {
+        if (db == null) {
+            db = new TokensFacadeDB();
+        }
+        return db;
+    }
 
-    @PersistenceContext(unitName = "se.stolpjakten.api_stolpjaktenAPI_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
 
     /**
      * Create a token to use for subsequent requests to this API.
@@ -80,7 +83,7 @@ public class TokenFacadeREST {
         dbToken.setScopes("user");
         dbToken.setUserName(userName);
         dbToken.setToken(UUID.randomUUID().toString());
-        em.persist(dbToken);
+        getDb().create(dbToken);
 
         return Token.fromTokens(dbToken);
     }
@@ -106,7 +109,8 @@ public class TokenFacadeREST {
         if (!userName.equals(id)) {
             throw new AuthorizationException();
         }
-        em.remove(em.find(Tokens.class, tokenId));
+        //TODO optimize to do delete instead of select + delete
+        getDb().remove(getDb().find(tokenId));
 
     }
 
@@ -127,9 +131,7 @@ public class TokenFacadeREST {
         if (!context.getSecurityContext().getUserPrincipal().getName().equals(id)) {
             throw new AuthorizationException();
         }
-        TypedQuery query = em.createNamedQuery("Tokens.deleteByUserName", Tokens.class);
-        query.setParameter("userName", id);
-        query.executeUpdate();
+        getDb().deleteByUserName(id);
 
     }
 

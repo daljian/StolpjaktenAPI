@@ -18,6 +18,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
+import se.stolpjakten.api.db.facade.TokensFacadeDB;
 import se.stolpjakten.api.db.type.RoleMappings;
 import se.stolpjakten.api.db.type.Tokens;
 import se.stolpjakten.api.rest.type.Role;
@@ -25,6 +26,7 @@ import se.stolpjakten.api.security.aspects.TokenSecured;
 import se.stolpjakten.api.security.User;
 import se.stolpjakten.api.security.UserSecurityContext;
 import se.stolpjakten.api.exceptions.AuthenticationException;
+import se.stolpjakten.api.utils.EntityManagerHolder;
 import se.stolpjakten.api.utils.Strings;
 
 /**
@@ -37,15 +39,12 @@ import se.stolpjakten.api.utils.Strings;
 public class TokenAuthenticationFilter implements ContainerRequestFilter {
 
     //https://stackoverflow.com/questions/26777083/best-practice-for-rest-token-based-authentication-with-jax-rs-and-jersey
-    @PersistenceContext(unitName = "se.stolpjakten.api_stolpjaktenAPI_war_1.0-SNAPSHOTPU")
-    EntityManager entityManager;
 
     private static final String REALM = "stolpjakten.se";
     private static final String AUTHENTICATION_SCHEME = "Bearer";
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-
         // Get the Authorization header from the request
         String authorizationHeader
                 = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
@@ -104,8 +103,11 @@ public class TokenAuthenticationFilter implements ContainerRequestFilter {
     private String[] extractUserRolesFromToken(String token) throws Exception {
         // Check if the token was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
-        Tokens dbToken = entityManager.find(Tokens.class, token);
-        TypedQuery query = entityManager.createNamedQuery("RoleMappings.findByUserName", RoleMappings.class);
+        Tokens dbToken = new TokensFacadeDB().find(token);
+        //TODO create RoleMappingsFacadeDB and use that instead.
+        TypedQuery query = EntityManagerHolder.INSTANCE.get().
+                createNamedQuery("RoleMappings.findByUserName", 
+                        RoleMappings.class);
         query.setParameter("userName", dbToken.getUserName());
         List<RoleMappings> result = query.getResultList();
         String[] retVal = new String[result.size() + 2];

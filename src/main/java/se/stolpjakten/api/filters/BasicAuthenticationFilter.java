@@ -23,6 +23,7 @@ import se.stolpjakten.api.security.User;
 import se.stolpjakten.api.security.UserSecurityContext;
 import se.stolpjakten.api.exceptions.AuthenticationException;
 import se.stolpjakten.api.security.PasswordAuthentication;
+import se.stolpjakten.api.utils.EntityManagerHolder;
 import se.stolpjakten.api.utils.Strings;
 
 @BasicSecured
@@ -37,6 +38,8 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
+        EntityManagerHolder.INSTANCE.set(entityManager);
+
         boolean authenticated = false;
         try {
             String auth = requestContext.getHeaderString("authorization");
