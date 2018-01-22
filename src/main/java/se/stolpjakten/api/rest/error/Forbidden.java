@@ -11,7 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author gengdahl
+ * Payload for forbidden (403) responses.
+ * <br>
+ * Please see error code and description for details about the specific error.
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

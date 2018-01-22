@@ -44,6 +44,13 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.webcohesion.enunciate/enunciate-core-annotations -->
+        <dependency>
+            <groupId>com.webcohesion.enunciate</groupId>
+            <artifactId>enunciate-core-annotations</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+        
     </dependencies>
 
     <build>

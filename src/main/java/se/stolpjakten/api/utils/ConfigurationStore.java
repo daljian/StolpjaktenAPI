@@ -6,7 +6,9 @@
 package se.stolpjakten.api.utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,12 +35,12 @@ public enum ConfigurationStore {
     }
 
     public String get() {
-        
+
         Configuration cfg = cache.get(key);
         if (cfg == null) {
             cfg = db.find(key);
             cache.put(key, cfg);
-            
+
         }
         if (cfg == null) {
             return defaultValue;
@@ -60,6 +62,17 @@ public enum ConfigurationStore {
         cfg.key = key;
         cfg.value = get();
         return cfg;
+    }
+
+    public static List<se.stolpjakten.api.rest.type.Configuration> toConfigurations() {
+        List<se.stolpjakten.api.rest.type.Configuration> configurations
+                = new ArrayList<>(ConfigurationStore.values().length);
+        for (ConfigurationStore cfg : ConfigurationStore.values()) {
+            cfg.get();
+            configurations.add(cfg.toConfiguration());
+        }
+        return configurations;
+
     }
 
 }

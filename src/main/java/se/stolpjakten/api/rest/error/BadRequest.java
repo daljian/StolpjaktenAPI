@@ -11,18 +11,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author gengdahl
+ * Payload for bad request (400) responses.
+ * <br>
+ * Please see error code and description for details about the specific error.
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class UserError extends BaseError {
+public class BadRequest extends BaseError {
+
     private ErrorCode errorCode;
-    public UserError(){
-        
+
+    /**
+     * The Error code.
+     */
+    public ErrorCode getErrorCode() {
+        return errorCode;
     }
-    public UserError(ErrorCode code, String description) {
+
+    public BadRequest() {
+
+    }
+
+    public BadRequest(ErrorCode code, String description) {
         this.errorCode = code;
         setDescription(description);
     }
-    
+
 }

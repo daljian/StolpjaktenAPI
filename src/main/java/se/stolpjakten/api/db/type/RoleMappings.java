@@ -12,6 +12,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import se.stolpjakten.api.rest.type.RoleMapping;
 
 /**
  *
@@ -72,6 +73,18 @@ public class RoleMappings implements Serializable {
     @Override
     public String toString() {
         return "se.stolpjakten.api.db.RoleMappings[ roleMappingsPK=" + roleMappingsPK + " ]";
+    }
+    public RoleMapping toRoleMapping() {
+        return new RoleMapping() {
+            @Override
+            public String getRole() {
+                return getRoleMappingsPK().getRole();
+            }
+            @Override
+            public String getUserName() {
+                return getRoleMappingsPK().getUserName();
+            }
+        };
     }
     
 }

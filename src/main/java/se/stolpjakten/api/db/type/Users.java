@@ -20,7 +20,10 @@ import se.stolpjakten.api.rest.type.User;
 
 /**
  *
- * @author gengdahl
+ * TODO, remove from REST JSON types.
+ * <br>
+ * TODO, document.
+ * 
  */
 @Entity
 @Table(name = "Users")

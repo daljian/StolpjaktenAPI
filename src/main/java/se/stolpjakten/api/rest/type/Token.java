@@ -13,11 +13,12 @@ import se.stolpjakten.api.db.type.Tokens;
 
 /**
  *
- * @author gengdahl
+ * Token data container.
+ * 
  */
 @XmlRootElement(name = "token")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Token implements TokenIF {
+public class Token {
 
     private String accessToken;
     private String type;

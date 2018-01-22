@@ -11,22 +11,18 @@ import java.util.logging.Logger;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import se.stolpjakten.api.rest.error.BaseError;
-import se.stolpjakten.api.rest.error.Forbidden;
-import se.stolpjakten.api.rest.error.InternalServerError;
-import se.stolpjakten.api.rest.error.Unauthorized;
-import se.stolpjakten.api.rest.error.UserError;
 import se.stolpjakten.api.exceptions.AuthenticationException;
 import se.stolpjakten.api.exceptions.AuthorizationException;
+import se.stolpjakten.api.exceptions.NotFoundException;
 import se.stolpjakten.api.exceptions.UserException;
 import se.stolpjakten.api.utils.Strings;
 
 @Provider
+/**
+ * This class maps java Exceptions to defined REST errors defined in this API.
+ */
 public class ErrorMapper implements ExceptionMapper<Exception> {
-    Logger logger = Logger.getLogger(ErrorMapper.class.getName());
+    static final Logger logger = Logger.getLogger(ErrorMapper.class.getName());
 
     @Override
     public Response toResponse(Exception exception) {
@@ -36,6 +32,8 @@ public class ErrorMapper implements ExceptionMapper<Exception> {
             return convert((AuthorizationException)exception);
         } else if (exception instanceof UserException) {
             return convert((UserException)exception);
+        } else if (exception instanceof NotFoundException) {
+            return convert((NotFoundException)exception);
         } else {
             return convert(exception);
         }
@@ -58,10 +56,14 @@ public class ErrorMapper implements ExceptionMapper<Exception> {
         return Response.status(Response.Status.FORBIDDEN).entity(error).build();
     }
     public Response convert(UserException exception) {
-        UserError error = new UserError(exception.getErrorCode(),
+        BadRequest error = new BadRequest(exception.getErrorCode(),
                 exception.getMessage());
         setErrorDescription(error, exception);
         return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
+    }
+    public Response convert (NotFoundException exception ) {
+        NotFound error = new NotFound(exception.getMessage());
+        return Response.status(Response.Status.NOT_FOUND).entity(error).build();
     }
     private void setErrorDescription (BaseError error, Exception exception) {
         if (!Strings.isNullOrEmpty(exception.getMessage())) {

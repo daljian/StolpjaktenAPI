@@ -5,13 +5,14 @@
  */
 package se.stolpjakten.api.rest.facade;
 
+import com.webcohesion.enunciate.metadata.rs.ResponseCode;
+import com.webcohesion.enunciate.metadata.rs.StatusCodes;
+import com.webcohesion.enunciate.metadata.rs.TypeHint;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -28,7 +29,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import se.stolpjakten.api.db.facade.TokensFacadeDB;
 import se.stolpjakten.api.db.facade.UsersFacadeDB;
-import se.stolpjakten.api.db.type.Tokens;
 import se.stolpjakten.api.db.type.Users;
 import se.stolpjakten.api.rest.error.ErrorCode;
 import se.stolpjakten.api.rest.type.Role;
@@ -38,13 +38,20 @@ import se.stolpjakten.api.security.aspects.BasicSecured;
 import se.stolpjakten.api.security.aspects.TokenSecured;
 import se.stolpjakten.api.exceptions.AuthorizationException;
 import se.stolpjakten.api.exceptions.UserException;
+import se.stolpjakten.api.rest.error.BadRequest;
+import se.stolpjakten.api.rest.error.Forbidden;
+import se.stolpjakten.api.rest.error.InternalServerError;
+import se.stolpjakten.api.rest.error.NotFound;
+import se.stolpjakten.api.rest.error.Unauthorized;
 import se.stolpjakten.api.security.PasswordAuthentication;
-import se.stolpjakten.api.utils.EntityManagerHolder;
+import se.stolpjakten.api.utils.AuthorizationHelper;
 import se.stolpjakten.api.utils.Strings;
 
 /**
  *
- * @author gengdahl
+ * CRUD operations for Users.
+ * <br>
+ * You need to create a user before using the protected REST APIs.
  */
 @Stateless
 @Path("/users")
@@ -60,14 +67,32 @@ public class UsersFacadeREST {
         return dbFacade;
     }
 
+    /**
+     * Update the user.
+     * <br>
+     * <b>Authentication:</b> Token (RFC 6750)
+     *
+     * @param userName Username User to update.
+     * @param user New User configuration, note that you cannot change the
+     * userName.
+     * @throws UserException If there is an issue with the supplied data.
+     * @throws AuthorizationException If user is not authorized to perform the
+     * operation.
+     */
     @PUT
-    @Path("{id}")
+    @Path("{userName}")
     @Consumes({MediaType.APPLICATION_JSON})
     @TokenSecured
-    @Authorization({Role.USER})
-    public void edit(@PathParam("id") String id, User user) throws IOException {
+    @Authorization({Role.USER, Role.SYS_ADMIN})
+    public void edit(@PathParam("userName") String userName, User user)
+            throws UserException, AuthorizationException {
         Users entity = (Users) user;
-        if (!id.equals(entity.getUserName())) {
+        if (!AuthorizationHelper.isInRole(Role.SYS_ADMIN)) {
+            AuthorizationHelper.assertRequestingUser(userName);
+        }
+        if (Strings.isNullOrEmpty(user.getUserName())) {
+            entity.setUserName(userName);
+        } else if (!userName.equals(entity.getUserName())) {
             throw new AuthorizationException();
             //TODO Refactor to have these type of validations inside REST data type objects.
         } else if (!Strings.isValidPasswordString(entity.getPassword())) {
@@ -78,9 +103,23 @@ public class UsersFacadeREST {
         getDb().edit(entity);
     }
 
+    /**
+     * Create a new User.
+     * <br>
+     * After creating a user you should proceed to get a token using the Token
+     * REST service. After you have retrieved a token you can use that to access
+     * the other APIs to explore arrangements, maps, courses and start register
+     * poles.
+     * <br>
+     * <b>Authentication:</b> None
+     *
+     * @param user The user to create.
+     * @throws UserException If input data is incorrect.
+     * @throws IOException If there is a problem persisting the new user.
+     */
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Users user) throws IOException {
+    public void create(Users user) throws UserException, IOException {
         Users entity = (Users) user;
         validateUserFields(user);
         if (getDb().find(entity.getUserName()) != null) {
@@ -93,30 +132,53 @@ public class UsersFacadeREST {
         getDb().create(entity);
     }
 
+    /**
+     * Delete a user account.
+     * <br>
+     * Please note that this will delete the user account and all data
+     * associated to it. Anonymous statistics data will remain.
+     *
+     * @param userName
+     */
     @DELETE
-    @Path("{id}")
+    @Path("{userName}")
     @BasicSecured
     @Authorization({Role.USER})
-    public void remove(@PathParam("id") String id) {
+    public void remove(@PathParam("userName") String userName) {
         TokensFacadeDB tokensDB = new TokensFacadeDB();
-        tokensDB.deleteByUserName(id);
-        getDb().remove(getDb().find(id));
+        tokensDB.deleteByUserName(userName);
+        getDb().remove(getDb().find(userName));
     }
 
+    /**
+     * Retrieve a User.
+     * <br>
+     *
+     * @param userName The user to retrieve.
+     * @return User if found.
+     * @throws NotFoundException If no user is found.
+     * @throws AuthorizationException If user is not authorized to perform
+     * operation.
+     */
     @GET
     @TokenSecured()
-    @Authorization({Role.USER})
-    @Path("{id}")
+    @Authorization({Role.USER, Role.SYS_ADMIN})
+    @Path("{userName}")
     @Produces({MediaType.APPLICATION_JSON})
-    public User find(@PathParam("id") String id,
-            @Context ContainerRequestContext context) throws IOException {
-        if (id.equals(context.getSecurityContext().getUserPrincipal().getName())) {
-            System.out.println("We are good");
-        } else {
-            throw new AuthorizationException();
+    @StatusCodes({
+        @ResponseCode(code = 200, type = @TypeHint(User.class), condition = "OK")
+        ,@ResponseCode(code = 400, type = @TypeHint(BadRequest.class), condition = "Invalid request")
+    ,@ResponseCode(code = 401, type = @TypeHint(Unauthorized.class), condition = "Invalid request")
+    ,@ResponseCode(code = 403, type = @TypeHint(Forbidden.class), condition = "Invalid request")
+    ,@ResponseCode(code = 404, type = @TypeHint(NotFound.class), condition = "Invalid request")
+    ,@ResponseCode(code = 500, type = @TypeHint(InternalServerError.class), condition = "Invalid request")})
+    public User find(@PathParam("userName") String userName)
+            throws NotFoundException, AuthorizationException {
+        if (!AuthorizationHelper.isInRole(Role.SYS_ADMIN)) {
+            AuthorizationHelper.assertRequestingUser(userName);
         }
 
-        Users user = getDb().find(id);
+        Users user = getDb().find(userName);
         if (user != null) {
             return user.toUser();
         } else {

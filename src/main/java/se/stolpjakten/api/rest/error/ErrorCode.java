@@ -14,19 +14,54 @@ import se.stolpjakten.api.utils.ConfigurationStore;
 
 /**
  *
- * @author gengdahl
+ * Enumeration of error codes that can occur in BadRequest responses.
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public enum ErrorCode {
+    /**
+     * JSON is not syntactically  correct.
+     * <br>
+     * Please make sure to use JSON lib to create your payload.
+     */
     JSON_SYNTAX(100,"JSON", "JSON syntax is incorrect."),
+    /**
+     * JSON is not semantically correct.
+     * <br>
+     * Please consult API documentation to assert you follow the correct format.
+     */
     JSON_SEMATIC(101,"JSON", "JSON semantic is incorrect."),
+    /**
+     * JSON field "userName" is not correct.
+     * <br>
+     * Please consult Configuration setting: USERNAME_PATTERN 
+     */
     JSON_FIELD_USERNAME(102,"JSON", "Field: username must follow configuration "
             + ConfigurationStore.USERNAME_PATTERN),
+    /**
+     * JSON field "email" is not correct.
+     * <br>
+     * Email address must pass validation by javax.mail.internet.InternetAddress
+     */
     JSON_FIELD_EMAIL(103,"JSON", "Field: email must be valid"),
+    /**
+     * JSON field "password" is not correct.
+     * <br>
+     * Please consult Configuration setting: PASSWORD_PATTERN 
+     */
     JSON_FIELD_PASSWORD(104,"JSON", "Field: password must follow Configuration "
             + ConfigurationStore.PASSWORD_PATTERN),
+    /**
+     * Can not create resource, because it already exists.
+     * <br>
+     * POST another resource or use PUT to edit existing resource.
+     */
     RESOURCE_EXISTS(200, "RESOURCE", "Resource already exists"),
+    /**
+     * Requested resource was not found.
+     * <br>
+     * Could not find requested resource, maybe you want to POST to create it?
+     */
     RESOURCE_NOT_EXISTS(201, "RESOURCE", "This resource does not exist");
     private static final Map<Integer, ErrorCode> CACHE = new HashMap<>();
   static {

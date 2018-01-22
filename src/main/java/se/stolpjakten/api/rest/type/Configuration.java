@@ -12,13 +12,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author gengdahl
+ * Key/value container for one configuration entity.
+ * <br>
+ * 
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Configuration {
+    /**
+     * Configuration key.
+     */
     @XmlElement(required = true)
     public String key;
+    /**
+     * Configuration value.
+     */
     @XmlElement(required = true)
     public String value;
     

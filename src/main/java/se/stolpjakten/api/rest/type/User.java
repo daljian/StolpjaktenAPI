@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
- * @author gengdahl
+ * User container class.
  */
 public interface User {
     /**
@@ -33,7 +33,7 @@ public interface User {
      * <br>
      * Only available for add (POST) and update (PUT) requests.
      * <br>
-     * Stored in database using xxx one-way hash algorithm with key yyy and salt length ZZZ.
+     * Stored in database using salted one-way hash algorithm with.
      * <br>
      * Required: yes
      */

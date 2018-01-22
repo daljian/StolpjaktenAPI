@@ -62,18 +62,17 @@ public class TokenAuthenticationFilter implements ContainerRequestFilter {
         try {
 
             // Validate the token
-            String[] userScopes = extractUserRolesFromToken(token);
-            if (!Strings.isNullOrEmpty(userScopes[0])) {
-                User user = new User(userScopes[0],
-                        userScopes[1]);
+            String[] userRoles = extractUserRolesFromToken(token);
+            if (!Strings.isNullOrEmpty(userRoles[0])) {
+                User user = new User(userRoles[0],
+                        userRoles[1]);
                 String scheme
                         = requestContext.getUriInfo().getAbsolutePath().getScheme();
                 
-                List<String> roles = new ArrayList(userScopes.length - 1);
-                for (int i = 0 ; i < roles.size(); i++) {
-                    roles.add(userScopes[i+1]);
+                List<String> roles = new ArrayList(userRoles.length - 1);
+                for (int i = 1 ; i < userRoles.length; i++) {
+                    roles.add(userRoles[i]);
                 }
-                roles.add(Role.USER.name());
                 SecurityContext securityContext = new UserSecurityContext(user,
                         scheme, roles);
                 requestContext.setSecurityContext(securityContext);

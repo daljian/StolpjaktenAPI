@@ -11,7 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author gengdahl
+ * Payload for unauthorized (401) responses.
+ * <br>
+ * Please see description for details about the specific error.
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

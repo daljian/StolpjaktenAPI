@@ -16,36 +16,58 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import se.stolpjakten.api.exceptions.NotFoundException;
 import se.stolpjakten.api.rest.type.Configuration;
+import se.stolpjakten.api.rest.type.Role;
+import se.stolpjakten.api.security.aspects.Authorization;
+import se.stolpjakten.api.security.aspects.TokenSecured;
 import se.stolpjakten.api.utils.ConfigurationStore;
 import se.stolpjakten.api.utils.EntityManagerHolder;
 
 /**
  *
- * @author gengdahl
+ * Configuration endpoint for global configuration setting.
+ * <br>
+ * This REST endpoint contains global configuration settings that is readable
+ * by anyone and writable by system administrators.
+ * 
  */
 @Stateless
 @Path("/configurations")
 public class ConfigurationFacadeREST {
+    private static final String NOT_FOUND_MSG =
+            "No such configuration value.";
 
     @PersistenceContext(unitName = "se.stolpjakten.api_stolpjaktenAPI_war_1.0-SNAPSHOTPU")
     private EntityManager em;
-    
+/**
+ * Get 
+ * @param key
+ * @return
+ * @throws IOException 
+ */
     @GET
     @Path("{key}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Configuration find(@PathParam("key") String key) throws IOException {
-        return ConfigurationStore.valueOf(key).toConfiguration();
+    public String find(@PathParam("key") String key) throws NotFoundException {
+        try {
+            return ConfigurationStore.valueOf(key).get();
+        } catch (IllegalArgumentException exception) {
+            throw new NotFoundException(NOT_FOUND_MSG);
+        }
     }
 
     @PUT
     @Path("{key}")
     @Produces({MediaType.APPLICATION_JSON})
+    @TokenSecured
+    @Authorization(Role.SYS_ADMIN)
     public void update(@PathParam("key") String key,
-            Configuration configuration) throws IOException {
-        ConfigurationStore.valueOf(key).set(configuration.value);
-        
+            String value) throws IOException {
+        ConfigurationStore.valueOf(key).set(value);
+
     }
+
     /**
      *
      * @return
@@ -53,7 +75,6 @@ public class ConfigurationFacadeREST {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Configuration> findAll() {
-        //TODO implement
-        return null;
+        return ConfigurationStore.toConfigurations();
     }
 }

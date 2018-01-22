@@ -11,11 +11,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author gengdahl
+ * Base class for all errors.
+ * <br>
+ * All errors contains a description text.
+ *
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class BaseError {
+    /**
+     * Human readable description for this error.
+     * 
+     */
     public String getDescription() {
         return description;
     }
