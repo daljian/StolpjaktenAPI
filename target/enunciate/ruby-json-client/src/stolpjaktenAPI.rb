@@ -184,22 +184,20 @@ module Type
   class Token 
 
     # The Bearer access token to be used for token protected endpoints.
-    # &lt;br&gt;&lt;br&gt;
-    # Sample value:
     # &lt;br&gt;
-    # 5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2
+    # &lt;b&gt;Note!&lt;/b&gt; This property exists only in responses, ignored if present in requests.
+    # &lt;br&gt;
+    # &lt;br&gt;
+    # Required: no
     attr_accessor :accessToken
     # Type of access token, currently only Bearer tokens are supported.
     # &lt;br&gt;&lt;br&gt;
-    # Sample value:
-    # &lt;br&gt;
-    # Bearer
     attr_accessor :type
     # The seconds left of the token life time.
+    # &lt;br&gt;
+    # Expired tokens are automatically rinsed.
     # 
     # &lt;br&gt;&lt;br&gt;
-    # Sample value:
-    # &lt;br&gt; 3600
     attr_accessor :expire
 
     # the json hash for this Token
@@ -312,14 +310,14 @@ module Type
   # (no documentation provided)
   class User 
 
-    # Email address for this user.
-    # &lt;br&gt;
-    # Required: no
-    attr_accessor :email
     # A globally unique username that identifies a user.
     # &lt;br&gt;
     # Required: yes
     attr_accessor :userName
+    # Email address for this user.
+    # &lt;br&gt;
+    # Required: no
+    attr_accessor :email
     # Password for this user.
     # &lt;br&gt;
     # Only available for add (POST) and update (PUT) requests.
@@ -332,8 +330,8 @@ module Type
     # the json hash for this User
     def to_jaxb_json_hash
       _h = {}
-      _h['email'] = email.to_jaxb_json_hash unless email.nil?
       _h['userName'] = userName.to_jaxb_json_hash unless userName.nil?
+      _h['email'] = email.to_jaxb_json_hash unless email.nil?
       _h['password'] = password.to_jaxb_json_hash unless password.nil?
       return _h
     end
@@ -345,25 +343,6 @@ module Type
 
     #initializes this User with a json hash
     def init_jaxb_json_hash(_o)
-        if !_o['email'].nil?
-          _oa = _o['email']
-            if(_oa.is_a? Hash)
-              @email = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
-              @email =  String.from_json(_oa) unless _oa['@class']
-            elsif (_oa.is_a? Array)
-              #an array(of hashes hopefully) or scalar
-              @email = Array.new
-              _oa.each { | _item | 
-                 if ((_item.nil? || _item['@class'].nil?)rescue true)
-                   @email.push String.from_json(_item)
-                 else
-                   @email.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
-                 end
-               }
-            else
-                @email = _oa
-            end
-          end
         if !_o['userName'].nil?
           _oa = _o['userName']
             if(_oa.is_a? Hash)
@@ -381,6 +360,25 @@ module Type
                }
             else
                 @userName = _oa
+            end
+          end
+        if !_o['email'].nil?
+          _oa = _o['email']
+            if(_oa.is_a? Hash)
+              @email = EnunciateHelpers::LAMB_CLASS_AWARE.call(_oa) if _oa['@class']
+              @email =  String.from_json(_oa) unless _oa['@class']
+            elsif (_oa.is_a? Array)
+              #an array(of hashes hopefully) or scalar
+              @email = Array.new
+              _oa.each { | _item | 
+                 if ((_item.nil? || _item['@class'].nil?)rescue true)
+                   @email.push String.from_json(_item)
+                 else
+                   @email.push EnunciateHelpers::LAMB_CLASS_AWARE.call(_item)
+                 end
+               }
+            else
+                @email = _oa
             end
           end
         if !_o['password'].nil?

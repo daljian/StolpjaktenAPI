@@ -51,9 +51,9 @@
     <div class="row">
       <div class="col-sm-3 col-md-2 sidebar" id="apinav">
         <ul class="nav nav-sidebar">
-          <li><a href="#resource_TokenFacadeREST_deleteTokens_DELETE"><abbr title="DELETE /users/{userId}/tokens"><span class="sideoverflow">DELETE /users/{userId}/tokens</span></abbr></a></li>
-          <li><a href="#resource_TokenFacadeREST_createToken_POST"><abbr title="POST /users/{userId}/tokens"><span class="sideoverflow">POST /users/{userId}/tokens</span></abbr></a></li>
-          <li><a href="#resource_TokenFacadeREST_deleteToken_DELETE"><abbr title="DELETE /users/{userId}/tokens/{token-id}"><span class="sideoverflow">DELETE /users/{userId}/tokens/{token-id}</span></abbr></a></li>
+          <li><a href="#resource_TokenFacadeREST_deleteTokens_DELETE"><abbr title="DELETE /users/{userName}/tokens"><span class="sideoverflow">DELETE /users/{userName}/tokens</span></abbr></a></li>
+          <li><a href="#resource_TokenFacadeREST_createToken_POST"><abbr title="POST /users/{userName}/tokens"><span class="sideoverflow">POST /users/{userName}/tokens</span></abbr></a></li>
+          <li><a href="#resource_TokenFacadeREST_deleteToken_DELETE"><abbr title="DELETE /users/{userName}/tokens/{token-id}"><span class="sideoverflow">DELETE /users/{userName}/tokens/{token-id}</span></abbr></a></li>
           <li class="divider"></li>
           <li class="text-right"><a href="#top"><small>Back to Top</small></a></li>
         </ul>
@@ -71,9 +71,11 @@
       <p></p>
 
       <div id="resource_TokenFacadeREST_deleteTokens_DELETE">
-        <h3><span class="label label-default resource-method">DELETE</span> <span class="resource-path">/users/{userId}/tokens <a href="../users/{userId}/tokens" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
+        <h3><span class="label label-default resource-method">DELETE</span> <span class="resource-path">/users/{userName}/tokens <a href="../users/{userName}/tokens" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
 
-        <p>Delete a previously created token.</p>
+        <p>Delete all tokens for this user.
+If user does not exist or user have no tokens, operation will return OK
+result (if authentication & authorization passed)..</p>
 
         <table class="table resource-parameters">
           <caption>Request Parameters</caption>
@@ -86,9 +88,53 @@
           </thead>
           <tbody>
           <tr>
-            <td><span class="parameter-name">userId</span></td>
+            <td><span class="parameter-name">Authorization</span></td>
+            <td>header</td>
+            <td><span class="parameter-description">Bearer token (RFC 6750).</span></td>
+          </tr>
+          <tr>
+            <td><span class="parameter-name">userName</span></td>
             <td>path</td>
-            <td><span class="parameter-description"></span></td>
+            <td><span class="parameter-description">The user userName (username) of the current user.</span></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table class="table resource-response-codes">
+          <caption>Response Codes</caption>
+          <thead>
+          <tr>
+            <th>code</th>
+            <th>condition</th>
+            <th>type</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="label label-success response-code">204</span></td>
+            <td><span class="response-condition">OK</span></td>
+            <td><ul class="list-unstyled"></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">401</span></td>
+            <td><span class="response-condition">You are not authorized to access this resource.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Unauthorized.html">Unauthorized</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_unauthorized.html">unauthorized</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">403</span></td>
+            <td><span class="response-condition">Authorization header is missing or contains incorrect credentials.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Forbidden.html">Forbidden</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_forbidden.html">forbidden</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-danger response-code">500</span></td>
+            <td><span class="response-condition">Server failed to process the request due to an internal error.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_InternalServerError.html">InternalServerError</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_internalServerError.html">internalServerError</a>
+ (XML)</span></li></ul></td>
           </tr>
           </tbody>
         </table>
@@ -99,7 +145,8 @@
             <div class="col-md-6">
               <h5>Request</h5>
               <pre>
-DELETE /users/{userId}/tokens
+DELETE /users/{userName}/tokens
+Authorization: ...
 
               </pre>
             </div>
@@ -115,7 +162,7 @@ HTTP/1.1 204 No Content
       </div>
 
       <div id="resource_TokenFacadeREST_createToken_POST">
-        <h3><span class="label label-default resource-method">POST</span> <span class="resource-path">/users/{userId}/tokens <a href="../users/{userId}/tokens" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
+        <h3><span class="label label-default resource-method">POST</span> <span class="resource-path">/users/{userName}/tokens <a href="../users/{userName}/tokens" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
 
         <p>Create a token to use for subsequent requests to this API.
 <br>
@@ -131,7 +178,7 @@ An API client can retrieve as many tokens as it likes, but server might
 discard old tokens to manage memory resources.
 <br>
 <br>
-<b>Authentication:</b> Basic Authentication (RFC 7617)</p>
+A SYS_ADMIN can impersonate a USER in order to troubleshoot specific user issues.</p>
 
         <table class="table resource-parameters">
           <caption>Request Parameters</caption>
@@ -144,9 +191,14 @@ discard old tokens to manage memory resources.
           </thead>
           <tbody>
           <tr>
-            <td><span class="parameter-name">userId</span></td>
+            <td><span class="parameter-name">Authorization</span></td>
+            <td>header</td>
+            <td><span class="parameter-description">Basic Authentication (RFC 7617)</span></td>
+          </tr>
+          <tr>
+            <td><span class="parameter-name">userName</span></td>
             <td>path</td>
-            <td><span class="parameter-description"></span></td>
+            <td><span class="parameter-description">The username of the user to create the token for.</span></td>
           </tr>
           </tbody>
         </table>
@@ -168,6 +220,36 @@ discard old tokens to manage memory resources.
           </tbody>
         </table>
 
+        <table class="table resource-response-codes">
+          <caption>Response Codes</caption>
+          <thead>
+          <tr>
+            <th>code</th>
+            <th>condition</th>
+            <th>type</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="label label-success response-code">200</span></td>
+            <td><span class="response-condition">OK</span></td>
+            <td><ul class="list-unstyled"></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">403</span></td>
+            <td><span class="response-condition">Authorization header is missing or contains incorrect credentials.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Forbidden.html">Forbidden</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-danger response-code">500</span></td>
+            <td><span class="response-condition">Server failed to process the request due to an internal error.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_InternalServerError.html">InternalServerError</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          </tbody>
+        </table>
+
         <table class="table resource-response-body">
           <caption>Response Body</caption>
           <thead>
@@ -182,7 +264,7 @@ discard old tokens to manage memory resources.
             <td><abbr data-toggle="tooltip" data-placement="top" title="Use the &quot;Accept: application/json&quot; HTTP header to request that this media type be provided by the server."><span class="response-type">application/json</span></abbr></td>
             <td><span class="datatype-reference"><a href="json_Token.html">Token</a>
  (JSON)</span></td>
-            <td><span class="response-description"></span></td>
+            <td><span class="response-description">Created token.</span></td>
           </tr>
           </tbody>
         </table>
@@ -193,15 +275,16 @@ discard old tokens to manage memory resources.
             <div class="col-md-6">
               <h5>Request</h5>
               <pre>
-POST /users/{userId}/tokens
+POST /users/{userName}/tokens
 Content-Type: application/json
 Accept: application/json
+Authorization: ...
 
                 <code class="prettyprint language-js">
 {
-  &quot;accessToken&quot; : &quot;...&quot;,
-  &quot;type&quot; : &quot;...&quot;,
-  &quot;expire&quot; : 12345
+  &quot;accessToken&quot; : &quot;5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2&quot;,
+  &quot;type&quot; : &quot;Bearer&quot;,
+  &quot;expire&quot; : 3600
 }
                 </code>
               </pre>
@@ -209,14 +292,14 @@ Accept: application/json
             <div class="col-md-6">
               <h5>Response</h5>
               <pre>
-HTTP/1.1 201 Created
+HTTP/1.1 200 OK
 Content-Type: application/json
 
                 <code class="prettyprint language-js">
 {
-  &quot;accessToken&quot; : &quot;...&quot;,
-  &quot;type&quot; : &quot;...&quot;,
-  &quot;expire&quot; : 12345
+  &quot;accessToken&quot; : &quot;5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2&quot;,
+  &quot;type&quot; : &quot;Bearer&quot;,
+  &quot;expire&quot; : 3600
 }
                 </code>
               </pre>
@@ -226,9 +309,12 @@ Content-Type: application/json
       </div>
 
       <div id="resource_TokenFacadeREST_deleteToken_DELETE">
-        <h3><span class="label label-default resource-method">DELETE</span> <span class="resource-path">/users/{userId}/tokens/{token-id} <a href="../users/{userId}/tokens/{token-id}" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
+        <h3><span class="label label-default resource-method">DELETE</span> <span class="resource-path">/users/{userName}/tokens/{token-id} <a href="../users/{userName}/tokens/{token-id}" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
 
-        <p>Delete a previously created token.</p>
+        <p>Delete a previously created token.
+<br>
+If user or token does not exist, operation will return OK
+result (if authentication & authorization passed)..</p>
 
         <table class="table resource-parameters">
           <caption>Request Parameters</caption>
@@ -241,17 +327,59 @@ Content-Type: application/json
           </thead>
           <tbody>
           <tr>
+            <td><span class="parameter-name">Authorization</span></td>
+            <td>header</td>
+            <td><span class="parameter-description">Bearer token (RFC 6750).</span></td>
+          </tr>
+          <tr>
             <td><span class="parameter-name">token-id</span></td>
             <td>path</td>
             <td><span class="parameter-description">The access token to delete, eg
-8758f65a-c27b-4f86-a43d-3ce1add36ec6
-<br>
-<b>Authentication:</b> Bearer Token</span></td>
+8758f65a-c27b-4f86-a43d-3ce1add36ec6</span></td>
           </tr>
           <tr>
-            <td><span class="parameter-name">userId</span></td>
+            <td><span class="parameter-name">userName</span></td>
             <td>path</td>
-            <td><span class="parameter-description"></span></td>
+            <td><span class="parameter-description">The user id (username) of the current user.</span></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table class="table resource-response-codes">
+          <caption>Response Codes</caption>
+          <thead>
+          <tr>
+            <th>code</th>
+            <th>condition</th>
+            <th>type</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="label label-success response-code">204</span></td>
+            <td><span class="response-condition">OK</span></td>
+            <td><ul class="list-unstyled"></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">401</span></td>
+            <td><span class="response-condition">You are not authorized to access this resource.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Unauthorized.html">Unauthorized</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_unauthorized.html">unauthorized</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">403</span></td>
+            <td><span class="response-condition">Authorization header is missing or contains incorrect credentials.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Forbidden.html">Forbidden</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_forbidden.html">forbidden</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-danger response-code">500</span></td>
+            <td><span class="response-condition">Server failed to process the request due to an internal error.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_InternalServerError.html">InternalServerError</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_internalServerError.html">internalServerError</a>
+ (XML)</span></li></ul></td>
           </tr>
           </tbody>
         </table>
@@ -262,7 +390,8 @@ Content-Type: application/json
             <div class="col-md-6">
               <h5>Request</h5>
               <pre>
-DELETE /users/{userId}/tokens/{token-id}
+DELETE /users/{userName}/tokens/{token-id}
+Authorization: ...
 
               </pre>
             </div>

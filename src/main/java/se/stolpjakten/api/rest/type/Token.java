@@ -26,16 +26,20 @@ public class Token {
 
     /**
      * The Bearer access token to be used for token protected endpoints.
-     * <br><br>
-     * Sample value:
      * <br>
-     * 5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2
+     * <b>Note!</b> This property exists only in responses, ignored if present in requests.
+     * <br>
+     * <br>
+     * Required: no
+     * @documentationExample 5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2
      */
     public String getAccessToken() {
         return accessToken;
     }
+    
+    
 
-    @XmlElement(required = true)
+    @XmlElement(required = false)
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
@@ -43,9 +47,7 @@ public class Token {
     /**
      * Type of access token, currently only Bearer tokens are supported.
      * <br><br>
-     * Sample value:
-     * <br>
-     * Bearer
+     * @documentationExample Bearer
      */
     public String getType() {
         return type;
@@ -58,10 +60,11 @@ public class Token {
 
     /**
      * The seconds left of the token life time.
+     * <br>
+     * Expired tokens are automatically rinsed.
      *
      * <br><br>
-     * Sample value:
-     * <br> 3600
+     * @documentationExample 3600
      */
     public long getExpire() {
         return expire;

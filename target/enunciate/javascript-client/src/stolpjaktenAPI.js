@@ -125,10 +125,11 @@ exports.Se.Stolpjakten.Api.Rest.Type.Token = class {
 
     /**
      * The Bearer access token to be used for token protected endpoints.
-       * &lt;br&gt;&lt;br&gt;
-       * Sample value:
        * &lt;br&gt;
-       * 5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2
+       * &lt;b&gt;Note!&lt;/b&gt; This property exists only in responses, ignored if present in requests.
+       * &lt;br&gt;
+       * &lt;br&gt;
+       * Required: no
      *
      * @return string
      */
@@ -138,10 +139,11 @@ exports.Se.Stolpjakten.Api.Rest.Type.Token = class {
 
     /**
      * The Bearer access token to be used for token protected endpoints.
-       * &lt;br&gt;&lt;br&gt;
-       * Sample value:
        * &lt;br&gt;
-       * 5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2
+       * &lt;b&gt;Note!&lt;/b&gt; This property exists only in responses, ignored if present in requests.
+       * &lt;br&gt;
+       * &lt;br&gt;
+       * Required: no
      *
      * @param string accessToken
      */
@@ -151,9 +153,6 @@ exports.Se.Stolpjakten.Api.Rest.Type.Token = class {
     /**
      * Type of access token, currently only Bearer tokens are supported.
        * &lt;br&gt;&lt;br&gt;
-       * Sample value:
-       * &lt;br&gt;
-       * Bearer
      *
      * @return string
      */
@@ -164,9 +163,6 @@ exports.Se.Stolpjakten.Api.Rest.Type.Token = class {
     /**
      * Type of access token, currently only Bearer tokens are supported.
        * &lt;br&gt;&lt;br&gt;
-       * Sample value:
-       * &lt;br&gt;
-       * Bearer
      *
      * @param string type
      */
@@ -175,10 +171,10 @@ exports.Se.Stolpjakten.Api.Rest.Type.Token = class {
     }
     /**
      * The seconds left of the token life time.
+       * &lt;br&gt;
+       * Expired tokens are automatically rinsed.
        * 
        * &lt;br&gt;&lt;br&gt;
-       * Sample value:
-       * &lt;br&gt; 3600
      *
      * @return integer
      */
@@ -188,10 +184,10 @@ exports.Se.Stolpjakten.Api.Rest.Type.Token = class {
 
     /**
      * The seconds left of the token life time.
+       * &lt;br&gt;
+       * Expired tokens are automatically rinsed.
        * 
        * &lt;br&gt;&lt;br&gt;
-       * Sample value:
-       * &lt;br&gt; 3600
      *
      * @param integer expire
      */
@@ -234,38 +230,17 @@ exports.Se.Stolpjakten.Api.Rest.Type.User = class {
      */
     constructor(o) {
         var self = this;
-        if (typeof o['email'] !== 'undefined') {
-            this.email = o['email'];
-        }
         if (typeof o['userName'] !== 'undefined') {
             this.userName = o['userName'];
+        }
+        if (typeof o['email'] !== 'undefined') {
+            this.email = o['email'];
         }
         if (typeof o['password'] !== 'undefined') {
             this.password = o['password'];
         }
     }
 
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @return string
-     */
-    getEmail() {
-        return this.email;
-    }
-
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @param string email
-     */
-    setEmail(email) {
-        this.email = email;
-    }
     /**
      * A globally unique username that identifies a user.
        * &lt;br&gt;
@@ -286,6 +261,27 @@ exports.Se.Stolpjakten.Api.Rest.Type.User = class {
      */
     setUserName(userName) {
         this.userName = userName;
+    }
+    /**
+     * Email address for this user.
+       * &lt;br&gt;
+       * Required: no
+     *
+     * @return string
+     */
+    getEmail() {
+        return this.email;
+    }
+
+    /**
+     * Email address for this user.
+       * &lt;br&gt;
+       * Required: no
+     *
+     * @param string email
+     */
+    setEmail(email) {
+        this.email = email;
     }
     /**
      * Password for this user.
@@ -325,11 +321,11 @@ exports.Se.Stolpjakten.Api.Rest.Type.User = class {
     toJSON() {
         var json = {};
         var self = this;
-        if (typeof this.email !== 'undefined') {
-            json['email'] = this.email;
-        }
         if (typeof this.userName !== 'undefined') {
             json['userName'] = this.userName;
+        }
+        if (typeof this.email !== 'undefined') {
+            json['email'] = this.email;
         }
         if (typeof this.password !== 'undefined') {
             json['password'] = this.password;

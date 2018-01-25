@@ -5,6 +5,8 @@
  */
 package se.stolpjakten.api.rest.facade;
 
+import com.webcohesion.enunciate.metadata.rs.RequestHeader;
+import com.webcohesion.enunciate.metadata.rs.RequestHeaders;
 import com.webcohesion.enunciate.metadata.rs.ResponseCode;
 import com.webcohesion.enunciate.metadata.rs.StatusCodes;
 import com.webcohesion.enunciate.metadata.rs.TypeHint;
@@ -16,7 +18,6 @@ import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -37,6 +38,7 @@ import se.stolpjakten.api.security.aspects.Authorization;
 import se.stolpjakten.api.security.aspects.BasicSecured;
 import se.stolpjakten.api.security.aspects.TokenSecured;
 import se.stolpjakten.api.exceptions.AuthorizationException;
+import se.stolpjakten.api.exceptions.NotFoundException;
 import se.stolpjakten.api.exceptions.UserException;
 import se.stolpjakten.api.rest.error.BadRequest;
 import se.stolpjakten.api.rest.error.Forbidden;
@@ -70,15 +72,20 @@ public class UsersFacadeREST {
     /**
      * Update the user.
      * <br>
-     * <b>Authentication:</b> Token (RFC 6750)
      *
      * @param userName Username User to update.
      * @param user New User configuration, note that you cannot change the
      * userName.
-     * @throws UserException If there is an issue with the supplied data.
-     * @throws AuthorizationException If user is not authorized to perform the
-     * operation.
+     *
+     * @RequestHeader Authorization Bearer token (RFC 6750).
      */
+    @StatusCodes({
+        @ResponseCode(code = 204, condition = "OK")
+        ,@ResponseCode(code = 400, type = @TypeHint(BadRequest.class), condition = BadRequest.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 401, type = @TypeHint(Unauthorized.class), condition = Unauthorized.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 403, type = @TypeHint(Forbidden.class), condition = Forbidden.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 404, type = @TypeHint(NotFound.class), condition = NotFound.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 500, type = @TypeHint(InternalServerError.class), condition = InternalServerError.DEFAULT_DESCRIPTION)})
     @PUT
     @Path("{userName}")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -111,15 +118,19 @@ public class UsersFacadeREST {
      * the other APIs to explore arrangements, maps, courses and start register
      * poles.
      * <br>
-     * <b>Authentication:</b> None
      *
+     * @ResponseHeader Location URL to created user
      * @param user The user to create.
-     * @throws UserException If input data is incorrect.
-     * @throws IOException If there is a problem persisting the new user.
      */
+    @StatusCodes({
+        @ResponseCode(code = 200, type = @TypeHint(User.class), condition = "OK")
+        ,@ResponseCode(code = 400, type = @TypeHint(BadRequest.class), condition = BadRequest.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 500, type = @TypeHint(InternalServerError.class), condition = InternalServerError.DEFAULT_DESCRIPTION)})
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public void create(Users user) throws UserException, IOException {
+        //TODO implement location header in response
         Users entity = (Users) user;
         validateUserFields(user);
         if (getDb().find(entity.getUserName()) != null) {
@@ -137,41 +148,57 @@ public class UsersFacadeREST {
      * <br>
      * Please note that this will delete the user account and all data
      * associated to it. Anonymous statistics data will remain.
+     * <br>
+     * <b>SYS_ADMIN</b> Role can delete any user account.
+     * <br>
+     * <b>USER</b> Role can delete only one user account (his).
      *
-     * @param userName
+     * @RequestHeader Authorization Bearer token.
      */
     @DELETE
     @Path("{userName}")
-    @BasicSecured
-    @Authorization({Role.USER})
-    public void remove(@PathParam("userName") String userName) {
+    @TokenSecured
+    @Authorization({Role.USER, Role.SYS_ADMIN})
+    @StatusCodes({
+        @ResponseCode(code = 204, condition = "OK")
+        ,@ResponseCode(code = 401, type = @TypeHint(Unauthorized.class), condition = Unauthorized.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 403, type = @TypeHint(Forbidden.class), condition = Forbidden.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 404, type = @TypeHint(NotFound.class), condition = NotFound.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 500, type = @TypeHint(InternalServerError.class), condition = InternalServerError.DEFAULT_DESCRIPTION)})
+    public void remove(@PathParam("userName") String userName) throws AuthorizationException, NotFoundException {
+        if (!AuthorizationHelper.isInRole(Role.SYS_ADMIN)) {
+            AuthorizationHelper.assertRequestingUser(userName);
+        }
         TokensFacadeDB tokensDB = new TokensFacadeDB();
         tokensDB.deleteByUserName(userName);
-        getDb().remove(getDb().find(userName));
+        Users user = getDb().find(userName);
+        if (user == null) {
+            throw new NotFoundException();
+        }
+        getDb().remove(user);
     }
 
     /**
      * Retrieve a User.
      * <br>
+     * <b>SYS_ADMIN</b> Role can retrieve any user.
+     * <br>
+     * <b>USER</b> Role can retrieve only one user (himself).
      *
-     * @param userName The user to retrieve.
-     * @return User if found.
-     * @throws NotFoundException If no user is found.
-     * @throws AuthorizationException If user is not authorized to perform
-     * operation.
+     * @RequestHeader Authorization Bearer token.
      */
+    @StatusCodes({
+        @ResponseCode(code = 200, type = @TypeHint(User.class), condition = "OK")
+        ,@ResponseCode(code = 400, type = @TypeHint(BadRequest.class), condition = BadRequest.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 401, type = @TypeHint(Unauthorized.class), condition = Unauthorized.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 403, type = @TypeHint(Forbidden.class), condition = Forbidden.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 404, type = @TypeHint(NotFound.class), condition = NotFound.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 500, type = @TypeHint(InternalServerError.class), condition = InternalServerError.DEFAULT_DESCRIPTION)})
     @GET
     @TokenSecured()
     @Authorization({Role.USER, Role.SYS_ADMIN})
     @Path("{userName}")
     @Produces({MediaType.APPLICATION_JSON})
-    @StatusCodes({
-        @ResponseCode(code = 200, type = @TypeHint(User.class), condition = "OK")
-        ,@ResponseCode(code = 400, type = @TypeHint(BadRequest.class), condition = "Invalid request")
-    ,@ResponseCode(code = 401, type = @TypeHint(Unauthorized.class), condition = "Invalid request")
-    ,@ResponseCode(code = 403, type = @TypeHint(Forbidden.class), condition = "Invalid request")
-    ,@ResponseCode(code = 404, type = @TypeHint(NotFound.class), condition = "Invalid request")
-    ,@ResponseCode(code = 500, type = @TypeHint(InternalServerError.class), condition = "Invalid request")})
     public User find(@PathParam("userName") String userName)
             throws NotFoundException, AuthorizationException {
         if (!AuthorizationHelper.isInRole(Role.SYS_ADMIN)) {
@@ -186,9 +213,33 @@ public class UsersFacadeREST {
         }
     }
 
+    /**
+     * Get a list of users.
+     * <br>
+     * <b>SYS_ADMIN</b> Role can retrieve all user data.
+     * <br>
+     * <b>USER</b> Role can retrieve all user data for himself, and partial data
+     * for other users.
+     *
+     * @RequestHeader Authorization Bearer token.
+     */
+    @StatusCodes({
+        @ResponseCode(code = 200, type = @TypeHint(User.class), condition = "OK")
+        ,@ResponseCode(code = 400, type = @TypeHint(BadRequest.class), condition = BadRequest.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 401, type = @TypeHint(Unauthorized.class), condition = Unauthorized.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 403, type = @TypeHint(Forbidden.class), condition = Forbidden.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 404, type = @TypeHint(NotFound.class), condition = NotFound.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 500, type = @TypeHint(InternalServerError.class), condition = InternalServerError.DEFAULT_DESCRIPTION)})
     @GET
+    @TokenSecured()
+    @Authorization({Role.USER, Role.SYS_ADMIN})
     @Produces({MediaType.APPLICATION_JSON})
     public List<User> findAll(@Context ContainerRequestContext context) {
+        //TODO, implement this method properly.
+        //It needs result reduction
+        //parameter filtering
+        //sorting
+        //paging
         List<Users> dbUsers = getDb().findAll();
         List<User> users = new ArrayList<>(dbUsers.size());
         for (Users dbUser : dbUsers) {
@@ -197,7 +248,23 @@ public class UsersFacadeREST {
         return users;
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     * @RequestHeader Authorization Bearer token.
+     */
+    @StatusCodes({
+        @ResponseCode(code = 200, type = @TypeHint(User.class), condition = "OK")
+        ,@ResponseCode(code = 400, type = @TypeHint(BadRequest.class), condition = BadRequest.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 401, type = @TypeHint(Unauthorized.class), condition = Unauthorized.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 403, type = @TypeHint(Forbidden.class), condition = Forbidden.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 404, type = @TypeHint(NotFound.class), condition = NotFound.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 500, type = @TypeHint(InternalServerError.class), condition = InternalServerError.DEFAULT_DESCRIPTION)})
     @GET
+    @TokenSecured()
+    @Authorization({Role.USER, Role.SYS_ADMIN})
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<User> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
@@ -209,7 +276,14 @@ public class UsersFacadeREST {
         return users;
     }
 
+    /**
+     *
+     * @param asyncResponse
+     * @RequestHeader Authorization Bearer token.
+     */
     @GET
+    @TokenSecured()
+    @Authorization({Role.USER, Role.SYS_ADMIN})
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     @Asynchronous

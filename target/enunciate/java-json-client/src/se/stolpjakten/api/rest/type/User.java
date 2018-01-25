@@ -16,31 +16,11 @@ import com.fasterxml.jackson.annotation.*;
 public class User implements java.io.Serializable {
 
   @JsonIgnore
-  private java.lang.String _email;
-  @JsonIgnore
   private java.lang.String _userName;
   @JsonIgnore
+  private java.lang.String _email;
+  @JsonIgnore
   private java.lang.String _password;
-
-  /**
-   * Email address for this user.
-   * <br>
-   * Required: no
-   */
-  @JsonProperty( value = "email", required = false )
-  public java.lang.String getEmail() {
-    return this._email;
-  }
-
-  /**
-   * Email address for this user.
-   * <br>
-   * Required: no
-   */
-  @JsonProperty( value = "email", required = false )
-  public void setEmail(java.lang.String _email) {
-    this._email = _email;
-  }
 
   /**
    * A globally unique username that identifies a user.
@@ -60,6 +40,26 @@ public class User implements java.io.Serializable {
   @JsonProperty( value = "userName", required = false )
   public void setUserName(java.lang.String _userName) {
     this._userName = _userName;
+  }
+
+  /**
+   * Email address for this user.
+   * <br>
+   * Required: no
+   */
+  @JsonProperty( value = "email", required = false )
+  public java.lang.String getEmail() {
+    return this._email;
+  }
+
+  /**
+   * Email address for this user.
+   * <br>
+   * Required: no
+   */
+  @JsonProperty( value = "email", required = false )
+  public void setEmail(java.lang.String _email) {
+    this._email = _email;
   }
 
   /**

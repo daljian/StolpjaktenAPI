@@ -21,8 +21,8 @@ import com.fasterxml.jackson.annotation.*;
  *  the error, please also provide the steps to reproduce the error.
  *  <br>
  *  Thanks!
- *  
- *  
+ * 
+ * 
  */
 @JsonInclude( JsonInclude.Include.NON_NULL )
 @JsonIgnoreProperties( ignoreUnknown = true )

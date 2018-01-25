@@ -32,14 +32,33 @@ public class AuthorizationHelper {
         } else {
             return getSecurityContext().isUserInRole(role.name());
         }
-        
     }
-    private static boolean isAnonymous() {
+    /**
+     * Attempt to read the username from the security context. 
+     * <br>
+     * Should the request be anonymous, there is no username to retrieve, in that
+     * case null is returned.
+     * @return The logged in username, or null if request is anonymous.
+     */
+    public static String getUserName() {
+        if (isAnonymous()) {
+            return null;
+        } else {
+            return getSecurityContext().getUserPrincipal().getName();
+        }
+    }
+    public static String getIpAddress() {
+        //TODO implement ip address
+        return "dummy";
+    }
+    
+    public static boolean isAnonymous() {
         return getSecurityContext() == null;
     }
     private static SecurityContext getSecurityContext() {
         return ContainerRequestContextHolder.INSTANCE.get()
                 .getSecurityContext();
     }
+    
     
 }

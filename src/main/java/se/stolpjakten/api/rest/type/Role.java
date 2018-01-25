@@ -12,12 +12,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  *
  * @author gengdahl
+ * @documentationExample kalle
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public enum Role {
+    /**
+     * All users have at least USER role.
+     */
     USER,
-    ARR_ADMIN,
+    /**
+     * AREA_ADMIN users manages a specific area.
+     * <br>
+     * One user can manage several areas.
+     */
+    AREA_ADMIN,
+    /**
+     * SYS_ADMIN users is a small set of users that have unlimited API access.
+     */
     SYS_ADMIN;
-    
+
 }

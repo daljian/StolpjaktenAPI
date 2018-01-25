@@ -18,8 +18,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Unauthorized extends BaseError {
+   public static final String DEFAULT_DESCRIPTION = "You are not authorized to access this resource.";
     public Unauthorized() {
-        setDescription("You are not authorized to access this resource.");
+        setDescription(DEFAULT_DESCRIPTION);
     }
     public Unauthorized(String description) {
         setDescription(description);

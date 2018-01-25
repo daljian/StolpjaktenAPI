@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BadRequest extends BaseError {
+    public static final String DEFAULT_DESCRIPTION = "Request data is sematically or syntactically incorrect.";
 
     private ErrorCode errorCode;
 

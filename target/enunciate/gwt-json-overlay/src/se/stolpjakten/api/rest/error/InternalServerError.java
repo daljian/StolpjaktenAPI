@@ -19,8 +19,8 @@ package se.stolpjakten.api.rest.error;
  *  the error, please also provide the steps to reproduce the error.
  *  <br>
  *  Thanks!
- *  
- *  
+ * 
+ * 
  */
 public class InternalServerError extends se.stolpjakten.api.rest.error.BaseError {
 

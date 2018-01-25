@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="1.0"
+  
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="badRequest" type="badRequest"/>
+  <xs:element name="baseError" type="baseError"/>
+  <xs:element name="errorCode" type="errorCode"/>
+  <xs:element name="forbidden" type="forbidden"/>
+  <xs:element name="serverError" type="internalServerError"/>
+  <xs:element name="notFound" type="notFound"/>
+  <xs:element name="unauthorized" type="unauthorized"/>
+<xs:complexType name="badRequest">
+  <xs:annotation>
+    <xs:documentation>
+      <![CDATA[Payload for bad request (400) responses.
+<br>
+Please see error code and description for details about the specific error.]]>
+    </xs:documentation>
+  </xs:annotation>
+   <xs:complexContent>
+    <xs:extension base="baseError">
+      <xs:sequence>
+              <xs:element name="errorCode" type="errorCode" minOccurs="0">
+              </xs:element>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="baseError" abstract="true">
+  <xs:annotation>
+    <xs:documentation>
+      <![CDATA[Base class for all errors.
+<br>
+All errors contains a description text.]]>
+    </xs:documentation>
+  </xs:annotation>
+       <xs:sequence>
+              <xs:element name="description" type="xs:string" minOccurs="0">
+              </xs:element>
+      </xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="errorCode">
+  <xs:annotation>
+    <xs:documentation>
+      <![CDATA[Enumeration of error codes that can occur in BadRequest responses.]]>
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:string">
+     
+    <xs:enumeration value="JSON_SYNTAX"/>
+ 
+    <xs:enumeration value="JSON_SEMATIC"/>
+ 
+    <xs:enumeration value="JSON_FIELD_USERNAME"/>
+ 
+    <xs:enumeration value="JSON_FIELD_EMAIL"/>
+ 
+    <xs:enumeration value="JSON_FIELD_PASSWORD"/>
+ 
+    <xs:enumeration value="RESOURCE_EXISTS"/>
+ 
+    <xs:enumeration value="RESOURCE_NOT_EXISTS"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:complexType name="forbidden">
+  <xs:annotation>
+    <xs:documentation>
+      <![CDATA[Payload for forbidden (403) responses.
+<br>
+Please see error code and description for details about the specific error.]]>
+    </xs:documentation>
+  </xs:annotation>
+   <xs:complexContent>
+    <xs:extension base="baseError">
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="internalServerError">
+  <xs:annotation>
+    <xs:documentation>
+      <![CDATA[Payload for internal server error (500) responses.
+<br>
+When an unforseen error happens, this payload will be generated.
+<br>
+Should you file a bug report for receiving this error please do so here:
+<br>
+https://github.com/daljian/StolpjaktenAPI/issues
+<br>
+Please include the identifier as a minimum, and if you know how to reproduce
+the error, please also provide the steps to reproduce the error.
+<br>
+Thanks!]]>
+    </xs:documentation>
+  </xs:annotation>
+   <xs:complexContent>
+    <xs:extension base="baseError">
+      <xs:sequence>
+              <xs:element name="identifier" type="xs:string" minOccurs="0">
+              </xs:element>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="notFound">
+  <xs:annotation>
+    <xs:documentation>
+      <![CDATA[Payload for not found (404) responses.
+<br>
+Please see description for details about the specific error.]]>
+    </xs:documentation>
+  </xs:annotation>
+   <xs:complexContent>
+    <xs:extension base="baseError">
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="unauthorized">
+  <xs:annotation>
+    <xs:documentation>
+      <![CDATA[Payload for unauthorized (401) responses.
+<br>
+Please see description for details about the specific error.]]>
+    </xs:documentation>
+  </xs:annotation>
+   <xs:complexContent>
+    <xs:extension base="baseError">
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>

@@ -25,10 +25,11 @@ public class Token implements java.io.Serializable {
 
   /**
    * The Bearer access token to be used for token protected endpoints.
-   * <br><br>
-   * Sample value:
    * <br>
-   * 5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2
+   * <b>Note!</b> This property exists only in responses, ignored if present in requests.
+   * <br>
+   * <br>
+   * Required: no
    */
   @JsonProperty( value = "accessToken", required = false )
   public java.lang.String getAccessToken() {
@@ -37,10 +38,11 @@ public class Token implements java.io.Serializable {
 
   /**
    * The Bearer access token to be used for token protected endpoints.
-   * <br><br>
-   * Sample value:
    * <br>
-   * 5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2
+   * <b>Note!</b> This property exists only in responses, ignored if present in requests.
+   * <br>
+   * <br>
+   * Required: no
    */
   @JsonProperty( value = "accessToken", required = false )
   public void setAccessToken(java.lang.String _accessToken) {
@@ -50,9 +52,6 @@ public class Token implements java.io.Serializable {
   /**
    * Type of access token, currently only Bearer tokens are supported.
    * <br><br>
-   * Sample value:
-   * <br>
-   * Bearer
    */
   @JsonProperty( value = "type", required = false )
   public java.lang.String getType() {
@@ -62,9 +61,6 @@ public class Token implements java.io.Serializable {
   /**
    * Type of access token, currently only Bearer tokens are supported.
    * <br><br>
-   * Sample value:
-   * <br>
-   * Bearer
    */
   @JsonProperty( value = "type", required = false )
   public void setType(java.lang.String _type) {
@@ -73,10 +69,10 @@ public class Token implements java.io.Serializable {
 
   /**
    * The seconds left of the token life time.
+   * <br>
+   * Expired tokens are automatically rinsed.
    * 
    * <br><br>
-   * Sample value:
-   * <br> 3600
    */
   @JsonProperty( value = "expire", required = false )
   public long getExpire() {
@@ -85,10 +81,10 @@ public class Token implements java.io.Serializable {
 
   /**
    * The seconds left of the token life time.
+   * <br>
+   * Expired tokens are automatically rinsed.
    * 
    * <br><br>
-   * Sample value:
-   * <br> 3600
    */
   @JsonProperty( value = "expire", required = false )
   public void setExpire(long _expire) {

@@ -45,7 +45,7 @@
         }
       ],
       "example" : {
-  "errorCode" : "JSON_SYNTAX",
+  "errorCode" : "RESOURCE_EXISTS",
   "description" : "..."
 },
       "description" : "Payload for bad request (400) responses.\n<br>\nPlease see error code and description for details about the specific error."
@@ -165,25 +165,28 @@
       "title" : "Token",
           "properties" : {
             "accessToken" : {
+            "example" : "5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2",
             "readOnly" : false,
-"description" : "The Bearer access token to be used for token protected endpoints.\n<br><br>\nSample value:\n<br>\n5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2",
+"description" : "The Bearer access token to be used for token protected endpoints.\n<br>\n<b>Note!<\/b> This property exists only in responses, ignored if present in requests.\n<br>\n<br>\nRequired: no",
 "type" : "string"
             },
             "type" : {
+            "example" : "Bearer",
             "readOnly" : false,
-"description" : "Type of access token, currently only Bearer tokens are supported.\n<br><br>\nSample value:\n<br>\nBearer",
+"description" : "Type of access token, currently only Bearer tokens are supported.\n<br><br>",
 "type" : "string"
             },
             "expire" : {
+            "example" : 3600,
             "readOnly" : false,
-"description" : "The seconds left of the token life time.\n\n<br><br>\nSample value:\n<br> 3600",
+"description" : "The seconds left of the token life time.\n<br>\nExpired tokens are automatically rinsed.\n\n<br><br>",
 "type" : "number"
             }
           },
       "example" : {
-  "accessToken" : "...",
-  "type" : "...",
-  "expire" : 12345
+  "accessToken" : "5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2",
+  "type" : "Bearer",
+  "expire" : 3600
 },
       "description" : "Token data container."
     }
@@ -201,33 +204,36 @@
       "example" : {
   "description" : "..."
 },
-      "description" : "Payload for unauthorized (403) responses.\n<br>\nPlease see description for details about the specific error."
+      "description" : "Payload for unauthorized (401) responses.\n<br>\nPlease see description for details about the specific error."
     }
     ,
     "json_User" : {
       "type" : "object",
       "title" : "User",
           "properties" : {
-            "email" : {
-            "readOnly" : false,
-"description" : "Email address for this user.\n<br>\nRequired: no",
-"type" : "string"
-            },
             "userName" : {
+            "example" : "kalle",
             "readOnly" : false,
 "description" : "A globally unique username that identifies a user.\n<br>\nRequired: yes",
 "type" : "string"
             },
+            "email" : {
+            "example" : "Kalle@stolpjakten.se",
+            "readOnly" : false,
+"description" : "Email address for this user.\n<br>\nRequired: no",
+"type" : "string"
+            },
             "password" : {
+            "example" : "H4MM3Rf@ll",
             "readOnly" : false,
 "description" : "Password for this user.\n<br>\nOnly available for add (POST) and update (PUT) requests.\n<br>\nStored in database using salted one-way hash algorithm with.\n<br>\nRequired: yes",
 "type" : "string"
             }
           },
       "example" : {
-  "email" : "...",
-  "userName" : "...",
-  "password" : "..."
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
 },
       "description" : "User container class."
     }
@@ -258,6 +264,149 @@
   "password" : "..."
 },
       "description" : "TODO, remove from REST JSON types.\n<br>\nTODO, document."
+    }
+    ,
+    "xml_ns0_badRequest" : {
+      "type" : "object",
+      "xml" : {
+        "name" : "badRequest",
+        "namespace" : ""
+      },
+      "title" : "badRequest",
+      "allOf" : [
+        {
+          "$ref" : "#/definitions/xml_ns0_baseError"
+        },
+        {
+          "properties" : {
+            "errorCode" : {
+              "xml" : {
+                "namespace" : ""
+              },
+            "readOnly" : false,
+"$ref" : "#/definitions/xml_ns0_errorCode"
+            }
+          }
+        }
+      ],
+      "description" : "Payload for bad request (400) responses.\n<br>\nPlease see error code and description for details about the specific error."
+    }
+    ,
+    "xml_ns0_baseError" : {
+      "type" : "object",
+      "xml" : {
+        "name" : "baseError",
+        "namespace" : ""
+      },
+      "title" : "baseError",
+      "allOf" : [
+        {
+          "properties" : {
+            "description" : {
+              "xml" : {
+                "namespace" : ""
+              },
+            "readOnly" : false,
+"description" : "",
+"type" : "string"
+            }
+          }
+        }
+      ],
+      "description" : "Base class for all errors.\n<br>\nAll errors contains a description text."
+    }
+    ,
+    "xml_ns0_errorCode" : {
+      "type" : "string",
+      "title" : "errorCode",
+          "enum" : [
+            "JSON_SYNTAX",
+            "JSON_SEMATIC",
+            "JSON_FIELD_USERNAME",
+            "JSON_FIELD_EMAIL",
+            "JSON_FIELD_PASSWORD",
+            "RESOURCE_EXISTS",
+            "RESOURCE_NOT_EXISTS"
+          ],
+      "description" : "Enumeration of error codes that can occur in BadRequest responses."
+    }
+    ,
+    "xml_ns0_forbidden" : {
+      "type" : "object",
+      "xml" : {
+        "name" : "forbidden",
+        "namespace" : ""
+      },
+      "title" : "forbidden",
+      "allOf" : [
+        {
+          "$ref" : "#/definitions/xml_ns0_baseError"
+        },
+        {
+        }
+      ],
+      "description" : "Payload for forbidden (403) responses.\n<br>\nPlease see error code and description for details about the specific error."
+    }
+    ,
+    "xml_ns0_internalServerError" : {
+      "type" : "object",
+      "xml" : {
+        "name" : "serverError",
+        "namespace" : ""
+      },
+      "title" : "internalServerError",
+      "allOf" : [
+        {
+          "$ref" : "#/definitions/xml_ns0_baseError"
+        },
+        {
+          "properties" : {
+            "identifier" : {
+              "xml" : {
+                "namespace" : ""
+              },
+            "readOnly" : false,
+"description" : "",
+"type" : "string"
+            }
+          }
+        }
+      ],
+      "description" : "Payload for internal server error (500) responses.\n<br>\nWhen an unforseen error happens, this payload will be generated.\n<br>\nShould you file a bug report for receiving this error please do so here:\n<br>\nhttps://github.com/daljian/StolpjaktenAPI/issues\n<br>\nPlease include the identifier as a minimum, and if you know how to reproduce\nthe error, please also provide the steps to reproduce the error.\n<br>\nThanks!"
+    }
+    ,
+    "xml_ns0_notFound" : {
+      "type" : "object",
+      "xml" : {
+        "name" : "notFound",
+        "namespace" : ""
+      },
+      "title" : "notFound",
+      "allOf" : [
+        {
+          "$ref" : "#/definitions/xml_ns0_baseError"
+        },
+        {
+        }
+      ],
+      "description" : "Payload for not found (404) responses.\n<br>\nPlease see description for details about the specific error."
+    }
+    ,
+    "xml_ns0_unauthorized" : {
+      "type" : "object",
+      "xml" : {
+        "name" : "unauthorized",
+        "namespace" : ""
+      },
+      "title" : "unauthorized",
+      "allOf" : [
+        {
+          "$ref" : "#/definitions/xml_ns0_baseError"
+        },
+        {
+        }
+      ],
+      "description" : "Payload for unauthorized (401) responses.\n<br>\nPlease see description for details about the specific error."
     }
   },
   "paths": {
@@ -319,7 +468,7 @@
         "tags" : [ "ConfigurationFacadeREST" ],
         "description" : "",
         "operationId" : "update",
-        "consumes" : [ "application/json" ],
+        "consumes" : [ "application/xml", "application/json" ],
         "parameters" : [
           {
             "name" : "key",
@@ -349,26 +498,84 @@
     "\/users" : {
       "get" : {
         "tags" : [ "UsersFacadeREST" ],
-        "description" : "",
+        "summary" : "Get a list of users.",
+        "description" : "Get a list of users.\n<br>\n<b>SYS_ADMIN<\/b> Role can retrieve all user data.\n<br>\n<b>USER<\/b> Role can retrieve all user data for himself, and partial data\nfor other users.",
         "operationId" : "findAll2",
         "produces" : [ "application/json" ],
         "parameters" : [
+          {
+            "name" : "Authorization",
+            "in" : "header",
+            "type" : "string",
+            "description" : "Bearer token."
+          }
         ],
         "responses" : {
           "200" : {
             "schema" : {
-"description" : "",
-"type" : "array",
-"items" : {
-  "$ref" : "#/definitions/json_User"
-}
+"$ref" : "#/definitions/json_User"
             },
             "example" : {
-  "email" : "...",
-  "userName" : "...",
-  "password" : "..."
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
 },
-            "description" : ""
+            "description" : "OK"
+          },
+          "400" : {
+            "schema" : {
+"$ref" : "#/definitions/json_BadRequest"
+            },
+            "example" : {
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
+},
+            "description" : "Request data is sematically or syntactically incorrect."
+          },
+          "401" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Unauthorized"
+            },
+            "example" : {
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
+},
+            "description" : "You are not authorized to access this resource."
+          },
+          "403" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Forbidden"
+            },
+            "example" : {
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
+},
+            "description" : "Authorization header is missing or contains incorrect credentials."
+          },
+          "404" : {
+            "schema" : {
+"$ref" : "#/definitions/json_NotFound"
+            },
+            "example" : {
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
+},
+            "description" : "This resource does not exist."
+          },
+          "500" : {
+            "schema" : {
+"$ref" : "#/definitions/json_InternalServerError"
+            },
+            "example" : {
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
+},
+            "description" : "Server failed to process the request due to an internal error."
           }
         }
       }
@@ -376,7 +583,7 @@
       "post" : {
         "tags" : [ "UsersFacadeREST" ],
         "summary" : "Create a new User.",
-        "description" : "Create a new User.\n<br>\nAfter creating a user you should proceed to get a token using the Token\nREST service. After you have retrieved a token you can use that to access\nthe other APIs to explore arrangements, maps, courses and start register\npoles.\n<br>\n<b>Authentication:<\/b> None",
+        "description" : "Create a new User.\n<br>\nAfter creating a user you should proceed to get a token using the Token\nREST service. After you have retrieved a token you can use that to access\nthe other APIs to explore arrangements, maps, courses and start register\npoles.\n<br>",
         "operationId" : "create",
         "consumes" : [ "application/json" ],
         "parameters" : [
@@ -390,8 +597,29 @@
           }
         ],
         "responses" : {
-          "201" : {
-            "description" : "Success"
+          "200" : {
+            "schema" : {
+"$ref" : "#/definitions/json_User"
+            },
+            "headers" : {
+              "Location" : {
+                "description" : "URL to created user",
+                "type" : "string"
+              }
+            },
+            "description" : "OK"
+          },
+          "400" : {
+            "schema" : {
+"$ref" : "#/definitions/json_BadRequest"
+            },
+            "description" : "Request data is sematically or syntactically incorrect."
+          },
+          "500" : {
+            "schema" : {
+"$ref" : "#/definitions/json_InternalServerError"
+            },
+            "description" : "Server failed to process the request due to an internal error."
           }
         }
       }
@@ -403,6 +631,12 @@
         "description" : "",
         "operationId" : "countREST",
         "parameters" : [
+          {
+            "name" : "Authorization",
+            "in" : "header",
+            "type" : "string",
+            "description" : "Bearer token."
+          }
         ],
         "responses" : {
           "200" : {
@@ -419,6 +653,12 @@
         "operationId" : "findRange",
         "produces" : [ "application/json" ],
         "parameters" : [
+          {
+            "name" : "Authorization",
+            "in" : "header",
+            "type" : "string",
+            "description" : "Bearer token."
+          },
           {
             "name" : "from",
             "in" : "path",
@@ -439,18 +679,69 @@
         "responses" : {
           "200" : {
             "schema" : {
-"description" : "",
-"type" : "array",
-"items" : {
-  "$ref" : "#/definitions/json_User"
-}
+"$ref" : "#/definitions/json_User"
             },
             "example" : {
-  "email" : "...",
-  "userName" : "...",
-  "password" : "..."
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
 },
-            "description" : ""
+            "description" : "OK"
+          },
+          "400" : {
+            "schema" : {
+"$ref" : "#/definitions/json_BadRequest"
+            },
+            "example" : {
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
+},
+            "description" : "Request data is sematically or syntactically incorrect."
+          },
+          "401" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Unauthorized"
+            },
+            "example" : {
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
+},
+            "description" : "You are not authorized to access this resource."
+          },
+          "403" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Forbidden"
+            },
+            "example" : {
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
+},
+            "description" : "Authorization header is missing or contains incorrect credentials."
+          },
+          "404" : {
+            "schema" : {
+"$ref" : "#/definitions/json_NotFound"
+            },
+            "example" : {
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
+},
+            "description" : "This resource does not exist."
+          },
+          "500" : {
+            "schema" : {
+"$ref" : "#/definitions/json_InternalServerError"
+            },
+            "example" : {
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
+},
+            "description" : "Server failed to process the request due to an internal error."
           }
         }
       }
@@ -540,105 +831,19 @@
       }
     }
     ,
-    "\/users/{userId}/tokens" : {
-      "delete" : {
-        "tags" : [ "TokenFacadeREST" ],
-        "summary" : "Delete a previously created token.",
-        "description" : "Delete a previously created token.",
-        "operationId" : "deleteTokens",
-        "parameters" : [
-          {
-            "name" : "userId",
-            "in" : "path",
-            "required" : true,
-            "type" : "string",
-            "description" : ""
-          }
-        ],
-        "responses" : {
-          "204" : {
-            "description" : "Success"
-          }
-        }
-      }
-      ,
-      "post" : {
-        "tags" : [ "TokenFacadeREST" ],
-        "summary" : "Create a token to use for subsequent requests to this API.",
-        "description" : "Create a token to use for subsequent requests to this API.\n<br>\nIf you do not have a user yet, please create one using the Users REST\nfacade (POST).\n<br>\nThe retrieved token SHOULD be stored by API client implementations.\n<br>\nClient implementations <b>MUST NOT<\/b> store the user username and\npassword.\n<br>\nAn API client can retrieve as many tokens as it likes, but server might\ndiscard old tokens to manage memory resources.\n<br>\n<br>\n<b>Authentication:<\/b> Basic Authentication (RFC 7617)",
-        "operationId" : "createToken",
-        "consumes" : [ "application/json" ],
-        "produces" : [ "application/json" ],
-        "parameters" : [
-          {
-            "name" : "userId",
-            "in" : "path",
-            "required" : true,
-            "type" : "string",
-            "description" : ""
-          },
-          {
-            "name" : "body",
-            "in" : "body",
-            "schema" : {
-"$ref" : "#/definitions/json_Token"
-            },
-            "description" : ""
-          }
-        ],
-        "responses" : {
-          "201" : {
-            "schema" : {
-"$ref" : "#/definitions/json_Token"
-            },
-            "example" : {
-  "accessToken" : "...",
-  "type" : "...",
-  "expire" : 12345
-},
-            "description" : ""
-          }
-        }
-      }
-    }
-    ,
-    "\/users/{userId}/tokens/{token-id}" : {
-      "delete" : {
-        "tags" : [ "TokenFacadeREST" ],
-        "summary" : "Delete a previously created token.",
-        "description" : "Delete a previously created token.",
-        "operationId" : "deleteToken",
-        "parameters" : [
-          {
-            "name" : "token-id",
-            "in" : "path",
-            "required" : true,
-            "type" : "string",
-            "description" : "The access token to delete, eg\n8758f65a-c27b-4f86-a43d-3ce1add36ec6\n<br>\n<b>Authentication:<\/b> Bearer Token"
-          },
-          {
-            "name" : "userId",
-            "in" : "path",
-            "required" : true,
-            "type" : "string",
-            "description" : ""
-          }
-        ],
-        "responses" : {
-          "204" : {
-            "description" : "Success"
-          }
-        }
-      }
-    }
-    ,
     "\/users/{userName}" : {
       "delete" : {
         "tags" : [ "UsersFacadeREST" ],
         "summary" : "Delete a user account.",
-        "description" : "Delete a user account.\n<br>\nPlease note that this will delete the user account and all data\nassociated to it. Anonymous statistics data will remain.",
+        "description" : "Delete a user account.\n<br>\nPlease note that this will delete the user account and all data\nassociated to it. Anonymous statistics data will remain.\n<br>\n<b>SYS_ADMIN<\/b> Role can delete any user account.\n<br>\n<b>USER<\/b> Role can delete only one user account (his).",
         "operationId" : "remove",
         "parameters" : [
+          {
+            "name" : "Authorization",
+            "in" : "header",
+            "type" : "string",
+            "description" : "Bearer token."
+          },
           {
             "name" : "userName",
             "in" : "path",
@@ -649,7 +854,31 @@
         ],
         "responses" : {
           "204" : {
-            "description" : "Success"
+            "description" : "OK"
+          },
+          "401" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Unauthorized"
+            },
+            "description" : "You are not authorized to access this resource."
+          },
+          "403" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Forbidden"
+            },
+            "description" : "Authorization header is missing or contains incorrect credentials."
+          },
+          "404" : {
+            "schema" : {
+"$ref" : "#/definitions/json_NotFound"
+            },
+            "description" : "This resource does not exist."
+          },
+          "500" : {
+            "schema" : {
+"$ref" : "#/definitions/json_InternalServerError"
+            },
+            "description" : "Server failed to process the request due to an internal error."
           }
         }
       }
@@ -657,16 +886,22 @@
       "get" : {
         "tags" : [ "UsersFacadeREST" ],
         "summary" : "Retrieve a User.",
-        "description" : "Retrieve a User.\n<br>",
+        "description" : "Retrieve a User.\n<br>\n<b>SYS_ADMIN<\/b> Role can retrieve any user.\n<br>\n<b>USER<\/b> Role can retrieve only one user (himself).",
         "operationId" : "find3",
         "produces" : [ "application/json" ],
         "parameters" : [
+          {
+            "name" : "Authorization",
+            "in" : "header",
+            "type" : "string",
+            "description" : "Bearer token."
+          },
           {
             "name" : "userName",
             "in" : "path",
             "required" : true,
             "type" : "string",
-            "description" : "The user to retrieve."
+            "description" : ""
           }
         ],
         "responses" : {
@@ -675,9 +910,9 @@
 "$ref" : "#/definitions/json_User"
             },
             "example" : {
-  "email" : "...",
-  "userName" : "...",
-  "password" : "..."
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
 },
             "description" : "OK"
           },
@@ -686,55 +921,55 @@
 "$ref" : "#/definitions/json_BadRequest"
             },
             "example" : {
-  "email" : "...",
-  "userName" : "...",
-  "password" : "..."
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
 },
-            "description" : "Invalid request"
+            "description" : "Request data is sematically or syntactically incorrect."
           },
           "401" : {
             "schema" : {
 "$ref" : "#/definitions/json_Unauthorized"
             },
             "example" : {
-  "email" : "...",
-  "userName" : "...",
-  "password" : "..."
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
 },
-            "description" : "Invalid request"
+            "description" : "You are not authorized to access this resource."
           },
           "403" : {
             "schema" : {
 "$ref" : "#/definitions/json_Forbidden"
             },
             "example" : {
-  "email" : "...",
-  "userName" : "...",
-  "password" : "..."
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
 },
-            "description" : "Invalid request"
+            "description" : "Authorization header is missing or contains incorrect credentials."
           },
           "404" : {
             "schema" : {
 "$ref" : "#/definitions/json_NotFound"
             },
             "example" : {
-  "email" : "...",
-  "userName" : "...",
-  "password" : "..."
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
 },
-            "description" : "Invalid request"
+            "description" : "This resource does not exist."
           },
           "500" : {
             "schema" : {
 "$ref" : "#/definitions/json_InternalServerError"
             },
             "example" : {
-  "email" : "...",
-  "userName" : "...",
-  "password" : "..."
+  "userName" : "kalle",
+  "email" : "Kalle@stolpjakten.se",
+  "password" : "H4MM3Rf@ll"
 },
-            "description" : "Invalid request"
+            "description" : "Server failed to process the request due to an internal error."
           }
         }
       }
@@ -742,10 +977,16 @@
       "put" : {
         "tags" : [ "UsersFacadeREST" ],
         "summary" : "Update the user.",
-        "description" : "Update the user.\n<br>\n<b>Authentication:<\/b> Token (RFC 6750)",
+        "description" : "Update the user.\n<br>",
         "operationId" : "edit",
         "consumes" : [ "application/json" ],
         "parameters" : [
+          {
+            "name" : "Authorization",
+            "in" : "header",
+            "type" : "string",
+            "description" : "Bearer token (RFC 6750)."
+          },
           {
             "name" : "userName",
             "in" : "path",
@@ -764,7 +1005,205 @@
         ],
         "responses" : {
           "204" : {
-            "description" : "Success"
+            "description" : "OK"
+          },
+          "400" : {
+            "schema" : {
+"$ref" : "#/definitions/json_BadRequest"
+            },
+            "description" : "Request data is sematically or syntactically incorrect."
+          },
+          "401" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Unauthorized"
+            },
+            "description" : "You are not authorized to access this resource."
+          },
+          "403" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Forbidden"
+            },
+            "description" : "Authorization header is missing or contains incorrect credentials."
+          },
+          "404" : {
+            "schema" : {
+"$ref" : "#/definitions/json_NotFound"
+            },
+            "description" : "This resource does not exist."
+          },
+          "500" : {
+            "schema" : {
+"$ref" : "#/definitions/json_InternalServerError"
+            },
+            "description" : "Server failed to process the request due to an internal error."
+          }
+        }
+      }
+    }
+    ,
+    "\/users/{userName}/tokens" : {
+      "delete" : {
+        "tags" : [ "TokenFacadeREST" ],
+        "summary" : "Delete all tokens for this user.",
+        "description" : "Delete all tokens for this user.\nIf user does not exist or user have no tokens, operation will return OK\nresult (if authentication & authorization passed)..",
+        "operationId" : "deleteTokens",
+        "parameters" : [
+          {
+            "name" : "Authorization",
+            "in" : "header",
+            "type" : "string",
+            "description" : "Bearer token (RFC 6750)."
+          },
+          {
+            "name" : "userName",
+            "in" : "path",
+            "required" : true,
+            "type" : "string",
+            "description" : "The user userName (username) of the current user."
+          }
+        ],
+        "responses" : {
+          "204" : {
+            "description" : "OK"
+          },
+          "401" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Unauthorized"
+            },
+            "description" : "You are not authorized to access this resource."
+          },
+          "403" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Forbidden"
+            },
+            "description" : "Authorization header is missing or contains incorrect credentials."
+          },
+          "500" : {
+            "schema" : {
+"$ref" : "#/definitions/json_InternalServerError"
+            },
+            "description" : "Server failed to process the request due to an internal error."
+          }
+        }
+      }
+      ,
+      "post" : {
+        "tags" : [ "TokenFacadeREST" ],
+        "summary" : "Create a token to use for subsequent requests to this API.",
+        "description" : "Create a token to use for subsequent requests to this API.\n<br>\nIf you do not have a user yet, please create one using the Users REST\nfacade (POST).\n<br>\nThe retrieved token SHOULD be stored by API client implementations.\n<br>\nClient implementations <b>MUST NOT<\/b> store the user username and\npassword.\n<br>\nAn API client can retrieve as many tokens as it likes, but server might\ndiscard old tokens to manage memory resources.\n<br>\n<br>\nA SYS_ADMIN can impersonate a USER in order to troubleshoot specific user issues.",
+        "operationId" : "createToken",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [
+          {
+            "name" : "Authorization",
+            "in" : "header",
+            "type" : "string",
+            "description" : "Basic Authentication (RFC 7617)"
+          },
+          {
+            "name" : "userName",
+            "in" : "path",
+            "required" : true,
+            "type" : "string",
+            "description" : "The username of the user to create the token for."
+          },
+          {
+            "name" : "body",
+            "in" : "body",
+            "schema" : {
+"$ref" : "#/definitions/json_Token"
+            },
+            "description" : ""
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Token"
+            },
+            "example" : {
+  "accessToken" : "5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2",
+  "type" : "Bearer",
+  "expire" : 3600
+},
+            "description" : "OK"
+          },
+          "403" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Forbidden"
+            },
+            "example" : {
+  "accessToken" : "5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2",
+  "type" : "Bearer",
+  "expire" : 3600
+},
+            "description" : "Authorization header is missing or contains incorrect credentials."
+          },
+          "500" : {
+            "schema" : {
+"$ref" : "#/definitions/json_InternalServerError"
+            },
+            "example" : {
+  "accessToken" : "5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2",
+  "type" : "Bearer",
+  "expire" : 3600
+},
+            "description" : "Server failed to process the request due to an internal error."
+          }
+        }
+      }
+    }
+    ,
+    "\/users/{userName}/tokens/{token-id}" : {
+      "delete" : {
+        "tags" : [ "TokenFacadeREST" ],
+        "summary" : "Delete a previously created token.",
+        "description" : "Delete a previously created token.\n<br>\nIf user or token does not exist, operation will return OK\nresult (if authentication & authorization passed)..",
+        "operationId" : "deleteToken",
+        "parameters" : [
+          {
+            "name" : "Authorization",
+            "in" : "header",
+            "type" : "string",
+            "description" : "Bearer token (RFC 6750)."
+          },
+          {
+            "name" : "token-id",
+            "in" : "path",
+            "required" : true,
+            "type" : "string",
+            "description" : "The access token to delete, eg\n8758f65a-c27b-4f86-a43d-3ce1add36ec6"
+          },
+          {
+            "name" : "userName",
+            "in" : "path",
+            "required" : true,
+            "type" : "string",
+            "description" : "The user id (username) of the current user."
+          }
+        ],
+        "responses" : {
+          "204" : {
+            "description" : "OK"
+          },
+          "401" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Unauthorized"
+            },
+            "description" : "You are not authorized to access this resource."
+          },
+          "403" : {
+            "schema" : {
+"$ref" : "#/definitions/json_Forbidden"
+            },
+            "description" : "Authorization header is missing or contains incorrect credentials."
+          },
+          "500" : {
+            "schema" : {
+"$ref" : "#/definitions/json_InternalServerError"
+            },
+            "description" : "Server failed to process the request due to an internal error."
           }
         }
       }

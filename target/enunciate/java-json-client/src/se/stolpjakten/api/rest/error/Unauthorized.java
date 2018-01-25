@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.*;
 
 /**
  * 
- *  Payload for unauthorized (403) responses.
+ *  Payload for unauthorized (401) responses.
  *  <br>
  *  Please see description for details about the specific error.
  */

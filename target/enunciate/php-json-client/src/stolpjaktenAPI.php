@@ -132,10 +132,11 @@ class Token
 
     /**
      * The Bearer access token to be used for token protected endpoints.
-     * &lt;br&gt;&lt;br&gt;
-     * Sample value:
      * &lt;br&gt;
-     * 5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2
+     * &lt;b&gt;Note!&lt;/b&gt; This property exists only in responses, ignored if present in requests.
+     * &lt;br&gt;
+     * &lt;br&gt;
+     * Required: no
      *
      * @var string
      */
@@ -144,9 +145,6 @@ class Token
     /**
      * Type of access token, currently only Bearer tokens are supported.
      * &lt;br&gt;&lt;br&gt;
-     * Sample value:
-     * &lt;br&gt;
-     * Bearer
      *
      * @var string
      */
@@ -154,10 +152,10 @@ class Token
 
     /**
      * The seconds left of the token life time.
+     * &lt;br&gt;
+     * Expired tokens are automatically rinsed.
      * 
      * &lt;br&gt;&lt;br&gt;
-     * Sample value:
-     * &lt;br&gt; 3600
      *
      * @var integer
      */
@@ -175,10 +173,11 @@ class Token
 
     /**
      * The Bearer access token to be used for token protected endpoints.
-       * &lt;br&gt;&lt;br&gt;
-       * Sample value:
        * &lt;br&gt;
-       * 5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2
+       * &lt;b&gt;Note!&lt;/b&gt; This property exists only in responses, ignored if present in requests.
+       * &lt;br&gt;
+       * &lt;br&gt;
+       * Required: no
      *
      * @return string
      */
@@ -189,10 +188,11 @@ class Token
 
     /**
      * The Bearer access token to be used for token protected endpoints.
-       * &lt;br&gt;&lt;br&gt;
-       * Sample value:
        * &lt;br&gt;
-       * 5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2
+       * &lt;b&gt;Note!&lt;/b&gt; This property exists only in responses, ignored if present in requests.
+       * &lt;br&gt;
+       * &lt;br&gt;
+       * Required: no
      *
      * @param string $accessToken
      */
@@ -203,9 +203,6 @@ class Token
     /**
      * Type of access token, currently only Bearer tokens are supported.
        * &lt;br&gt;&lt;br&gt;
-       * Sample value:
-       * &lt;br&gt;
-       * Bearer
      *
      * @return string
      */
@@ -217,9 +214,6 @@ class Token
     /**
      * Type of access token, currently only Bearer tokens are supported.
        * &lt;br&gt;&lt;br&gt;
-       * Sample value:
-       * &lt;br&gt;
-       * Bearer
      *
      * @param string $type
      */
@@ -229,10 +223,10 @@ class Token
     }
     /**
      * The seconds left of the token life time.
+       * &lt;br&gt;
+       * Expired tokens are automatically rinsed.
        * 
        * &lt;br&gt;&lt;br&gt;
-       * Sample value:
-       * &lt;br&gt; 3600
      *
      * @return integer
      */
@@ -243,10 +237,10 @@ class Token
 
     /**
      * The seconds left of the token life time.
+       * &lt;br&gt;
+       * Expired tokens are automatically rinsed.
        * 
        * &lt;br&gt;&lt;br&gt;
-       * Sample value:
-       * &lt;br&gt; 3600
      *
      * @param integer $expire
      */
@@ -312,15 +306,6 @@ class User
 {
 
     /**
-     * Email address for this user.
-     * &lt;br&gt;
-     * Required: no
-     *
-     * @var string
-     */
-    private $email;
-
-    /**
      * A globally unique username that identifies a user.
      * &lt;br&gt;
      * Required: yes
@@ -328,6 +313,15 @@ class User
      * @var string
      */
     private $userName;
+
+    /**
+     * Email address for this user.
+     * &lt;br&gt;
+     * Required: no
+     *
+     * @var string
+     */
+    private $email;
 
     /**
      * Password for this user.
@@ -353,29 +347,6 @@ class User
     }
 
     /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Email address for this user.
-       * &lt;br&gt;
-       * Required: no
-     *
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-    /**
      * A globally unique username that identifies a user.
        * &lt;br&gt;
        * Required: yes
@@ -397,6 +368,29 @@ class User
     public function setUserName($userName)
     {
         $this->userName = $userName;
+    }
+    /**
+     * Email address for this user.
+       * &lt;br&gt;
+       * Required: no
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Email address for this user.
+       * &lt;br&gt;
+       * Required: no
+     *
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
     /**
      * Password for this user.
@@ -437,11 +431,11 @@ class User
     public function toArray()
     {
         $a = array();
-        if ($this->email) {
-            $a["email"] = $this->email;
-        }
         if ($this->userName) {
             $a["userName"] = $this->userName;
+        }
+        if ($this->email) {
+            $a["email"] = $this->email;
         }
         if ($this->password) {
             $a["password"] = $this->password;
@@ -466,11 +460,11 @@ class User
      */
     public function initFromArray($o)
     {
-        if (isset($o['email'])) {
-            $this->email = $o["email"];
-        }
         if (isset($o['userName'])) {
             $this->userName = $o["userName"];
+        }
+        if (isset($o['email'])) {
+            $this->email = $o["email"];
         }
         if (isset($o['password'])) {
             $this->password = $o["password"];

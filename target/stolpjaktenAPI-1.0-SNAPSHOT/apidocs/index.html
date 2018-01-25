@@ -53,6 +53,7 @@
         <ul class="nav nav-sidebar">
           <li><a href="#resources"><abbr title="Resources"><span class="sideoverflow">Resources</span></abbr></a></li>
           <li><a href="#syntax_json"><abbr title="JSON"><span class="sideoverflow">JSON</span></abbr></a></li>
+          <li><a href="#syntax_xml"><abbr title="XML"><span class="sideoverflow">XML</span></abbr></a></li>
           <li class="divider"></li>
           <li class="text-right"><a href="#top"><small>Back to Top</small></a></li>
         </ul>
@@ -125,8 +126,8 @@ by anyone and writable by system administrators.</span>
     <tr class="clickable-row" data-href="resource_TokenFacadeREST.html">
       <td>  <span class="resource-name">TokenFacadeREST</span>
 </td>
-      <td class="text-nowrap"><ul class="list-unstyled"><li><samp>  <span class="resource-path">/users/{userId}/tokens</span>
-</samp></li><li><samp>  <span class="resource-path">/users/{userId}/tokens/{token-id}</span>
+      <td class="text-nowrap"><ul class="list-unstyled"><li><samp>  <span class="resource-path">/users/{userName}/tokens</span>
+</samp></li><li><samp>  <span class="resource-path">/users/{userName}/tokens/{token-id}</span>
 </samp></li></ul></td>
       <td class="text-nowrap"><ul class="list-unstyled"><li><samp>  <span class="label label-default resource-method">DELETE</span> <span class="label label-default resource-method">POST</span> 
 </samp></li><li><samp>  <span class="label label-default resource-method">DELETE</span> 
@@ -237,7 +238,7 @@ Please see description for details about the specific error.</span>
     <tr class="clickable-row" data-href="json_Unauthorized.html">
       <td>  <span class="datatype-name">Unauthorized</span>
 </td>
-      <td>  <span class="datatype-description">Payload for unauthorized (403) responses.
+      <td>  <span class="datatype-description">Payload for unauthorized (401) responses.
 <br>
 Please see description for details about the specific error.</span>
 </td>
@@ -254,6 +255,82 @@ Please see description for details about the specific error.</span>
       <td>  <span class="datatype-description">TODO, remove from REST JSON types.
 <br>
 TODO, document.</span>
+</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h3 id="syntax_xml"><span class="syntax-name">XML</span></h3>
+
+  <table class="table table-hover datatypes">
+    <caption>Default Namespace  (<a href="ns0.xsd">schema</a>)</caption>
+    <thead>
+      <tr>
+        <th align="center">type</th>
+        <th align="center">description</th>
+      </tr>
+    </thead>
+    <tbody data-link="row" class="rowlink">
+    <tr class="clickable-row" data-href="xml_ns0_badRequest.html">
+      <td>  <span class="datatype-name">badRequest</span>
+</td>
+      <td>  <span class="datatype-description">Payload for bad request (400) responses.
+<br>
+Please see error code and description for details about the specific error.</span>
+</td>
+    </tr>
+    <tr class="clickable-row" data-href="xml_ns0_baseError.html">
+      <td>  <span class="datatype-name">baseError</span>
+</td>
+      <td>  <span class="datatype-description">Base class for all errors.
+<br>
+All errors contains a description text.</span>
+</td>
+    </tr>
+    <tr class="clickable-row" data-href="xml_ns0_errorCode.html">
+      <td>  <span class="datatype-name">errorCode</span>
+</td>
+      <td>  <span class="datatype-description">Enumeration of error codes that can occur in BadRequest responses.</span>
+</td>
+    </tr>
+    <tr class="clickable-row" data-href="xml_ns0_forbidden.html">
+      <td>  <span class="datatype-name">forbidden</span>
+</td>
+      <td>  <span class="datatype-description">Payload for forbidden (403) responses.
+<br>
+Please see error code and description for details about the specific error.</span>
+</td>
+    </tr>
+    <tr class="clickable-row" data-href="xml_ns0_internalServerError.html">
+      <td>  <span class="datatype-name">internalServerError</span>
+</td>
+      <td>  <span class="datatype-description">Payload for internal server error (500) responses.
+<br>
+When an unforseen error happens, this payload will be generated.
+<br>
+Should you file a bug report for receiving this error please do so here:
+<br> <a target="_blank" href="https://github.com/daljian/StolpjaktenAPI/issues">https://github.com/daljian/StolpjaktenAPI/issues</a>
+<br>
+Please include the identifier as a minimum, and if you know how to reproduce
+the error, please also provide the steps to reproduce the error.
+<br>
+Thanks!</span>
+</td>
+    </tr>
+    <tr class="clickable-row" data-href="xml_ns0_notFound.html">
+      <td>  <span class="datatype-name">notFound</span>
+</td>
+      <td>  <span class="datatype-description">Payload for not found (404) responses.
+<br>
+Please see description for details about the specific error.</span>
+</td>
+    </tr>
+    <tr class="clickable-row" data-href="xml_ns0_unauthorized.html">
+      <td>  <span class="datatype-name">unauthorized</span>
+</td>
+      <td>  <span class="datatype-description">Payload for unauthorized (401) responses.
+<br>
+Please see description for details about the specific error.</span>
 </td>
     </tr>
     </tbody>

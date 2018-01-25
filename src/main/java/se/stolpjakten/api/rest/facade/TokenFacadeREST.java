@@ -5,6 +5,9 @@
  */
 package se.stolpjakten.api.rest.facade;
 
+import com.webcohesion.enunciate.metadata.rs.ResponseCode;
+import com.webcohesion.enunciate.metadata.rs.StatusCodes;
+import com.webcohesion.enunciate.metadata.rs.TypeHint;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.UUID;
@@ -27,6 +30,14 @@ import se.stolpjakten.api.rest.type.Token;
 import se.stolpjakten.api.security.aspects.BasicSecured;
 import se.stolpjakten.api.security.aspects.TokenSecured;
 import se.stolpjakten.api.exceptions.AuthorizationException;
+import se.stolpjakten.api.exceptions.NotFoundException;
+import se.stolpjakten.api.rest.error.Forbidden;
+import se.stolpjakten.api.rest.error.InternalServerError;
+import se.stolpjakten.api.rest.error.NotFound;
+import se.stolpjakten.api.rest.error.Unauthorized;
+import se.stolpjakten.api.rest.type.Role;
+import se.stolpjakten.api.security.aspects.Authorization;
+import se.stolpjakten.api.utils.AuthorizationHelper;
 import se.stolpjakten.api.utils.EntityManagerHolder;
 
 /**
@@ -34,7 +45,7 @@ import se.stolpjakten.api.utils.EntityManagerHolder;
  * @author gengdahl
  */
 @Stateless
-@Path("/users/{userId}/tokens")
+@Path("/users/{userName}/tokens")
 public class TokenFacadeREST {
     private TokensFacadeDB db = null;
     private TokensFacadeDB getDb() {
@@ -60,21 +71,27 @@ public class TokenFacadeREST {
      * discard old tokens to manage memory resources.
      * <br>
      * <br>
-     * <b>Authentication:</b> Basic Authentication (RFC 7617)
+     * A SYS_ADMIN can impersonate a USER in order to troubleshoot specific user issues. 
+     * 
+     * @RequestHeader Authorization Basic Authentication (RFC 7617)
      *
-     * @param context
-     * @return
+     * @param userName The username of the user to create the token for.
+     * @return Created token.
      */
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
     @BasicSecured
-    public Token createToken(@PathParam("userId") String id, Token token,
-            @Context ContainerRequestContext context) throws IOException {
-        String userName
-                = context.getSecurityContext().getUserPrincipal().getName();
-        if (!userName.equals(id)) {
-            throw new AuthorizationException();
+    @Authorization({Role.USER, Role.SYS_ADMIN})
+    @StatusCodes({
+        @ResponseCode(code = 200, condition = "OK")
+        ,@ResponseCode(code = 403, type = @TypeHint(Forbidden.class), condition = Forbidden.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 500, type = @TypeHint(InternalServerError.class), condition = InternalServerError.DEFAULT_DESCRIPTION)})
+    public Token createToken(@PathParam("userName") String userName, Token token) throws IOException {
+        //Below check will make impersionation possible.
+        //Potentially this could be useful for troubleshooting a user issue.
+        if (!AuthorizationHelper.isInRole(Role.SYS_ADMIN)) {
+            AuthorizationHelper.assertRequestingUser(userName);
         }
         Tokens dbToken = new Tokens();
 
@@ -90,48 +107,63 @@ public class TokenFacadeREST {
 
     /**
      * Delete a previously created token.
+     * <br>
+     * If user or token does not exist, operation will return OK
+     * result (if authentication & authorization passed)..
      *
-     * @param userId The user id (username) of te current user.
+     * @param userName The user id (username) of the current user.
      * @param tokenId The access token to delete, eg
      * 8758f65a-c27b-4f86-a43d-3ce1add36ec6
-     * <br>
-     * <b>Authentication:</b> Bearer Token
      *
+     * @RequestHeader Authorization Bearer token (RFC 6750).
      */
+    @StatusCodes({
+        @ResponseCode(code = 204, condition = "OK")
+        ,@ResponseCode(code = 401, type = @TypeHint(Unauthorized.class), condition = Unauthorized.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 403, type = @TypeHint(Forbidden.class), condition = Forbidden.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 500, type = @TypeHint(InternalServerError.class), condition = InternalServerError.DEFAULT_DESCRIPTION)})
     @DELETE
     @Path("{token-id}")
     @TokenSecured
-    public void deleteToken(@PathParam("userId") String id,
+    @Authorization({Role.USER, Role.SYS_ADMIN})
+    public void deleteToken(@PathParam("userName") String userName,
             @PathParam("token-id") String tokenId,
-            @Context ContainerRequestContext context) throws IOException {
-        String userName
-                = context.getSecurityContext().getUserPrincipal().getName();
-        if (!userName.equals(id)) {
-            throw new AuthorizationException();
+            @Context ContainerRequestContext context) throws IOException, NotFoundException {
+        if (!AuthorizationHelper.isInRole(Role.SYS_ADMIN)) {
+            AuthorizationHelper.assertRequestingUser(userName);
         }
         //TODO optimize to do delete instead of select + delete
-        getDb().remove(getDb().find(tokenId));
+        Tokens token = getDb().find(tokenId);
+        if (token != null) {
+            getDb().remove(token);
+        }
 
     }
 
     /**
-     * Delete a previously created token.
+     * Delete all tokens for this user.
+     * If user does not exist or user have no tokens, operation will return OK
+     * result (if authentication & authorization passed)..
      *
-     * @param userId The user id (username) of te current user.
-     * @param tokenId The access token to delete, eg
-     * 8758f65a-c27b-4f86-a43d-3ce1add36ec6
-     * <br>
-     * <b>Authentication:</b> Bearer Token
+     * @param userName The user userName (username) of the current user.
      *
+     *
+     * @RequestHeader Authorization Bearer token (RFC 6750).
      */
+    @StatusCodes({
+        @ResponseCode(code = 204, condition = "OK")
+        ,@ResponseCode(code = 401, type = @TypeHint(Unauthorized.class), condition = Unauthorized.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 403, type = @TypeHint(Forbidden.class), condition = Forbidden.DEFAULT_DESCRIPTION)
+        ,@ResponseCode(code = 500, type = @TypeHint(InternalServerError.class), condition = InternalServerError.DEFAULT_DESCRIPTION)})
     @DELETE
     @TokenSecured
-    public void deleteTokens(@PathParam("userId") String id,
+    @Authorization({Role.USER, Role.SYS_ADMIN})
+    public void deleteTokens(@PathParam("userName") String userName,
             @Context ContainerRequestContext context) throws IOException {
-        if (!context.getSecurityContext().getUserPrincipal().getName().equals(id)) {
-            throw new AuthorizationException();
+        if (!AuthorizationHelper.isInRole(Role.SYS_ADMIN)) {
+            AuthorizationHelper.assertRequestingUser(userName);
         }
-        getDb().deleteByUserName(id);
+        getDb().deleteByUserName(userName);
 
     }
 

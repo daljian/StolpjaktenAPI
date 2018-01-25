@@ -18,8 +18,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NotFound extends BaseError {
+    public static final String DEFAULT_DESCRIPTION = "This resource does not exist.";
+
     public NotFound() {
-        setDescription(ErrorCode.RESOURCE_NOT_EXISTS.getDescription());
+        setDescription(DEFAULT_DESCRIPTION);
     }
     public NotFound(String description) {
         setDescription(description);

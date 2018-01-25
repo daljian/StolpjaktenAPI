@@ -15,24 +15,6 @@ public class User extends com.google.gwt.core.client.JavaScriptObject {
   }
 
   /**
-   * Email address for this user.
-   * <br>
-   * Required: no
-   */
-  public final native java.lang.String getEmail() /*-{
-    return this.email;
-  }-*/;
-
-  /**
-   * Email address for this user.
-   * <br>
-   * Required: no
-   */
-  public final native void setEmail(java.lang.String email) /*-{
-    this.email = email;
-  }-*/;
-
-  /**
    * A globally unique username that identifies a user.
    * <br>
    * Required: yes
@@ -48,6 +30,24 @@ public class User extends com.google.gwt.core.client.JavaScriptObject {
    */
   public final native void setUserName(java.lang.String userName) /*-{
     this.userName = userName;
+  }-*/;
+
+  /**
+   * Email address for this user.
+   * <br>
+   * Required: no
+   */
+  public final native java.lang.String getEmail() /*-{
+    return this.email;
+  }-*/;
+
+  /**
+   * Email address for this user.
+   * <br>
+   * Required: no
+   */
+  public final native void setEmail(java.lang.String email) /*-{
+    this.email = email;
   }-*/;
 
   /**

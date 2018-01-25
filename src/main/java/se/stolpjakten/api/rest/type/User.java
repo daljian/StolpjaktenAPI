@@ -16,6 +16,7 @@ public interface User {
      * A globally unique username that identifies a user.
      * <br>
      * Required: yes
+     * @documentationExample kalle
      */
     @XmlElement(required = true)
     public String getUserName();
@@ -24,6 +25,7 @@ public interface User {
      * Email address for this user.
      * <br>
      * Required: no
+     * @documentationExample Kalle@stolpjakten.se
      */
     @XmlElement(required = false)
     public String getEmail();
@@ -36,6 +38,7 @@ public interface User {
      * Stored in database using salted one-way hash algorithm with.
      * <br>
      * Required: yes
+     * @documentationExample H4MM3Rf@ll
      */
     public String getPassword();
 

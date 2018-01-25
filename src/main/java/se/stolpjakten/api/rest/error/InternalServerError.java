@@ -24,21 +24,28 @@ import javax.xml.bind.annotation.XmlRootElement;
  * the error, please also provide the steps to reproduce the error.
  * <br>
  * Thanks!
- * 
- * 
+ *
+ *
  */
 @XmlRootElement(name = "serverError")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InternalServerError extends BaseError {
-    
+
+    public static final String DEFAULT_DESCRIPTION = "Server failed to process the request due to an internal error.";
+
     private String identifier = UUID.randomUUID().toString();
-/**
- * A unique identifier for this specific error incident.
- * <br>
- * The server log file will have more details about the error.
- * 
- * @return 
- */
+    
+    public InternalServerError() {
+        setDescription(DEFAULT_DESCRIPTION);
+    }
+
+    /**
+     * A unique identifier for this specific error incident.
+     * <br>
+     * The server log file will have more details about the error.
+     *
+     * @return
+     */
     public String getIdentifier() {
         return identifier;
     }
@@ -46,5 +53,5 @@ public class InternalServerError extends BaseError {
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
-    
+
 }

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <title>stolpjaktenAPI: XML</title>
+
+  <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+  <!--custom css for these pages-->
+  <link rel="stylesheet" href="css/enunciate.css">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body data-spy="scroll" data-target="#apinav">
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">stolpjaktenAPI: XML</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="data.html">Data Types</a></li>
+          <li><a href="downloads.html">Files and Libraries</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar" id="apinav">
+        <ul class="nav nav-sidebar">
+          <li class="text-right"><a href="#top"><small>Back to Top</small></a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <ol class="breadcrumb" id="top">
+          <li class="active dropdown"><a href="index.html">Home</a></li>
+          <li class="dropdown"><a href="syntax_xml.html">XML</a></li>
+        </ol>
+
+  <h1 class="page-header">XML</h1>
+
+  <table class="table table-hover datatypes">
+  <caption>Default Namespace  (<a href="ns0.xsd">schema</a>)</caption>
+  <thead>
+    <tr>
+      <th align="center">type</th>
+      <th align="center">description</th>
+    </tr>
+  </thead>
+  <tbody data-link="row" class="rowlink">
+    <tr class="clickable-row" data-href="xml_ns0_badRequest.html">
+      <td>  <span class="datatype-name">badRequest</span>
+</td>
+      <td>  <span class="datatype-description">Payload for bad request (400) responses.
+<br>
+Please see error code and description for details about the specific error.</span>
+</td>
+    </tr>
+    <tr class="clickable-row" data-href="xml_ns0_baseError.html">
+      <td>  <span class="datatype-name">baseError</span>
+</td>
+      <td>  <span class="datatype-description">Base class for all errors.
+<br>
+All errors contains a description text.</span>
+</td>
+    </tr>
+    <tr class="clickable-row" data-href="xml_ns0_errorCode.html">
+      <td>  <span class="datatype-name">errorCode</span>
+</td>
+      <td>  <span class="datatype-description">Enumeration of error codes that can occur in BadRequest responses.</span>
+</td>
+    </tr>
+    <tr class="clickable-row" data-href="xml_ns0_forbidden.html">
+      <td>  <span class="datatype-name">forbidden</span>
+</td>
+      <td>  <span class="datatype-description">Payload for forbidden (403) responses.
+<br>
+Please see error code and description for details about the specific error.</span>
+</td>
+    </tr>
+    <tr class="clickable-row" data-href="xml_ns0_internalServerError.html">
+      <td>  <span class="datatype-name">internalServerError</span>
+</td>
+      <td>  <span class="datatype-description">Payload for internal server error (500) responses.
+<br>
+When an unforseen error happens, this payload will be generated.
+<br>
+Should you file a bug report for receiving this error please do so here:
+<br> <a target="_blank" href="https://github.com/daljian/StolpjaktenAPI/issues">https://github.com/daljian/StolpjaktenAPI/issues</a>
+<br>
+Please include the identifier as a minimum, and if you know how to reproduce
+the error, please also provide the steps to reproduce the error.
+<br>
+Thanks!</span>
+</td>
+    </tr>
+    <tr class="clickable-row" data-href="xml_ns0_notFound.html">
+      <td>  <span class="datatype-name">notFound</span>
+</td>
+      <td>  <span class="datatype-description">Payload for not found (404) responses.
+<br>
+Please see description for details about the specific error.</span>
+</td>
+    </tr>
+    <tr class="clickable-row" data-href="xml_ns0_unauthorized.html">
+      <td>  <span class="datatype-name">unauthorized</span>
+</td>
+      <td>  <span class="datatype-description">Payload for unauthorized (401) responses.
+<br>
+Please see description for details about the specific error.</span>
+</td>
+    </tr>
+  </tbody>
+  </table>
+
+        <footer class="footer">
+          <div class="container">
+            <p class="text-muted">Generated by <a href="http://enunciate.webcohesion.com">Enunciate</a>.</p>
+          </div>
+        </footer>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- JavaScript placed at the end of the document so the pages load faster. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+  <!-- prettify code blocks. see http://code.google.com/p/google-code-prettify/ -->
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js" type="text/javascript"></script>
+  <script>
+    $(function() {
+      $(".clickable-row").click(function() {
+        window.document.location = $(this).data("href");
+      });
+
+      $('[data-toggle="tooltip"]').tooltip()
+    });
+  </script>
+
+</body>
+</html>

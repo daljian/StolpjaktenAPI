@@ -79,7 +79,79 @@ You need to create a user before using the protected REST APIs.</p>
       <div id="resource_UsersFacadeREST_findAll_GET">
         <h3><span class="label label-default resource-method">GET</span> <span class="resource-path">/users <a href="../users" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
 
-        <p></p>
+        <p>Get a list of users.
+<br>
+<b>SYS_ADMIN</b> Role can retrieve all user data.
+<br>
+<b>USER</b> Role can retrieve all user data for himself, and partial data
+for other users.</p>
+
+        <table class="table resource-parameters">
+          <caption>Request Parameters</caption>
+          <thead>
+          <tr>
+            <th>name</th>
+            <th>type</th>
+            <th>description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="parameter-name">Authorization</span></td>
+            <td>header</td>
+            <td><span class="parameter-description">Bearer token.</span></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table class="table resource-response-codes">
+          <caption>Response Codes</caption>
+          <thead>
+          <tr>
+            <th>code</th>
+            <th>condition</th>
+            <th>type</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="label label-success response-code">200</span></td>
+            <td><span class="response-condition">OK</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_User.html">User</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">400</span></td>
+            <td><span class="response-condition">Request data is sematically or syntactically incorrect.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_BadRequest.html">BadRequest</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">401</span></td>
+            <td><span class="response-condition">You are not authorized to access this resource.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Unauthorized.html">Unauthorized</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">403</span></td>
+            <td><span class="response-condition">Authorization header is missing or contains incorrect credentials.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Forbidden.html">Forbidden</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">404</span></td>
+            <td><span class="response-condition">This resource does not exist.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_NotFound.html">NotFound</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-danger response-code">500</span></td>
+            <td><span class="response-condition">Server failed to process the request due to an internal error.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_InternalServerError.html">InternalServerError</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          </tbody>
+        </table>
 
         <table class="table resource-response-body">
           <caption>Response Body</caption>
@@ -108,6 +180,7 @@ You need to create a user before using the protected REST APIs.</p>
               <pre>
 GET /users
 Accept: application/json
+Authorization: ...
 
               </pre>
             </div>
@@ -119,9 +192,9 @@ Content-Type: application/json
 
                 <code class="prettyprint language-js">
 [ {
-  &quot;email&quot; : &quot;...&quot;,
-  &quot;userName&quot; : &quot;...&quot;,
-  &quot;password&quot; : &quot;...&quot;
+  &quot;userName&quot; : &quot;kalle&quot;,
+  &quot;email&quot; : &quot;Kalle@stolpjakten.se&quot;,
+  &quot;password&quot; : &quot;H4MM3Rf@ll&quot;
 } ]
                 </code>
               </pre>
@@ -139,8 +212,7 @@ After creating a user you should proceed to get a token using the Token
 REST service. After you have retrieved a token you can use that to access
 the other APIs to explore arrangements, maps, courses and start register
 poles.
-<br>
-<b>Authentication:</b> None</p>
+<br></p>
 
         <table class="table resource-request-body">
           <caption>Request Body</caption>
@@ -157,132 +229,6 @@ poles.
             <td><span class="datatype-reference"><a href="json_Users.html">Users</a>
  (JSON)</span></td>
             <td><span class="request-description">The user to create.</span></td>
-          </tr>
-          </tbody>
-        </table>
-        <h4>Example</h4>
-
-        <div class="container-fluid example panel">
-          <div class="row panel-body">
-            <div class="col-md-6">
-              <h5>Request</h5>
-              <pre>
-POST /users
-Content-Type: application/json
-
-                <code class="prettyprint language-js">
-{
-  &quot;userName&quot; : &quot;...&quot;,
-  &quot;email&quot; : &quot;...&quot;,
-  &quot;password&quot; : &quot;...&quot;
-}
-                </code>
-              </pre>
-            </div>
-            <div class="col-md-6">
-              <h5>Response</h5>
-              <pre>
-HTTP/1.1 201 Created
-
-              </pre>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="resource_UsersFacadeREST_countREST_GET">
-        <h3><span class="label label-default resource-method">GET</span> <span class="resource-path">/users/count <a href="../users/count" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
-
-        <p></p>
-        <h4>Example</h4>
-
-        <div class="container-fluid example panel">
-          <div class="row panel-body">
-            <div class="col-md-6">
-              <h5>Request</h5>
-              <pre>
-GET /users/count
-
-              </pre>
-            </div>
-            <div class="col-md-6">
-              <h5>Response</h5>
-              <pre>
-HTTP/1.1 200 OK
-
-              </pre>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="resource_UsersFacadeREST_remove_DELETE">
-        <h3><span class="label label-default resource-method">DELETE</span> <span class="resource-path">/users/{userName} <a href="../users/{userName}" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
-
-        <p>Delete a user account.
-<br>
-Please note that this will delete the user account and all data
-associated to it. Anonymous statistics data will remain.</p>
-
-        <table class="table resource-parameters">
-          <caption>Request Parameters</caption>
-          <thead>
-          <tr>
-            <th>name</th>
-            <th>type</th>
-            <th>description</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td><span class="parameter-name">userName</span></td>
-            <td>path</td>
-            <td><span class="parameter-description"></span></td>
-          </tr>
-          </tbody>
-        </table>
-        <h4>Example</h4>
-
-        <div class="container-fluid example panel">
-          <div class="row panel-body">
-            <div class="col-md-6">
-              <h5>Request</h5>
-              <pre>
-DELETE /users/{userName}
-
-              </pre>
-            </div>
-            <div class="col-md-6">
-              <h5>Response</h5>
-              <pre>
-HTTP/1.1 204 No Content
-
-              </pre>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="resource_UsersFacadeREST_find_GET">
-        <h3><span class="label label-default resource-method">GET</span> <span class="resource-path">/users/{userName} <a href="../users/{userName}" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
-
-        <p>Retrieve a User.
-<br></p>
-
-        <table class="table resource-parameters">
-          <caption>Request Parameters</caption>
-          <thead>
-          <tr>
-            <th>name</th>
-            <th>type</th>
-            <th>description</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td><span class="parameter-name">userName</span></td>
-            <td>path</td>
-            <td><span class="parameter-description">The user to retrieve.</span></td>
           </tr>
           </tbody>
         </table>
@@ -305,31 +251,289 @@ HTTP/1.1 204 No Content
           </tr>
           <tr>
             <td><span class="label label-warning response-code">400</span></td>
-            <td><span class="response-condition">Invalid request</span></td>
+            <td><span class="response-condition">Request data is sematically or syntactically incorrect.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_BadRequest.html">BadRequest</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-danger response-code">500</span></td>
+            <td><span class="response-condition">Server failed to process the request due to an internal error.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_InternalServerError.html">InternalServerError</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table class="table resource-response-headers">
+          <caption>Response Headers</caption>
+          <thead>
+          <tr>
+            <th>name</th>
+            <th>description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="header-name">Location</span></td>
+            <td><span class="header-description">URL to created user</span></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <h4>Example</h4>
+
+        <div class="container-fluid example panel">
+          <div class="row panel-body">
+            <div class="col-md-6">
+              <h5>Request</h5>
+              <pre>
+POST /users
+Content-Type: application/json
+
+                <code class="prettyprint language-js">
+{
+  &quot;userName&quot; : &quot;...&quot;,
+  &quot;email&quot; : &quot;...&quot;,
+  &quot;password&quot; : &quot;...&quot;
+}
+                </code>
+              </pre>
+            </div>
+            <div class="col-md-6">
+              <h5>Response</h5>
+              <pre>
+HTTP/1.1 200 OK
+Location: ...
+
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="resource_UsersFacadeREST_countREST_GET">
+        <h3><span class="label label-default resource-method">GET</span> <span class="resource-path">/users/count <a href="../users/count" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
+
+        <p></p>
+
+        <table class="table resource-parameters">
+          <caption>Request Parameters</caption>
+          <thead>
+          <tr>
+            <th>name</th>
+            <th>type</th>
+            <th>description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="parameter-name">Authorization</span></td>
+            <td>header</td>
+            <td><span class="parameter-description">Bearer token.</span></td>
+          </tr>
+          </tbody>
+        </table>
+        <h4>Example</h4>
+
+        <div class="container-fluid example panel">
+          <div class="row panel-body">
+            <div class="col-md-6">
+              <h5>Request</h5>
+              <pre>
+GET /users/count
+Authorization: ...
+
+              </pre>
+            </div>
+            <div class="col-md-6">
+              <h5>Response</h5>
+              <pre>
+HTTP/1.1 200 OK
+
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="resource_UsersFacadeREST_remove_DELETE">
+        <h3><span class="label label-default resource-method">DELETE</span> <span class="resource-path">/users/{userName} <a href="../users/{userName}" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
+
+        <p>Delete a user account.
+<br>
+Please note that this will delete the user account and all data
+associated to it. Anonymous statistics data will remain.
+<br>
+<b>SYS_ADMIN</b> Role can delete any user account.
+<br>
+<b>USER</b> Role can delete only one user account (his).</p>
+
+        <table class="table resource-parameters">
+          <caption>Request Parameters</caption>
+          <thead>
+          <tr>
+            <th>name</th>
+            <th>type</th>
+            <th>description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="parameter-name">Authorization</span></td>
+            <td>header</td>
+            <td><span class="parameter-description">Bearer token.</span></td>
+          </tr>
+          <tr>
+            <td><span class="parameter-name">userName</span></td>
+            <td>path</td>
+            <td><span class="parameter-description"></span></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table class="table resource-response-codes">
+          <caption>Response Codes</caption>
+          <thead>
+          <tr>
+            <th>code</th>
+            <th>condition</th>
+            <th>type</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="label label-success response-code">204</span></td>
+            <td><span class="response-condition">OK</span></td>
+            <td><ul class="list-unstyled"></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">401</span></td>
+            <td><span class="response-condition">You are not authorized to access this resource.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Unauthorized.html">Unauthorized</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_unauthorized.html">unauthorized</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">403</span></td>
+            <td><span class="response-condition">Authorization header is missing or contains incorrect credentials.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Forbidden.html">Forbidden</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_forbidden.html">forbidden</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">404</span></td>
+            <td><span class="response-condition">This resource does not exist.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_NotFound.html">NotFound</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_notFound.html">notFound</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-danger response-code">500</span></td>
+            <td><span class="response-condition">Server failed to process the request due to an internal error.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_InternalServerError.html">InternalServerError</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_internalServerError.html">internalServerError</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          </tbody>
+        </table>
+        <h4>Example</h4>
+
+        <div class="container-fluid example panel">
+          <div class="row panel-body">
+            <div class="col-md-6">
+              <h5>Request</h5>
+              <pre>
+DELETE /users/{userName}
+Authorization: ...
+
+              </pre>
+            </div>
+            <div class="col-md-6">
+              <h5>Response</h5>
+              <pre>
+HTTP/1.1 204 No Content
+
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="resource_UsersFacadeREST_find_GET">
+        <h3><span class="label label-default resource-method">GET</span> <span class="resource-path">/users/{userName} <a href="../users/{userName}" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
+
+        <p>Retrieve a User.
+<br>
+<b>SYS_ADMIN</b> Role can retrieve any user.
+<br>
+<b>USER</b> Role can retrieve only one user (himself).</p>
+
+        <table class="table resource-parameters">
+          <caption>Request Parameters</caption>
+          <thead>
+          <tr>
+            <th>name</th>
+            <th>type</th>
+            <th>description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="parameter-name">Authorization</span></td>
+            <td>header</td>
+            <td><span class="parameter-description">Bearer token.</span></td>
+          </tr>
+          <tr>
+            <td><span class="parameter-name">userName</span></td>
+            <td>path</td>
+            <td><span class="parameter-description"></span></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table class="table resource-response-codes">
+          <caption>Response Codes</caption>
+          <thead>
+          <tr>
+            <th>code</th>
+            <th>condition</th>
+            <th>type</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="label label-success response-code">200</span></td>
+            <td><span class="response-condition">OK</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_User.html">User</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">400</span></td>
+            <td><span class="response-condition">Request data is sematically or syntactically incorrect.</span></td>
             <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_BadRequest.html">BadRequest</a>
  (JSON)</span></li></ul></td>
           </tr>
           <tr>
             <td><span class="label label-warning response-code">401</span></td>
-            <td><span class="response-condition">Invalid request</span></td>
+            <td><span class="response-condition">You are not authorized to access this resource.</span></td>
             <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Unauthorized.html">Unauthorized</a>
  (JSON)</span></li></ul></td>
           </tr>
           <tr>
             <td><span class="label label-warning response-code">403</span></td>
-            <td><span class="response-condition">Invalid request</span></td>
+            <td><span class="response-condition">Authorization header is missing or contains incorrect credentials.</span></td>
             <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Forbidden.html">Forbidden</a>
  (JSON)</span></li></ul></td>
           </tr>
           <tr>
             <td><span class="label label-warning response-code">404</span></td>
-            <td><span class="response-condition">Invalid request</span></td>
+            <td><span class="response-condition">This resource does not exist.</span></td>
             <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_NotFound.html">NotFound</a>
  (JSON)</span></li></ul></td>
           </tr>
           <tr>
             <td><span class="label label-danger response-code">500</span></td>
-            <td><span class="response-condition">Invalid request</span></td>
+            <td><span class="response-condition">Server failed to process the request due to an internal error.</span></td>
             <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_InternalServerError.html">InternalServerError</a>
  (JSON)</span></li></ul></td>
           </tr>
@@ -350,7 +554,7 @@ HTTP/1.1 204 No Content
             <td><abbr data-toggle="tooltip" data-placement="top" title="Use the &quot;Accept: application/json&quot; HTTP header to request that this media type be provided by the server."><span class="response-type">application/json</span></abbr></td>
             <td><span class="datatype-reference"><a href="json_User.html">User</a>
  (JSON)</span></td>
-            <td><span class="response-description">User if found.</span></td>
+            <td><span class="response-description"></span></td>
           </tr>
           </tbody>
         </table>
@@ -363,6 +567,7 @@ HTTP/1.1 204 No Content
               <pre>
 GET /users/{userName}
 Accept: application/json
+Authorization: ...
 
               </pre>
             </div>
@@ -374,9 +579,9 @@ Content-Type: application/json
 
                 <code class="prettyprint language-js">
 {
-  &quot;email&quot; : &quot;...&quot;,
-  &quot;userName&quot; : &quot;...&quot;,
-  &quot;password&quot; : &quot;...&quot;
+  &quot;userName&quot; : &quot;kalle&quot;,
+  &quot;email&quot; : &quot;Kalle@stolpjakten.se&quot;,
+  &quot;password&quot; : &quot;H4MM3Rf@ll&quot;
 }
                 </code>
               </pre>
@@ -389,8 +594,7 @@ Content-Type: application/json
         <h3><span class="label label-default resource-method">PUT</span> <span class="resource-path">/users/{userName} <a href="../users/{userName}" class="glyphicon glyphicon-new-window" target="_blank"></a></span></h3>
 
         <p>Update the user.
-<br>
-<b>Authentication:</b> Token (RFC 6750)</p>
+<br></p>
 
         <table class="table resource-parameters">
           <caption>Request Parameters</caption>
@@ -402,6 +606,11 @@ Content-Type: application/json
           </tr>
           </thead>
           <tbody>
+          <tr>
+            <td><span class="parameter-name">Authorization</span></td>
+            <td>header</td>
+            <td><span class="parameter-description">Bearer token (RFC 6750).</span></td>
+          </tr>
           <tr>
             <td><span class="parameter-name">userName</span></td>
             <td>path</td>
@@ -429,6 +638,59 @@ userName.</span></td>
           </tr>
           </tbody>
         </table>
+
+        <table class="table resource-response-codes">
+          <caption>Response Codes</caption>
+          <thead>
+          <tr>
+            <th>code</th>
+            <th>condition</th>
+            <th>type</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="label label-success response-code">204</span></td>
+            <td><span class="response-condition">OK</span></td>
+            <td><ul class="list-unstyled"></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">400</span></td>
+            <td><span class="response-condition">Request data is sematically or syntactically incorrect.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_BadRequest.html">BadRequest</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_badRequest.html">badRequest</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">401</span></td>
+            <td><span class="response-condition">You are not authorized to access this resource.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Unauthorized.html">Unauthorized</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_unauthorized.html">unauthorized</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">403</span></td>
+            <td><span class="response-condition">Authorization header is missing or contains incorrect credentials.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Forbidden.html">Forbidden</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_forbidden.html">forbidden</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">404</span></td>
+            <td><span class="response-condition">This resource does not exist.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_NotFound.html">NotFound</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_notFound.html">notFound</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-danger response-code">500</span></td>
+            <td><span class="response-condition">Server failed to process the request due to an internal error.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_InternalServerError.html">InternalServerError</a>
+ (JSON)</span></li><li><span class="datatype-reference"><a href="xml_ns0_internalServerError.html">internalServerError</a>
+ (XML)</span></li></ul></td>
+          </tr>
+          </tbody>
+        </table>
         <h4>Example</h4>
 
         <div class="container-fluid example panel">
@@ -438,12 +700,13 @@ userName.</span></td>
               <pre>
 PUT /users/{userName}
 Content-Type: application/json
+Authorization: ...
 
                 <code class="prettyprint language-js">
 {
-  &quot;email&quot; : &quot;...&quot;,
-  &quot;userName&quot; : &quot;...&quot;,
-  &quot;password&quot; : &quot;...&quot;
+  &quot;userName&quot; : &quot;kalle&quot;,
+  &quot;email&quot; : &quot;Kalle@stolpjakten.se&quot;,
+  &quot;password&quot; : &quot;H4MM3Rf@ll&quot;
 }
                 </code>
               </pre>
@@ -476,6 +739,12 @@ HTTP/1.1 204 No Content
           </thead>
           <tbody>
           <tr>
+            <td><span class="parameter-name">Authorization</span></td>
+            <td>header</td>
+            <td><span class="parameter-description">Bearer token.</span></td>
+            <td><span class="parameter-constraints">&nbsp;</span></td>
+          </tr>
+          <tr>
             <td><span class="parameter-name">from</span></td>
             <td>path</td>
             <td><span class="parameter-description"></span></td>
@@ -486,6 +755,55 @@ HTTP/1.1 204 No Content
             <td>path</td>
             <td><span class="parameter-description"></span></td>
             <td><span class="parameter-constraints">int</span></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table class="table resource-response-codes">
+          <caption>Response Codes</caption>
+          <thead>
+          <tr>
+            <th>code</th>
+            <th>condition</th>
+            <th>type</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span class="label label-success response-code">200</span></td>
+            <td><span class="response-condition">OK</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_User.html">User</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">400</span></td>
+            <td><span class="response-condition">Request data is sematically or syntactically incorrect.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_BadRequest.html">BadRequest</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">401</span></td>
+            <td><span class="response-condition">You are not authorized to access this resource.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Unauthorized.html">Unauthorized</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">403</span></td>
+            <td><span class="response-condition">Authorization header is missing or contains incorrect credentials.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_Forbidden.html">Forbidden</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-warning response-code">404</span></td>
+            <td><span class="response-condition">This resource does not exist.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_NotFound.html">NotFound</a>
+ (JSON)</span></li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="label label-danger response-code">500</span></td>
+            <td><span class="response-condition">Server failed to process the request due to an internal error.</span></td>
+            <td><ul class="list-unstyled"><li><span class="datatype-reference"><a href="json_InternalServerError.html">InternalServerError</a>
+ (JSON)</span></li></ul></td>
           </tr>
           </tbody>
         </table>
@@ -517,6 +835,7 @@ HTTP/1.1 204 No Content
               <pre>
 GET /users/{from}/{to}
 Accept: application/json
+Authorization: ...
 
               </pre>
             </div>
@@ -528,9 +847,9 @@ Content-Type: application/json
 
                 <code class="prettyprint language-js">
 [ {
-  &quot;email&quot; : &quot;...&quot;,
-  &quot;userName&quot; : &quot;...&quot;,
-  &quot;password&quot; : &quot;...&quot;
+  &quot;userName&quot; : &quot;kalle&quot;,
+  &quot;email&quot; : &quot;Kalle@stolpjakten.se&quot;,
+  &quot;password&quot; : &quot;H4MM3Rf@ll&quot;
 } ]
                 </code>
               </pre>

@@ -17,10 +17,11 @@ public class Token extends com.google.gwt.core.client.JavaScriptObject {
 
   /**
    * The Bearer access token to be used for token protected endpoints.
-   * <br><br>
-   * Sample value:
    * <br>
-   * 5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2
+   * <b>Note!</b> This property exists only in responses, ignored if present in requests.
+   * <br>
+   * <br>
+   * Required: no
    */
   public final native java.lang.String getAccessToken() /*-{
     return this.accessToken;
@@ -28,10 +29,11 @@ public class Token extends com.google.gwt.core.client.JavaScriptObject {
 
   /**
    * The Bearer access token to be used for token protected endpoints.
-   * <br><br>
-   * Sample value:
    * <br>
-   * 5eb19a75-c1d2-4d57-b1ec-4c61ff3c3cf2
+   * <b>Note!</b> This property exists only in responses, ignored if present in requests.
+   * <br>
+   * <br>
+   * Required: no
    */
   public final native void setAccessToken(java.lang.String accessToken) /*-{
     this.accessToken = accessToken;
@@ -40,9 +42,6 @@ public class Token extends com.google.gwt.core.client.JavaScriptObject {
   /**
    * Type of access token, currently only Bearer tokens are supported.
    * <br><br>
-   * Sample value:
-   * <br>
-   * Bearer
    */
   public final native java.lang.String getType() /*-{
     return this.type;
@@ -51,9 +50,6 @@ public class Token extends com.google.gwt.core.client.JavaScriptObject {
   /**
    * Type of access token, currently only Bearer tokens are supported.
    * <br><br>
-   * Sample value:
-   * <br>
-   * Bearer
    */
   public final native void setType(java.lang.String type) /*-{
     this.type = type;
@@ -61,10 +57,10 @@ public class Token extends com.google.gwt.core.client.JavaScriptObject {
 
   /**
    * The seconds left of the token life time.
+   * <br>
+   * Expired tokens are automatically rinsed.
    * 
    * <br><br>
-   * Sample value:
-   * <br> 3600
    */
   public final native Long getExpire() /*-{
     return (this.expire == null ? null : @java.lang.Long::valueOf(Ljava/lang/String;)(this.expire + ''));
@@ -72,10 +68,10 @@ public class Token extends com.google.gwt.core.client.JavaScriptObject {
 
   /**
    * The seconds left of the token life time.
+   * <br>
+   * Expired tokens are automatically rinsed.
    * 
    * <br><br>
-   * Sample value:
-   * <br> 3600
    */
   public final native void setExpire(java.lang.Long expire) /*-{
     this.expire = (expire == null ? null : (+(@java.lang.String::valueOf(Ljava/lang/Object;)(expire))));

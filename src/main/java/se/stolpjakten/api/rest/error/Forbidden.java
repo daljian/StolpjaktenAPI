@@ -18,8 +18,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Forbidden extends BaseError {
+   public static final String DEFAULT_DESCRIPTION = "Authorization header is missing or contains incorrect credentials.";
+
     public Forbidden() {
-        setDescription("Please provide correct authentication details.");
+        setDescription(DEFAULT_DESCRIPTION);
     }
     public Forbidden(String description) {
         setDescription(description);
